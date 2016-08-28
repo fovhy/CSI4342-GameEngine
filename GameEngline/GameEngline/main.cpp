@@ -1,8 +1,10 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include <GL/glew.h>
+#include "MainGame.h"
 
 int main(int argc, char** argv) {
-	std::cout << " simple test " << std::endl;
+	MainGame mainGame;
+	mainGame.run();
 	return 0;
 }

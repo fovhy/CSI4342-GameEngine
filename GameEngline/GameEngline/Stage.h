@@ -11,5 +11,7 @@ class Stage
 public:
 	Stage();
 	~Stage();
+private:
+	
 };
 

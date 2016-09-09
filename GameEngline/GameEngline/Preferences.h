@@ -1,7 +1,6 @@
-#ifndef PREF_H
-#define PREF_H
+#pragma once 
 #include <fstream>
-#include <SDL/DL.h>
+#include <SDL/SDL.h> 
 
 /**
 	File: Preferences.h
@@ -87,5 +86,3 @@ public:
 		jump_ = newJump;
 	}
 };
-
-#endif

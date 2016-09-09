@@ -1,5 +1,4 @@
-#ifndef CIRCLE_H
-#define CIRCLE_H
+#pragma once 
 #include "Thing.h"
 /**
 	File: Circle.h
@@ -36,5 +35,3 @@ public:
 
 
 };
-
-#endif

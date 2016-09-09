@@ -8,6 +8,8 @@ MainGame::MainGame() {
 
 
 MainGame::~MainGame(){
+	SDL_DestroyRenderer(renderer_);
+	SDL_DestroyWindow(window_);
 }
 
 void MainGame::run() {
@@ -17,25 +19,19 @@ void MainGame::run() {
 
 void MainGame::initSystem() {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
+	// initiate SDL window 
 	window_ = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL);    // used sdl to open a window and kick graphic to opengl
-
+		SDL_WINDOWPOS_CENTERED, screenWidth_, screenHeight_, SDL_WINDOW_SHOWN);    // used sdl to open a window and kick graphic to opengl 
 	if (window_ == nullptr) {
-		log::getInstance().logMessage("Windows failed to open", logType::error);
+		log::getInstance().logMessage("Windows failed to open " + std::string(SDL_GetError()), logType::error);
+	}
+	// initiate SDL_renderer
+	renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer_ == nullptr) {
+		log::getInstance().logMessage("Failed to create SDL render" + std::string(SDL_GetError()), logType::error);
 	}
 
-	SDL_GLContext glContext = SDL_GL_CreateContext(window_);
-	if (glContext == nullptr) {
-		log::getInstance().logMessage("SDL_GL context could not be created", logType::error);
-	}
-
-	GLenum glewSignal = glewInit();
-	if (glewSignal != GLEW_OK) {
-		log::getInstance().logMessage("Failed to initialize glew", logType::error);
-	}
-	//TODO:initiate shader
+	// init game camera
 	mainCamera_.init(screenWidth_, screenHeight_);
 }
 
@@ -72,8 +68,6 @@ void MainGame::processInput() {
 }
 
 void MainGame::drawGame() {
-	glClearDepth(1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //TODO: draw the game
 }
 

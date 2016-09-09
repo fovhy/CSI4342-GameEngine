@@ -1,22 +1,20 @@
-#ifndef THING_H
-#define THING_H
+#pragma once 
+#include <SDL/SDL.h>
 /**
 	File: Thing.h
-	Description: The base class for all objects in the game.
+	Description: The abstract base class for all drawable objects in the game.
 	Date Created: 8/30/16
 	Creator: Logan
-	Last Modified: 8/31/16
-	Modified By: Logan
+	Last Modified: 9/8/16
+	Modified By: Dean He  
 */
-
-struct Coordinate {
-	double x;
-	double y;
-	//int z;
-};
 
 class Thing {
 protected:
+	struct Coordinate {
+		double x;
+		double y;
+	};
 
 	//location
 	Coordinate loc_;
@@ -24,8 +22,6 @@ protected:
 	//x and y velocities
 	double xVelocity_, yVelocity_;
 
-	//z velocity
-	//int zVelocity;
 
 	//acceleration
 	double xAcceleration_, yAcceleration_;
@@ -42,7 +38,14 @@ protected:
 	//hitbox; each object sets their own
 	Coordinate lowerLeft_, upperRight_;
 
+	SDL_Texture* texture_; // store texture
+
+
+
 public:
+	virtual ~Thing() {} 
+
+	virtual void draw() = 0;
 	//get location
 	Coordinate getLoc() {
 		return loc_;
@@ -101,7 +104,3 @@ public:
 		yAcceleration_ = newYAccel;
 	}
 };
-
-
-
-#endif

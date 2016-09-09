@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL/SDL.h>
 #include "Camera.h"
+#include "InputManager.h"
 enum class GameState {PLAY, EXIT};
 class MainGame
 {
@@ -19,6 +20,7 @@ private:
 	float frameTime_;
 	float maxfps_ = 60.0f;
 	SDL_Renderer* renderer_ = nullptr;
+	InputManager inputManager_;
 
 	void initSystem();
 	void gameLoop();

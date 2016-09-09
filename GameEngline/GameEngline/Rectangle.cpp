@@ -7,13 +7,12 @@
 	Last Modified: 9/9/16
 	Modified By: Logan
 */
-//constructor
+
 Rectangle::Rectangle() {
 	type_ = 0;
 }
 
 
-//getters
 double Rectangle::getWidth() {
 	return width_;
 }
@@ -21,7 +20,6 @@ double Rectangle::getLength() {
 	return length_;
 }
 
-//setters
 void Rectangle::setLength(double newLength) {
 	length_ = newLength;
 	lowerLeft_.x = loc_.x - (length_ / 2);
@@ -31,4 +29,8 @@ void Rectangle::setWidth(double newWidth) {
 	width_ = newWidth;
 	lowerLeft_.y = loc_.y - (width_ / 2);
 	upperRight_.y = loc_.y + (width_ / 2);
+}
+
+void Rectangle::draw() {
+	return;
 }

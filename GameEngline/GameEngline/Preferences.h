@@ -14,25 +14,26 @@
 class Pref {
 private:
 	SDL_Scancode up_, down_, left_, right_, jump_;
-	void getInput();
-	void savePref();
+	char assocPlayer;
+	void getInput(char);
+	void savePref(char);
 public:
 	//Constructor; gets user's preferred inputs from the preferences file
-	Pref();
+	Pref(char);
 	//Deconstructor; saves the user's preferred inputs to the preferences file
 	~Pref();
 
 	//getters; retrieves the user's current input preferences
-	char getUp();
-	char getDown();
-	char getLeft();
-	char getRight();
-	char getJump();
+	SDL_Scancode getUp();
+	SDL_Scancode getDown();
+	SDL_Scancode getLeft();
+	SDL_Scancode getRight();
+	SDL_Scancode getJump();
 
 	//setters; remaps the ipnuts for the user
-	void setUp(char newUp);
-	void setDown(char newDown);
-	void setLeft(char newLeft);
-	void setRight(char newRight);
-	void setJump(char newJump);
+	void setUp(SDL_Scancode newUp);
+	void setDown(SDL_Scancode newDown);
+	void setLeft(SDL_Scancode newLeft);
+	void setRight(SDL_Scancode newRight);
+	void setJump(SDL_Scancode newJump);
 };

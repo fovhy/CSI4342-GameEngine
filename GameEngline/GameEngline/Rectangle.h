@@ -26,4 +26,5 @@ public:
 	void setLength(double newLength);
 	void setWidth(double newWidth);
 
+	void draw();
 };

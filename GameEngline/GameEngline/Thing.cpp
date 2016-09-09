@@ -7,6 +7,7 @@
 	Last Modified: 9/9/16
 	Modified By: Logan
 */
+
 void Thing::setCoord(double x, double y) {
 	loc_.x = x;
 	loc_.y = y;
@@ -33,7 +34,6 @@ double Thing::getYVeloc() {
 	return yVelocity_;
 }
 
-//get acceleration
 double Thing::getXAccel() {
 	return xAcceleration_;
 }
@@ -41,12 +41,10 @@ double Thing::getYAccel() {
 	return yAcceleration_;
 }
 
-//get type
 int Thing::getType() {
 	return type_;
 }
 
-//set velocities
 void Thing::setXVeloc(double newXVeloc) {
 	xVelocity_ = newXVeloc;
 }
@@ -54,7 +52,6 @@ void Thing::setYVeloc(double newYVeloc) {
 	yVelocity_ = newYVeloc;
 }
 
-//set acceleration
 void Thing::setXAccel(double newXAccel) {
 	xAcceleration_ = newXAccel;
 }

@@ -18,6 +18,10 @@ void MainGame::run() {
 }
 
 void MainGame::initSystem() {
+	
+	int numPlayers = 1;
+	
+	
 	SDL_Init(SDL_INIT_EVERYTHING);
 	// initiate SDL window 
 	window_ = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_CENTERED,
@@ -30,7 +34,13 @@ void MainGame::initSystem() {
 	if (renderer_ == nullptr) {
 		log::getInstance().logMessage("Failed to create SDL render" + std::string(SDL_GetError()), logType::error);
 	}
-
+	Pref* pref;
+	for (int i = 0; i < numPlayers; i++) {
+		pref = new Pref((char)i);
+		preferences_.push_back(*(new Pref((char)i)));
+		players_.push_back(*(new Player()));
+		playerPreferences_.emplace(preferences_.back(), players_.back());
+	}
 	// init game camera
 	mainCamera_.init(screenWidth_, screenHeight_);
 }

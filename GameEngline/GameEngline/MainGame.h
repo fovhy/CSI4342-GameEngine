@@ -1,7 +1,10 @@
 #pragma once
 #include <SDL/SDL.h>
+#include <unordered_map>
 #include "Camera.h"
 #include "InputManager.h"
+#include "Player.h"
+#include "Preferences.h"
 enum class GameState {PLAY, EXIT};
 class MainGame
 {
@@ -21,6 +24,7 @@ private:
 	float maxfps_ = 60.0f;
 	SDL_Renderer* renderer_ = nullptr;
 	InputManager inputManager_;
+	std::vector<Player> players_;
 
 	void initSystem();
 	void gameLoop();

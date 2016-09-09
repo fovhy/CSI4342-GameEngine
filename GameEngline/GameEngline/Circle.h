@@ -14,24 +14,14 @@ private:
 	double radius_;
 public:
 	//constructor
-	Circle() {
-		type_ = 1;
-	}
+	Circle();
 
 	//getter
-	double getRadius() {
-		return radius_;
-	}
+	double getRadius();
 
 	//setter
-	void setRadius(double newRadius) {
-		radius_ = newRadius;
-		lowerLeft_.x = loc_.x - radius_;
-		lowerLeft_.y = loc_.y - radius_;
-		upperRight_.x = loc_.x + radius_;
-		upperRight_.y = loc_.y + radius_;
-	}
+	void setRadius(double newRadius);
 
-
+	void draw();
 
 };

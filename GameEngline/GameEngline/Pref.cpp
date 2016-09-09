@@ -9,9 +9,9 @@
 	Modified By: Logan
 */
 
-void Pref::getInput() {
+void Pref::getInput(char player) {
 	std::fstream file;
-	file.open("inputs.txt");
+	file.open(std::string("inputs") + player + ".txt");
 	if (!file.is_open) {
 		//defaults
 		up_ = SDL_SCANCODE_UP;
@@ -25,10 +25,11 @@ void Pref::getInput() {
 		//can be changed later
 	}
 }
-void Pref::savePref() {
+
+void Pref::savePref(char player) {
 	//write the prefered inputs to the file
 	std::fstream file;
-	file.open("inputs.txt");
+	file.open(std::string("inputs") + player + ".txt");
 	if (!file.is_open) {
 		//do something
 	}
@@ -37,44 +38,45 @@ void Pref::savePref() {
 		//write the data to the file, overwriting the previous contents
 	}
 }
-Pref::Pref() {
-	getInput();
-}
-//Deconstructor; saves the user's preferred inputs to the preferences file
-Pref::~Pref() {
-	savePref();
+
+
+Pref::Pref(char player) {
+	assocPlayer = player;
+	getInput(player);
 }
 
-//getters; retrieves the user's current input preferences
-char Pref::getUp() {
+Pref::~Pref() {
+	savePref(assocPlayer);
+}
+
+SDL_Scancode Pref::getUp() {
 	return up_;
 }
-char Pref::getDown() {
+SDL_Scancode Pref::getDown() {
 	return down_;
 }
-char Pref::getLeft() {
+SDL_Scancode Pref::getLeft() {
 	return left_;
 }
-char Pref::getRight() {
+SDL_Scancode Pref::getRight() {
 	return right_;
 }
-char Pref::getJump() {
+SDL_Scancode Pref::getJump() {
 	return jump_;
 }
 
-//setters; remaps the ipnuts for the user
-void Pref::setUp(char newUp) {
+void Pref::setUp(SDL_Scancode newUp) {
 	up_ = newUp;
 }
-void Pref::setDown(char newDown) {
+void Pref::setDown(SDL_Scancode newDown) {
 	down_ = newDown;
 }
-void Pref::setLeft(char newLeft) {
+void Pref::setLeft(SDL_Scancode newLeft) {
 	left_ = newLeft;
 }
-void Pref::setRight(char newRight) {
+void Pref::setRight(SDL_Scancode newRight) {
 	right_ = newRight;
 }
-void Pref::setJump(char newJump) {
+void Pref::setJump(SDL_Scancode newJump) {
 	jump_ = newJump;
 }

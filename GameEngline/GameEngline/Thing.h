@@ -1,5 +1,6 @@
 #pragma once 
 #include <SDL/SDL.h>
+#include <glm\glm.hpp>
 /**
 	File: Thing.h
 	Description: The abstract base class for all drawable objects in the game.
@@ -14,6 +15,7 @@ protected:
 	struct Coordinate {
 		double x;
 		double y;
+		double z;
 	};
 
 	//location
@@ -46,6 +48,7 @@ public:
 	virtual ~Thing() {} 
 
 	virtual void draw() = 0;
+
 	//get location
 	Coordinate getLoc();
 

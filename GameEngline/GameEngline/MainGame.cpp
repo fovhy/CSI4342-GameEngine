@@ -60,8 +60,10 @@ void MainGame::processInput() {
 		case SDL_MOUSEBUTTONUP:
 			break;
 		case SDL_KEYDOWN:
+			inputManager_.pressKey(event.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
+			inputManager_.releaseKey(event.key.keysym.sym);
 			break;
 		}
 	}

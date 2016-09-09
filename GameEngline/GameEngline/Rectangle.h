@@ -1,5 +1,4 @@
-#ifndef RECTANGLE_H
-#define RECTANGLE_H
+#pragma once
 #include "Thing.h"
 /**
 	File: Rectangle.h
@@ -19,6 +18,7 @@ public:
 	Rectangle() {
 		type_ = 0;
 	}
+
 
 	//getters
 	double getWidth() {
@@ -41,5 +41,3 @@ public:
 	}
 
 };
-
-#endif

@@ -1,6 +1,5 @@
-#ifndef PLAYER_H
-#define PLAYER_H
-#include "Rectangle.h"
+#pragma once
+
 
 /**
 	File: Player.h
@@ -11,8 +10,7 @@
 	Modified By: Logan
 */
 
-class Player : public Rectangle {
+class Player{
 
 };
 
-#endif

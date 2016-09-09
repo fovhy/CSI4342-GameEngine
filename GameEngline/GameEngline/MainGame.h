@@ -18,6 +18,7 @@ private:
 	float fps_;
 	float frameTime_;
 	float maxfps_ = 60.0f;
+	SDL_Renderer* renderer_ = nullptr;
 
 	void initSystem();
 	void gameLoop();

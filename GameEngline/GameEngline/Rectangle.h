@@ -15,29 +15,15 @@ private:
 
 public:
 	//constructor
-	Rectangle() {
-		type_ = 0;
-	}
+	Rectangle();
 
 
 	//getters
-	double getWidth() {
-		return width_;
-	}
-	double getLength() {
-		return length_;
-	}
+	double getWidth();
+	double getLength();
 
 	//setters
-	void setLength(double newLength) {
-		length_ = newLength;
-		lowerLeft_.x = loc_.x - (length_ / 2);
-		upperRight_.x = loc_.x + (length_ / 2);
-	}
-	void setWidth(double newWidth) {
-		width_ = newWidth;
-		lowerLeft_.y = loc_.y - (width_ / 2);
-		upperRight_.y = loc_.y + (width_ / 2);
-	}
+	void setLength(double newLength);
+	void setWidth(double newWidth);
 
 };

@@ -5,8 +5,8 @@
 	Description: The abstract base class for all drawable objects in the game.
 	Date Created: 8/30/16
 	Creator: Logan
-	Last Modified: 9/8/16
-	Modified By: Dean He  
+	Last Modified: 9/9/16
+	Modified By: Logan 
 */
 
 class Thing {
@@ -47,60 +47,37 @@ public:
 
 	virtual void draw() = 0;
 	//get location
-	Coordinate getLoc() {
-		return loc_;
-	}
+	Coordinate getLoc();
 
 	//set location with points
-	void setCoord(double x, double y) {
-		loc_.x = x;
-		loc_.y = y;
-	}
+	void setCoord(double x, double y);
 
 	//set location with a Coordinate
-	void setCoord(Coordinate newLoc) {
-		loc_ = newLoc;
-	}
+	void setCoord(Coordinate newLoc);
 
 	//can the thing move?
-	bool canMove() {
-		return moveable_;
-	}
+	bool canMove();
 
 	//get velocities
-	double getXVeloc() {
-		return xVelocity_;
-	}
-	double getYVeloc() {
-		return yVelocity_;
-	}
+	double getXVeloc();
+	double getYVeloc();
 
 	//get acceleration
-	double getXAccel() {
-		return xAcceleration_;
-	}
-	double getYAccel() {
-		return yAcceleration_;
-	}
+	double getXAccel();
+	double getYAccel();
 
 	//get type
-	int getType() {
-		return type_;
-	}
+	int getType();
 
 	//set velocities
-	void setXVeloc(double newXVeloc) {
-		xVelocity_ = newXVeloc;
-	}
-	void setYVeloc(double newYVeloc) {
-		yVelocity_ = newYVeloc;
-	}
+	void setXVeloc(double newXVeloc);
+	void setYVeloc(double newYVeloc);
 
 	//set acceleration
-	void setXAccel(double newXAccel) {
-		xAcceleration_ = newXAccel;
-	}
-	void setYAccel(double newYAccel) {
-		yAcceleration_ = newYAccel;
-	}
+	void setXAccel(double newXAccel);
+	void setYAccel(double newYAccel);
+
+	//get hitbox
+	Coordinate getLowerLeft();
+	Coordinate getUpperRight();
 };

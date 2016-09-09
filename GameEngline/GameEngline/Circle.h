@@ -5,7 +5,7 @@
 	Description: Basic setup for all circular objects
 	Date Created: 8/31/16
 	Creator: Logan
-	Last Modified: 8/31/16
+	Last Modified: 9/9/16
 	Modified By: Logan
 */
 

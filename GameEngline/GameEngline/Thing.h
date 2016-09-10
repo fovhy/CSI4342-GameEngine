@@ -47,7 +47,7 @@ protected:
 public:
 	virtual ~Thing() {} 
 
-	virtual void draw() = 0;
+	virtual void draw(SDL_Renderer*) = 0;
 
 	//get location
 	Coordinate getLoc();

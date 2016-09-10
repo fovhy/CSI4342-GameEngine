@@ -17,9 +17,9 @@ Character::~Character()
 }
 
 
-void Character::draw() {
+void Character::draw(SDL_Renderer* renderer) {
 	//Thing* toDraw;
 	for (int i = 0; i < comp_.size(); i++) {
-		comp_[i].draw();
+		comp_[i].draw(renderer);
 	}
 }

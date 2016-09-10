@@ -33,8 +33,7 @@ void Rectangle::setWidth(double newWidth) {
 }
 
 
-void Rectangle::draw() {
-	return;
+void Rectangle::draw(SDL_Renderer* renderer) {
 }
 
 SDL_Rect Rectangle::getSDLRect() {
@@ -43,4 +42,5 @@ SDL_Rect Rectangle::getSDLRect() {
 	rec.w = width_;
 	rec.x = loc_.x;
 	rec.y = loc_.y;
+	return rec;
 }

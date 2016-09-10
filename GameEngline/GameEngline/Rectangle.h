@@ -11,7 +11,7 @@
 
 class Rectangle : public Thing{
 private:
-	double length_, width_;
+	double height_, width_;
 
 public:
 	//constructor
@@ -22,11 +22,11 @@ public:
 
 	//getters
 	double getWidth();
-	double getLength();
+	double getHeight();
 
 	//setters
-	void setLength(double newLength);
+	void setHeight(double newHeight);
 	void setWidth(double newWidth);
 
-	void draw();
+	void draw(SDL_Renderer* renderer);
 };

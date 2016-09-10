@@ -19,6 +19,6 @@ private:
 public:
 	Character();
 	~Character();
-	void draw();
+	void draw(SDL_Renderer* renderer);
 };
 

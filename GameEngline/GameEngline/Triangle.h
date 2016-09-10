@@ -22,5 +22,5 @@ public:
 	void setCoord2(Coordinate);
 	void setCoord3(Coordinate);
 	
-	void draw();
+	void draw(SDL_Renderer* renderer);
 };

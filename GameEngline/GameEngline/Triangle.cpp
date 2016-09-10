@@ -34,6 +34,5 @@ void Triangle::setCoord3(Coordinate newCoord) {
 	coord3_ = newCoord;
 }
 
-void Triangle::draw() {
-	return;
+void Triangle::draw(SDL_Renderer* renderer) {
 }

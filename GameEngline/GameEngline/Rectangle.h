@@ -5,8 +5,8 @@
 	Description: The setup for all rectangular objects
 	Date Created: 8/31/16
 	Creator: Logan
-	Last Modified: 8/31/16
-	Modified By: Logan
+	Last Modified: 9/10/16
+	Modified By: Dean
 */
 
 class Rectangle : public Thing{

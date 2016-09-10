@@ -5,7 +5,7 @@
 	Date Created: 9/9/2016
 	Creator: Logan
 	Last Modified: 9/10/16
-	Modified By: Logan
+	Modified By: Dean
 */
 
 Rectangle::Rectangle() {

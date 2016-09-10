@@ -4,7 +4,7 @@
 	Description: Implementation of Rectangle's functions
 	Date Created: 9/9/2016
 	Creator: Logan
-	Last Modified: 9/9/16
+	Last Modified: 9/10/16
 	Modified By: Logan
 */
 
@@ -20,6 +20,7 @@ double Rectangle::getHeight() {
 	return height_;
 }
 
+
 void Rectangle::setHeight(double newHeight) {
 	height_ = newHeight;
 	lowerLeft_.y = loc_.y - (height_ / 2);
@@ -30,6 +31,7 @@ void Rectangle::setWidth(double newWidth) {
 	lowerLeft_.x = loc_.x - (width_ / 2);
 	upperRight_.x = loc_.x + (width_ / 2);
 }
+
 
 void Rectangle::draw() {
 	return;

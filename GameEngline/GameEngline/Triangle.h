@@ -21,5 +21,6 @@ public:
 	void setCoord1(Coordinate);
 	void setCoord2(Coordinate);
 	void setCoord3(Coordinate);
-
+	
+	void draw();
 };

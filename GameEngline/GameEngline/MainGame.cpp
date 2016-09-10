@@ -1,6 +1,11 @@
 #include "MainGame.h"
 #include "log.h"
 #include <GL/glew.h>
+
+
+
+
+
 MainGame::MainGame() {
 	window_ = nullptr;
 	gameState_ = GameState::PLAY;
@@ -12,10 +17,12 @@ MainGame::~MainGame(){
 	SDL_DestroyWindow(window_);
 }
 
+
 void MainGame::run() {
 	initSystem();
 	gameLoop();
 }
+
 
 void MainGame::initSystem() {
 	
@@ -37,13 +44,11 @@ void MainGame::initSystem() {
 	Pref* pref;
 	for (int i = 0; i < numPlayers; i++) {
 		pref = new Pref((char)i);
-		preferences_.push_back(*(new Pref((char)i)));
-		players_.push_back(*(new Player()));
-		playerPreferences_.emplace(preferences_.back(), players_.back());
 	}
 	// init game camera
 	mainCamera_.init(screenWidth_, screenHeight_);
 }
+
 
 void MainGame::gameLoop() {
 	while (gameState_ != GameState::EXIT) {
@@ -54,6 +59,7 @@ void MainGame::gameLoop() {
 		calculateFPS();
 	}
 }
+
 
 void MainGame::processInput() {
 //TODO: process input
@@ -75,13 +81,27 @@ void MainGame::processInput() {
 		case SDL_KEYUP:
 			inputManager_.releaseKey(event.key.keysym.sym);
 			break;
+		case SDL_CONTROLLERBUTTONDOWN:
+			inputManager_.pressButton(event.cbutton.button);
+			break;
+		case SDL_CONTROLLERBUTTONUP:
+			inputManager_.releaseButton(event.cbutton.button);
+			break;
+		case SDL_CONTROLLER_AXIS_LEFTX:
+			//left stick tilted left or right
+			break;
+		case SDL_CONTROLLER_AXIS_LEFTY:
+			//left stick tilted up or down
+			break;
 		}
 	}
 }
 
+
 void MainGame::drawGame() {
 //TODO: draw the game
 }
+
 
 void MainGame::calculateFPS() {
 	static const int NUM_SAMPLES = 10;

@@ -5,13 +5,13 @@
 	Description: The setup for all rectangular objects
 	Date Created: 8/31/16
 	Creator: Logan
-	Last Modified: 8/31/16
-	Modified By: Logan
+	Last Modified: 9/10/16
+	Modified By: Dean
 */
 
 class Rectangle : public Thing{
 private:
-	double length_, width_;
+	double height_, width_;
 
 public:
 	//constructor
@@ -22,10 +22,10 @@ public:
 
 	//getters
 	double getWidth();
-	double getLength();
+	double getHeight();
 
 	//setters
-	void setLength(double newLength);
+	void setHeight(double newHeight);
 	void setWidth(double newWidth);
 
 	void draw();

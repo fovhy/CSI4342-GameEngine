@@ -163,13 +163,10 @@
     <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Observer.cpp" />
-=======
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pref.cpp" />
     <ClCompile Include="Rectangle.cpp" />
->>>>>>> logan
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Thing.cpp" />
     <ClCompile Include="Triangle.cpp" />

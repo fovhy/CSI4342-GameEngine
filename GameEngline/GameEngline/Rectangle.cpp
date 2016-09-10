@@ -16,21 +16,29 @@ Rectangle::Rectangle() {
 double Rectangle::getWidth() {
 	return width_;
 }
-double Rectangle::getLength() {
-	return length_;
+double Rectangle::getHeight() {
+	return height_;
 }
 
-void Rectangle::setLength(double newLength) {
-	length_ = newLength;
-	lowerLeft_.x = loc_.x - (length_ / 2);
-	upperRight_.x = loc_.x + (length_ / 2);
+void Rectangle::setHeight(double newHeight) {
+	height_ = newHeight;
+	lowerLeft_.y = loc_.y - (height_ / 2);
+	upperRight_.y = loc_.y + (height_ / 2);
 }
 void Rectangle::setWidth(double newWidth) {
 	width_ = newWidth;
-	lowerLeft_.y = loc_.y - (width_ / 2);
-	upperRight_.y = loc_.y + (width_ / 2);
+	lowerLeft_.x = loc_.x - (width_ / 2);
+	upperRight_.x = loc_.x + (width_ / 2);
 }
 
 void Rectangle::draw() {
 	return;
+}
+
+SDL_Rect Rectangle::getSDLRect() {
+	SDL_Rect rec;
+	rec.h = height_;
+	rec.w = width_;
+	rec.x = loc_.x;
+	rec.y = loc_.y;
 }

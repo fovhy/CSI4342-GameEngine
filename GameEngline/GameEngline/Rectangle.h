@@ -17,6 +17,8 @@ public:
 	//constructor
 	Rectangle();
 
+	SDL_Rect getSDLRect();
+
 
 	//getters
 	double getWidth();

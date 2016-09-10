@@ -5,7 +5,7 @@
 	Description: Implementation of Triangle's functions
 	Date Created: 9/9/2016
 	Creator: Logan
-	Last Modified: 9/9/16
+	Last Modified: 9/10/16
 	Modified By: Logan
 */
 
@@ -32,4 +32,8 @@ void Triangle::setCoord2(Coordinate newCoord) {
 
 void Triangle::setCoord3(Coordinate newCoord) {
 	coord3_ = newCoord;
+}
+
+void Triangle::draw() {
+	return;
 }

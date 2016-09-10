@@ -45,7 +45,7 @@ protected:
 
 
 public:
-	virtual ~Thing() {} 
+	virtual ~Thing();
 
 	virtual void draw() = 0;
 

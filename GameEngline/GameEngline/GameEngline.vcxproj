@@ -18,6 +18,56 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\bald.h" />
+    <ClInclude Include="source\Camera.h" />
+    <ClInclude Include="source\Character.h" />
+    <ClInclude Include="source\Error.h" />
+    <ClInclude Include="source\fileManager.h" />
+    <ClInclude Include="source\GLSLProgram.h" />
+    <ClInclude Include="source\GLTexture.h" />
+    <ClInclude Include="source\ImageLoader.h" />
+    <ClInclude Include="source\inputManager.h" />
+    <ClInclude Include="source\maiden.h" />
+    <ClInclude Include="source\MainGame.h" />
+    <ClInclude Include="source\ninja.h" />
+    <ClInclude Include="source\Physic.h" />
+    <ClInclude Include="source\pico.h" />
+    <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\ResourceManager.h" />
+    <ClInclude Include="source\samurai.h" />
+    <ClInclude Include="source\Sprite.h" />
+    <ClInclude Include="source\spriteBatch.h" />
+    <ClInclude Include="source\Stage.h" />
+    <ClInclude Include="source\TextureCache.h" />
+    <ClInclude Include="source\tile.h" />
+    <ClInclude Include="source\Vertex.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\bald.cpp" />
+    <ClCompile Include="source\Camera.cpp" />
+    <ClCompile Include="source\Character.cpp" />
+    <ClCompile Include="source\Error.cpp" />
+    <ClCompile Include="source\fileManager.cpp" />
+    <ClCompile Include="source\GLSLProgram.cpp" />
+    <ClCompile Include="source\GLTexture.cpp" />
+    <ClCompile Include="source\ImageLoader.cpp" />
+    <ClCompile Include="source\inputManager.cpp" />
+    <ClCompile Include="source\maiden.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\MainGame.cpp" />
+    <ClCompile Include="source\ninja.cpp" />
+    <ClCompile Include="source\Physic.cpp" />
+    <ClCompile Include="source\pico.cpp" />
+    <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\ResourceManager.cpp" />
+    <ClCompile Include="source\samurai.cpp" />
+    <ClCompile Include="source\Sprite.cpp" />
+    <ClCompile Include="source\spriteBatch.cpp" />
+    <ClCompile Include="source\Stage.cpp" />
+    <ClCompile Include="source\sumrai.cpp" />
+    <ClCompile Include="source\TextureCache.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FCFB9844-8724-4D2B-8E3D-C2001157920E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -148,29 +198,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Character.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="log.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="Thing.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="Circle.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="log.h" />
-    <ClInclude Include="MainGame.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Preferences.h" />
-    <ClInclude Include="Rectangle.h" />
-    <ClInclude Include="Stage.h" />
-    <ClInclude Include="Thing.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

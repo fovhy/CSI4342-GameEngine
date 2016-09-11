@@ -12,15 +12,7 @@ void Stage::init(){
     poisonTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");
     backGroundTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/Backgrounds/background.png");
 
-	Player* playerToAdd;
-	int numPlayers = 2;
-
-	for (char i = 0; i < numPlayers; i++) {
-		playerToAdd = new Player();
-		players.push_back(*playerToAdd);
-	}
-
-
+    players.resize(PLAYER_NUMBERS);
     players[0].init(glm::vec2(0, 200));
     players[0].setCurrentCharacters(players[0].characters[0]);
     players[0].setPlayerType(PLAYER_ONE);

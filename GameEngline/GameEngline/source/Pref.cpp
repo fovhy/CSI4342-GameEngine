@@ -53,13 +53,13 @@ void Pref::getInput(char player) {
 	file.open(std::string("inputs") + player + ".txt");
 	if (!file.is_open()) {
 		//defaults
-		if (player == '1') {
+		if (player == '2') {
 			up_ = SDLK_UP;
 			down_ = SDLK_DOWN;
 			left_ = SDLK_LEFT;
 			right_ = SDLK_RIGHT;
 		}
-		else if (player == '2') {
+		else if (player == '1') {
 			up_ = SDLK_w;
 			down_ = SDLK_s;
 			left_ = SDLK_a;

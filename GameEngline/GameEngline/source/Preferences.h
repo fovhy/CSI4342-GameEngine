@@ -16,7 +16,6 @@ private:
 	int up_, down_, left_, right_, jump_;
 	char assocPlayer;
 	void getInput(char);
-	void savePref(char);
 public:
 	//Constructor; gets user's preferred inputs from the preferences file
 	Pref(char);
@@ -40,4 +39,6 @@ public:
 	void setLeft(int newLeft);
 	void setRight(int newRight);
 	void setJump(int newJump);
+
+	void savePref(char);
 };

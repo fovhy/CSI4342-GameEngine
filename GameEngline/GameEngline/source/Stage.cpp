@@ -102,9 +102,9 @@ void Stage::setStage(SpriteBatch& spriteBatch){
     firstLevel[2].setTile(getTilesLeftRight(firstLevelPos, 2), POISON);
     firstLevel[3].setTile(getTilesLeftRight(firstLevelPos, 3), GRASS);
     firstLevel[4].setTile(getTilesLeftRight(firstLevelPos, 4), GRASS);
-    //firstLevel[5].setTile(getTilesLeftRight(firstLevelPos, 5), BLANK);
+    firstLevel[5].setTile(getTilesLeftRight(firstLevelPos, 5), BLANK);
 
-    //firstLevel[6].setTile(getTilesLeftRight(firstLevelPos, 6), BLANK);
+    firstLevel[6].setTile(getTilesLeftRight(firstLevelPos, 6), BLANK);
     firstLevel[7].setTile(getTilesLeftRight(firstLevelPos, 7), GRASS);
     firstLevel[8].setTile(getTilesLeftRight(firstLevelPos, 8), GRASS);
     firstLevel[9].setTile(getTilesLeftRight(firstLevelPos, 9), POISON);
@@ -112,19 +112,19 @@ void Stage::setStage(SpriteBatch& spriteBatch){
     firstLevel[11].setTile(getTilesLeftRight(firstLevelPos, 11), POISON);
 
     glm::vec4 secondLevelPos(0, secondLevelHeight, tileWidth, tileHeight);
-    //secondLevel[0].setTile(secondLevelPos, BLANK);
-   // secondLevel[1].setTile(getTilesLeftRight(secondLevelPos, 1), BLANK);
-   // secondLevel[2].setTile(getTilesLeftRight(secondLevelPos, 2), BLANK);
-   // secondLevel[3].setTile(getTilesLeftRight(secondLevelPos, 3), BLANK);
+    secondLevel[0].setTile(secondLevelPos, BLANK);
+    secondLevel[1].setTile(getTilesLeftRight(secondLevelPos, 1), BLANK);
+    secondLevel[2].setTile(getTilesLeftRight(secondLevelPos, 2), BLANK);
+    secondLevel[3].setTile(getTilesLeftRight(secondLevelPos, 3), BLANK);
     secondLevel[4].setTile(getTilesLeftRight(secondLevelPos, 4), ICE);
     secondLevel[5].setTile(getTilesLeftRight(secondLevelPos, 5), ICE);
 
     secondLevel[6].setTile(getTilesLeftRight(secondLevelPos, 6), ICE);
     secondLevel[7].setTile(getTilesLeftRight(secondLevelPos, 7), ICE);
-   // secondLevel[8].setTile(getTilesLeftRight(secondLevelPos, 8), BLANK);
-   // secondLevel[9].setTile(getTilesLeftRight(secondLevelPos, 9), BLANK);
-   // secondLevel[10].setTile(getTilesLeftRight(secondLevelPos, 10), BLANK);
-   // secondLevel[11].setTile(getTilesLeftRight(secondLevelPos, 11), BLANK);
+    secondLevel[8].setTile(getTilesLeftRight(secondLevelPos, 8), BLANK);
+    secondLevel[9].setTile(getTilesLeftRight(secondLevelPos, 9), BLANK);
+    secondLevel[10].setTile(getTilesLeftRight(secondLevelPos, 10), BLANK);
+    secondLevel[11].setTile(getTilesLeftRight(secondLevelPos, 11), BLANK);
 
     glm::vec4 thirdLevelPos(0, thirdLevelHeight, tileWidth, tileHeight);
     thirdLevel[0].setTile(thirdLevelPos, BLANK);
@@ -132,27 +132,27 @@ void Stage::setStage(SpriteBatch& spriteBatch){
     thirdLevel[2].setTile(getTilesLeftRight(thirdLevelPos, 2), DIRT);
     thirdLevel[3].setTile(getTilesLeftRight(thirdLevelPos, 3), DIRT);
     thirdLevel[4].setTile(getTilesLeftRight(thirdLevelPos, 4), DIRT);
-   // thirdLevel[5].setTile(getTilesLeftRight(thirdLevelPos, 5), BLANK);
+    thirdLevel[5].setTile(getTilesLeftRight(thirdLevelPos, 5), BLANK);
 
-   // thirdLevel[6].setTile(getTilesLeftRight(thirdLevelPos, 6), BLANK);
+    thirdLevel[6].setTile(getTilesLeftRight(thirdLevelPos, 6), BLANK);
     thirdLevel[7].setTile(getTilesLeftRight(thirdLevelPos, 7), DIRT);
     thirdLevel[8].setTile(getTilesLeftRight(thirdLevelPos, 8), DIRT);
     thirdLevel[9].setTile(getTilesLeftRight(thirdLevelPos, 9), DIRT);
     thirdLevel[10].setTile(getTilesLeftRight(thirdLevelPos, 10), DIRT);
-   // thirdLevel[11].setTile(getTilesLeftRight(thirdLevelPos, 11), BLANK);
+    thirdLevel[11].setTile(getTilesLeftRight(thirdLevelPos, 11), BLANK);
 
     glm::vec4 fourthLevelPos(0, fourthLevelHeight, tileWidth, tileHeight);
     fourthLevel[0].setTile(fourthLevelPos, ICE);
     fourthLevel[1].setTile(getTilesLeftRight(fourthLevelPos, 1), ICE);
-   // fourthLevel[2].setTile(getTilesLeftRight(fourthLevelPos, 2), BLANK);
-   // fourthLevel[3].setTile(getTilesLeftRight(fourthLevelPos, 3), BLANK);
+    fourthLevel[2].setTile(getTilesLeftRight(fourthLevelPos, 2), BLANK);
+    fourthLevel[3].setTile(getTilesLeftRight(fourthLevelPos, 3), BLANK);
     fourthLevel[4].setTile(getTilesLeftRight(fourthLevelPos, 4), ICE);
     fourthLevel[5].setTile(getTilesLeftRight(fourthLevelPos, 5), ICE);
 
     fourthLevel[6].setTile(getTilesLeftRight(fourthLevelPos, 6), ICE);
     fourthLevel[7].setTile(getTilesLeftRight(fourthLevelPos, 7), ICE);
-   // fourthLevel[8].setTile(getTilesLeftRight(fourthLevelPos, 8), BLANK);
-   // fourthLevel[9].setTile(getTilesLeftRight(fourthLevelPos, 9), BLANK);
+    fourthLevel[8].setTile(getTilesLeftRight(fourthLevelPos, 8), BLANK);
+    fourthLevel[9].setTile(getTilesLeftRight(fourthLevelPos, 9), BLANK);
     fourthLevel[10].setTile(getTilesLeftRight(fourthLevelPos, 10), ICE);
     fourthLevel[11].setTile(getTilesLeftRight(fourthLevelPos, 11), ICE);
 
@@ -247,28 +247,33 @@ tile Stage::findTile(Player& aPlayer){
                 }
         }
     }
+	tile aTile;
+	aTile.type = BLANK;
+	return aTile;
 }
 
 void Stage::applyTileEffect(Player& aPlayer, const tile& aTile){
     float speedX = aPlayer.getVX();
-    switch (aTile.type) {
-    case GRASS:
-        myPhysic.applyFriction(speedX, 0.12);
-        aPlayer.setVX(speedX);
-        break;
-    case ICE:
-        myPhysic.applyFriction(speedX, 0.04);
-        aPlayer.setVX(speedX);
-        break;
-    case DIRT:
-        myPhysic.applyFriction(speedX, 0.14);
-        aPlayer.setVX(speedX);
-        break;
-    case POISON:
-        aPlayer.setVX(speedX);
-        aPlayer.setVX(0.05);
-        break;
-    }
+	if(&aTile){
+		switch (aTile.type) {
+		case GRASS:
+			myPhysic.applyFriction(speedX, 0.12);
+			aPlayer.setVX(speedX);
+			break;
+		case ICE:
+			myPhysic.applyFriction(speedX, 0.04);
+			aPlayer.setVX(speedX);
+			break;
+		case DIRT:
+		    myPhysic.applyFriction(speedX, 0.14);
+		    aPlayer.setVX(speedX);
+		    break;
+		case POISON:
+		    aPlayer.setVX(speedX);
+		    aPlayer.setVX(0.05);
+		    break;
+		}
+	}
 }
 
 

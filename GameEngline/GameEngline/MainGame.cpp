@@ -28,8 +28,12 @@ void MainGame::initSystem() {
 	
 	int numPlayers = 1;
 	
-	
+
+
+	stages_.push_back(*new Stage());
+	stages_[0].getNPCs().push_back(*new Character());
 	SDL_Init(SDL_INIT_EVERYTHING);
+	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF);
 	// initiate SDL window 
 	window_ = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, screenWidth_, screenHeight_, SDL_WINDOW_SHOWN);    // used sdl to open a window and kick graphic to opengl 
@@ -45,6 +49,7 @@ void MainGame::initSystem() {
 	for (int i = 0; i < numPlayers; i++) {
 		pref = new Pref((char)i);
 	}
+	stages_[0].getNPCs()[0].makeDefault(renderer_);
 	// init game camera
 	mainCamera_.init(screenWidth_, screenHeight_);
 }
@@ -57,6 +62,7 @@ void MainGame::gameLoop() {
 		time_ += 0.1;
 		processInput();
 		calculateFPS();
+		drawGame();
 	}
 }
 
@@ -99,7 +105,12 @@ void MainGame::processInput() {
 
 
 void MainGame::drawGame() {
-//TODO: draw the game
+	SDL_RenderClear(renderer_);
+	for (int i = 0; i < stages_[currentStage_].getNPCs().size(); i++) {
+		
+		stages_[currentStage_].getNPCs()[i].draw(renderer_);
+	}
+	SDL_RenderPresent(renderer_);
 }
 
 

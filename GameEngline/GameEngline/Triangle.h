@@ -13,6 +13,7 @@
 class Triangle : public Thing {
 private:
 	Coordinate coord1_, coord2_, coord3_;
+	SDL_Rect getSDLRect();
 public:
 	Coordinate getCoord1();
 	Coordinate getCoord2();

@@ -35,4 +35,48 @@ void Triangle::setCoord3(Coordinate newCoord) {
 }
 
 void Triangle::draw(SDL_Renderer* renderer) {
+	SDL_RenderCopy(renderer, texture_, NULL, &getSDLRect());
+	return;
+}
+
+SDL_Rect Triangle::getSDLRect() {
+	SDL_Rect rec;
+	//find lowest and highest x-values
+	double xLow, xHigh;
+	//find lowest and highest y-values
+	double yLow, yHigh;
+	xLow = xHigh = coord1_.x;
+	yLow = yHigh = coord1_.y;
+	if (xLow > coord2_.x) {
+		xLow = coord2_.x;
+	}
+	else if (xHigh > coord2_.x) {
+		xHigh = coord2_.x;
+	}
+
+	if (xLow > coord3_.x) {
+		xLow = coord3_.x;
+	}
+	else if (xHigh < coord3_.x) {
+		xHigh = coord3_.x;
+	}
+	
+	if (yLow > coord2_.y) {
+		yLow = coord2_.y;
+	}
+	else if (yHigh > coord2_.y) {
+		yHigh = coord2_.y;
+	}
+
+	if (yLow > coord3_.y) {
+		yLow = coord3_.y;
+	}
+	else if (yHigh < coord3_.y) {
+		yHigh = coord3_.y;
+	}
+	rec.h = yHigh - yLow;
+	rec.w = xHigh - xLow;
+	rec.x = loc_.x;
+	rec.y = loc_.y;
+	return rec;
 }

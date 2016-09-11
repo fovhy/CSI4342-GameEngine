@@ -1,6 +1,8 @@
 #pragma once 
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <glm\glm.hpp>
+#include <string>
 /**
 	File: Thing.h
 	Description: The abstract base class for all drawable objects in the game.
@@ -83,4 +85,6 @@ public:
 	//get hitbox
 	Coordinate getLowerLeft();
 	Coordinate getUpperRight();
+
+	void loadTexture(std::string texturePath, SDL_Renderer* renderer);
 };

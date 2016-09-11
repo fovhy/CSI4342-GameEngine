@@ -43,6 +43,9 @@
     <ClCompile Include="Triangle.cpp">
       <Filter>CPP Files</Filter>
     </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>CPP Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">

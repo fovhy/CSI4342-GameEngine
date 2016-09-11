@@ -12,6 +12,9 @@
 class Circle : public Thing{
 private:
 	double radius_;
+
+	SDL_Rect getSDLRect();
+
 public:
 	//constructor
 	Circle();

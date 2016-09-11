@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 #include "Thing.h"
+#include "Rectangle.h"
+#include "Triangle.h"
+#include "Circle.h"
 
 /*
 Character is the astract base class for both PC and NPC. It contains several meothods that all
@@ -15,10 +18,11 @@ Modified By: Logan
 class Character
 {
 private:
-	std::vector<Thing> comp_;
+	std::vector<Thing*> comp_;
 public:
 	Character();
 	~Character();
 	void draw(SDL_Renderer* renderer);
+	void makeDefault(SDL_Renderer* renderer);
 };
 

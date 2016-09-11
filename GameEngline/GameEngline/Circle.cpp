@@ -27,3 +27,11 @@ void Circle::setRadius(double newRadius) {
 void Circle::draw() {
 	return;
 }
+
+SDL_Rect Circle::getSDLRect() {
+	SDL_Rect rec;
+	rec.h = rec.w = radius_ * 2;
+	rec.x = loc_.x;
+	rec.y = loc_.y;
+	return rec;
+}

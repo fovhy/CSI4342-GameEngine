@@ -11,7 +11,7 @@
 Thing::~Thing()
 {
 	if (texture_ != NULL) {
-		delete texture_;
+		SDL_DestroyTexture(texture_);
 	}
 }
 
@@ -75,4 +75,25 @@ Thing::Coordinate Thing::getLowerLeft() {
 }
 Thing::Coordinate Thing::getUpperRight() {
 	return upperRight_;
+}
+
+void Thing::loadTexture(std::string texturePath, SDL_Renderer* renderer) {
+	//Load image at specified path
+	SDL_Surface* loadedSurface = IMG_Load(texturePath.c_str());
+	if (loadedSurface == NULL)
+	{
+		printf("Unable to load image %s! SDL_image Error: %s\n", texturePath.c_str(), IMG_GetError());
+	}
+	else
+	{
+		//Create texture from surface pixels
+		texture_ = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+		if (texture_ == NULL)
+		{
+			printf("Unable to create texture from %s! SDL Error: %s\n", texturePath.c_str(), SDL_GetError());
+		}
+
+		//Get rid of old loaded surface
+		SDL_FreeSurface(loadedSurface);
+	}
 }

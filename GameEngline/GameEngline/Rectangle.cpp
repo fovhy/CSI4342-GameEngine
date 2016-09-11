@@ -34,6 +34,8 @@ void Rectangle::setWidth(double newWidth) {
 
 
 void Rectangle::draw(SDL_Renderer* renderer) {
+	SDL_RenderCopy(renderer, texture_, NULL, NULL);
+	return;
 }
 
 SDL_Rect Rectangle::getSDLRect() {

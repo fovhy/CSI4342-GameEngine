@@ -34,13 +34,13 @@ struct tile{
     float getFriction(){
         switch (type) {
         case GRASS:
-            return 0.05;
+            return 0.12;
             break;
         case ICE:
-            return 0.01;
+            return 0.04;
             break;
         case DIRT:
-            return 0.1;
+            return 0.14;
             break;
         case POISON:
             return 0.4;

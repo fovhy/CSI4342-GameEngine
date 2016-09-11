@@ -30,7 +30,7 @@ public:
     void processInput();
     void draw(SpriteBatch& spriteBattch);
     tile findTile(Player& aPlayer);
-    void applyTileEffect(Player& aPlayer, const tile& aTile);
+    void applyTileEffect(Player& aPlayer,  tile& aTile);
     void applyGravity();
 
     void checkAttack();

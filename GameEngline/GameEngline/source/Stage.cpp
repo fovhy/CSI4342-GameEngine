@@ -245,25 +245,25 @@ tile Stage::findTile(Player& aPlayer){
 	return aTile;
 }
 
-void Stage::applyTileEffect(Player& aPlayer, const tile& aTile){
+void Stage::applyTileEffect(Player& aPlayer,  tile& aTile){
     float speedX = aPlayer.getVX();
 	if(&aTile){
 		switch (aTile.type) {
 		case GRASS:
-			myPhysic.applyFriction(speedX, 0.12);
+			myPhysic.applyFriction(speedX, aTile.getFriction());
 			aPlayer.setVX(speedX);
 			break;
 		case ICE:
-			myPhysic.applyFriction(speedX, 0.04);
+			myPhysic.applyFriction(speedX, aTile.getFriction());
 			aPlayer.setVX(speedX);
 			break;
 		case DIRT:
-		    myPhysic.applyFriction(speedX, 0.14);
+		    myPhysic.applyFriction(speedX, aTile.getFriction());
 		    aPlayer.setVX(speedX);
 		    break;
 		case POISON:
+			myPhysic.applyFriction(speedX, aTile.getFriction());
 		    aPlayer.setVX(speedX);
-		    aPlayer.setVX(0.05);
 		    break;
 		}
 	}

@@ -1,6 +1,8 @@
 #include "Player.h"
 #include <SDL/SDL.h>
 
+
+
 void Player::init(const glm::vec2& pos){
     setPosition(pos);
     heart.resize(6);
@@ -19,7 +21,7 @@ void Player::init(const glm::vec2& pos){
     characters[2]->init();
     characters[3] = new Samurai();
     characters[3]->init();
-
+	preferences_.init(playerNum_);
 }
 
 void Player::checkDeath(){
@@ -116,7 +118,9 @@ void Player::processInput(){
     if(playerType_ == PLAYER_ONE){
         if(isDead){
             if(playerInputManager.isKeyPressed(SDLK_F1)){
-                respawn();
+				takingDamage = false;
+				currentCharacter_->stunDone = true;
+				respawn();
             }
         }
         if(playerInputManager.isKeyPressed(SDLK_1)){
@@ -135,9 +139,12 @@ void Player::processInput(){
             currentCharacter_ = characters[3];
             characterType = SAMURAI;
         }
-    }else{
+    }
+	else{
         if(isDead){
             if(playerInputManager.isKeyPressed(SDLK_F2)){
+				takingDamage = false;
+				currentCharacter_->stunDone = true;
                 respawn();
             }
         }
@@ -158,18 +165,18 @@ void Player::processInput(){
             characterType = SAMURAI;
         }
     }
-    if(playerInputManager.isKeyPressed(SDLK_t)){
-        takingDamage = true;
-        currentCharacter_->stunDone = false;
-    }
+    //if(playerInputManager.isKeyPressed(SDLK_t)){
+    //    takingDamage = true;
+    //    currentCharacter_->stunDone = false;
+    //}
     switch(currentState_){
     case STANDING:
         if(playerType_ == PLAYER_ONE){
-            if(playerInputManager.isKeyPressed(SDLK_w) && onTile){
+            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
                 velocityY_ += 7;
                 currentState_ = JUMPING;
             }
-            if(playerInputManager.isKeyPressed(SDLK_a)){
+            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
                 currentState_ = RUNNING;
                 if(velocityX_ > 0)
                     velocityX_ -= speedChange * 0.7;
@@ -177,7 +184,7 @@ void Player::processInput(){
                     velocityX_ -= speedChange;
                 direction = -1;
             }
-            if(playerInputManager.isKeyPressed(SDLK_d)){
+            if(playerInputManager.isKeyPressed(preferences_.getRight())){
                 currentState_ = RUNNING;
                 if(velocityX_ < 0)
                     velocityX_ += speedChange * 0.7;
@@ -189,12 +196,13 @@ void Player::processInput(){
                 currentState_ = ATTACKING;
                 currentCharacter_->attackDone = false;
             }
-        }else{
-            if(playerInputManager.isKeyPressed(SDLK_UP) && onTile){
+        }
+		else if(playerType_ == PLAYER_TWO){
+            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
                 velocityY_ += 7;
                 currentState_ = JUMPING;
             }
-            if(playerInputManager.isKeyPressed(SDLK_LEFT)){
+            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
                 currentState_ = RUNNING;
                 if(velocityX_ > 0)
                     velocityX_ -= speedChange * 0.7;
@@ -202,7 +210,7 @@ void Player::processInput(){
                     velocityX_ -= speedChange;
                 direction = -1;
             }
-            if(playerInputManager.isKeyPressed(SDLK_RIGHT)){
+            if(playerInputManager.isKeyPressed(preferences_.getRight())){
                 currentState_ = RUNNING;
                 if(velocityX_ < 0)
                     velocityX_ += speedChange * 0.7;
@@ -218,20 +226,20 @@ void Player::processInput(){
         break;
     case RUNNING:
         if(playerType_ == PLAYER_ONE){
-            if(playerInputManager.isKeyPressed(SDLK_w) && onTile){
+            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
                 velocityY_ += 7;
                 currentState_ = JUMPING;
             }
-            if(playerInputManager.isKeyPressed(SDLK_s) && !onTile){
+            if(playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile){
                 velocityY_ -= 0.3;
             }
-            if(playerInputManager.isKeyPressed(SDLK_a)){
+            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
                 if(velocityX_ > 0)
                     velocityX_ -= speedChange * 0.7;
                 else
                     velocityX_ -= speedChange;
                 direction = -1;
-            }else if(playerInputManager.isKeyPressed(SDLK_d)){
+            }else if(playerInputManager.isKeyPressed(preferences_.getRight())){
                 if(velocityX_ < 0)
                     velocityX_ += speedChange * 0.7;
                 else
@@ -244,21 +252,22 @@ void Player::processInput(){
                 currentState_ = ATTACKING;
                 currentCharacter_->attackDone = false;
             }
-        }else{
-            if(playerInputManager.isKeyPressed(SDLK_UP) && onTile){
+        }
+		else if(playerType_ == PLAYER_TWO){
+            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
                 velocityY_ += 7;
                 currentState_ = JUMPING;
             }
-            if(playerInputManager.isKeyPressed(SDLK_DOWN) && !onTile){
+            if(playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile){
                 velocityY_ -= 0.3;
             }
-            if(playerInputManager.isKeyPressed(SDLK_LEFT)){
+            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
                 if(velocityX_ > 0)
                     velocityX_ -= speedChange * 0.7;
                 else
                     velocityX_ -= speedChange;
                 direction = -1;
-            }else if(playerInputManager.isKeyPressed(SDLK_RIGHT)){
+            }else if(playerInputManager.isKeyPressed(preferences_.getRight())){
                 if(velocityX_ < 0)
                     velocityX_ += speedChange * 0.7;
                 else
@@ -275,14 +284,14 @@ void Player::processInput(){
         break;
     case JUMPING:
         if(playerType_ == PLAYER_ONE){
-            if(playerInputManager.isKeyPressed(SDLK_a)){
+            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
                 if(velocityX_ > 0)
                     velocityX_ -= 0.08;
                 else
                     velocityX_ -= 0.10;
                 direction = -1;
             }
-            if(playerInputManager.isKeyPressed(SDLK_d)){
+            if(playerInputManager.isKeyPressed(preferences_.getRight())){
                 if(velocityX_ < 0)
                     velocityX_ += 0.08;
                 else
@@ -293,15 +302,16 @@ void Player::processInput(){
                 currentCharacter_->jumpAttackDone = false;
                 currentState_ = JUMP_ATTACKING;
             }
-        }else{
-            if(playerInputManager.isKeyPressed(SDLK_LEFT)){
+        }
+		else{
+            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
                 if(velocityX_ > 0)
                     velocityX_ -= 0.08;
                 else
                     velocityX_ -= 0.10;
                 direction = -1;
             }
-            if(playerInputManager.isKeyPressed(SDLK_RIGHT)){
+            if(playerInputManager.isKeyPressed(preferences_.getRight())){
                 if(velocityX_ < 0)
                     velocityX_ += 0.08;
                 else
@@ -322,48 +332,49 @@ void Player::processInput(){
                     }
                 }
                 break;
-            case FALLING:
-                if(velocityY_ == 0){
-                    currentState_ = STANDING;
-                    break;
-                }
-                if(playerType_ == PLAYER_ONE){
-                    if(playerInputManager.isKeyPressed(SDLK_a)){
-                        if(velocityX_ > 0)
-                            velocityX_ -= 0.08;
-                        else
-                            velocityX_ -= 0.10;
-                        direction = -1;
-                    }
-                    if(playerInputManager.isKeyPressed(SDLK_d)){
-                        if(velocityX_ < 0)
-                            velocityX_ += 0.08;
-                        else
-                            velocityX_ += 0.10;
-                        direction = 1;
-                    }
-                }else{
-                    if(playerInputManager.isKeyPressed(SDLK_LEFT)){
-                        if(velocityX_ > 0)
-                            velocityX_ -= 0.08;
-                        else
-                            velocityX_ -= 0.10;
-                        direction = -1;
-                    }
-                    if(playerInputManager.isKeyPressed(SDLK_RIGHT)){
-                        if(velocityX_ < 0)
-                            velocityX_ += 0.08;
-                        else
-                            velocityX_ += 0.10;
-                        direction = 1;
-                    }
-                }
+    case FALLING:
+            if(velocityY_ == 0){
+                currentState_ = STANDING;
                 break;
+            }
+            if(playerType_ == PLAYER_ONE){
+                if(playerInputManager.isKeyPressed(preferences_.getLeft())){
+                    if(velocityX_ > 0)
+                        velocityX_ -= 0.08;
+                    else
+                        velocityX_ -= 0.10;
+                    direction = -1;
+                }
+                if(playerInputManager.isKeyPressed(preferences_.getRight())){
+                    if(velocityX_ < 0)
+                        velocityX_ += 0.08;
+                    else
+                        velocityX_ += 0.10;
+                    direction = 1;
+                }
+            }
+			else if(playerType_ == PLAYER_TWO){
+                if(playerInputManager.isKeyPressed(preferences_.getLeft())){
+                    if(velocityX_ > 0)
+                        velocityX_ -= 0.08;
+                    else
+                        velocityX_ -= 0.10;
+                    direction = -1;
+                }
+                if(playerInputManager.isKeyPressed(preferences_.getRight())){
+                    if(velocityX_ < 0)
+                        velocityX_ += 0.08;
+                    else
+                        velocityX_ += 0.10;
+                    direction = 1;
+                }
+            }
+            break;
         }
     }
 }
 
-    void Player::update(){
+void Player::update(){
 
         limitSpeed(velocityX_);
         limitSpeed(velocityY_);
@@ -411,9 +422,9 @@ void Player::processInput(){
                 }
             }
         }
-    }
+}
 
-    void Player::drawPlayer(SpriteBatch &spriteBatch){
+void Player::drawPlayer(SpriteBatch &spriteBatch){
         if(currentCharacter_ == nullptr)
             exit(-1);
         switch(currentState_){
@@ -440,5 +451,5 @@ void Player::processInput(){
             break;
         }
         drawHP(spriteBatch);
-    }
+}
 

@@ -5,6 +5,7 @@
 #include "maiden.h"
 #include "ninja.h"
 #include "samurai.h"
+#include "Preferences.h"
 
 enum currentCharacterType{
     MAIDEN,
@@ -32,7 +33,7 @@ enum PlayerType{
 
 class Player{
 public:
-    Player(){}
+	Player() {}
     ~Player(){}
 
 
@@ -49,6 +50,15 @@ public:
 
     void setPlayerType(PlayerType aType){
         playerType_ = aType;
+		switch (aType) {
+		case PLAYER_ONE:
+			playerNum_ = '1';
+			break;
+		case PLAYER_TWO:
+			playerNum_ = '2';
+			break;
+		}
+		preferences_.init(playerNum_);
     }
 
     void setDirection(int direction){
@@ -117,6 +127,8 @@ private:
     float velocityX_ = 0;
     float velocityY_ = 0;
 
+	Pref preferences_;
+	char playerNum_;
 
 
     glm::vec2 playerPosition_ = glm::vec2(0.0f);

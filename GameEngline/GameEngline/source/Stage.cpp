@@ -12,7 +12,15 @@ void Stage::init(){
     poisonTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");
     backGroundTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/Backgrounds/background.png");
 
-    players.resize(PLAYER_NUMBERS);
+	Player* playerToAdd;
+	int numPlayers = 2;
+
+	for (char i = 0; i < numPlayers; i++) {
+		playerToAdd = new Player();
+		players.push_back(*playerToAdd);
+	}
+
+
     players[0].init(glm::vec2(0, 200));
     players[0].setCurrentCharacters(players[0].characters[0]);
     players[0].setPlayerType(PLAYER_ONE);
@@ -33,28 +41,21 @@ void Stage::init(){
 
 void Stage::checkAttack(){
     if(!players[0].currentCharacter_->attackDone){
- //       std::cout << " attack box x " << players[0].currentCharacter_->attackBox.x << std::endl;
-  //      std::cout << " attack box y " << players[0].currentCharacter_->attackBox.y << std::endl;
-   //j     std::cout << " attack box w " << players[0].currentCharacter_->attackBox.z << std::endl;
-     //j   std::cout << " attack box h " << players[0].currentCharacter_->attackBox.w << std::endl;
-
-
-       //j std::cout << " player 2 box x " << players[1].getMatrix().x << std::endl;
-      //j  std::cout << " player 2 box y " << players[1].getMatrix().y << std::endl;
-      //j  std::cout << " player 2 box h " << players[1].getMatrix().z << std::endl;
-      //j  std::cout << " player 2 box w " << players[1].getMatrix().w << std::endl;
-
-      //  if(myPhysic.checkCollisions(players[0].currentCharacter_->attackBox, players[1].getMatrix())){
-       //     players[1].takingDamage = true;
-        //    std::cout << " taking damage " << std::endl;
-       // }
-    }
-        if(!players[1].currentCharacter_->attackDone){
-            if(myPhysic.checkCollisions(players[1].currentCharacter_->attackBox, players[0].getMatrix())){
-                players[0].takingDamage = true;
-            }
+        if(myPhysic.checkCollisions(players[0].currentCharacter_->attackBox, players[1].getMatrix())){
+           players[1].takingDamage = true;
+            std::cout << "taking damage p1" << std::endl;
         }
     }
+    if(!players[1].currentCharacter_->attackDone){
+        if(myPhysic.checkCollisions(players[1].currentCharacter_->attackBox, players[0].getMatrix())){
+            players[0].takingDamage = true;
+			std::cout << "taking damage p2" << std::endl;
+        }
+    }
+	players[0].currentCharacter_->attackDone = true;
+	players[1].currentCharacter_->attackDone = true;
+
+}
 
 void Stage::update(){
     /*for(auto &aPlayer : players){

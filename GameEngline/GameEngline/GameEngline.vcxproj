@@ -34,6 +34,7 @@
     <ClInclude Include="source\Physic.h" />
     <ClInclude Include="source\pico.h" />
     <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\Preferences.h" />
     <ClInclude Include="source\ResourceManager.h" />
     <ClInclude Include="source\samurai.h" />
     <ClInclude Include="source\Sprite.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="source\Physic.cpp" />
     <ClCompile Include="source\pico.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Pref.cpp" />
     <ClCompile Include="source\ResourceManager.cpp" />
     <ClCompile Include="source\samurai.cpp" />
     <ClCompile Include="source\Sprite.cpp" />

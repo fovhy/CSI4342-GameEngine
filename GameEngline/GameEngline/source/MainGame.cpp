@@ -68,8 +68,6 @@ void MainGame::gameLoop(){
 void MainGame::processInput(){
     SDL_Event evnt;
 
-    // TODO ADD SECOND PLAYER
-
     while(SDL_PollEvent(&evnt)){
         switch(evnt.type){
         case SDL_QUIT:

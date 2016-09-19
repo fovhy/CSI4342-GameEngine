@@ -109,6 +109,9 @@ int Pref::getRight() {
 int Pref::getJump() {
 	return jump_;
 }
+int Pref::getAttack() {
+	return attack_;
+}
 
 
 void Pref::setUp(int newUp) {
@@ -125,4 +128,7 @@ void Pref::setRight(int newRight) {
 }
 void Pref::setJump(int newJump) {
 	jump_ = newJump;
+}
+void Pref::setAttack(int newAttack) {
+	attack_ = newAttack;
 }

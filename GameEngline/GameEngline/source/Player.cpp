@@ -165,212 +165,112 @@ void Player::processInput(){
             characterType = SAMURAI;
         }
     }
-    //if(playerInputManager.isKeyPressed(SDLK_t)){
-    //    takingDamage = true;
-    //    currentCharacter_->stunDone = false;
-    //}
     switch(currentState_){
     case STANDING:
-        if(playerType_ == PLAYER_ONE){
-            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
-                velocityY_ += 7;
-                currentState_ = JUMPING;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                currentState_ = RUNNING;
-                if(velocityX_ > 0)
-                    velocityX_ -= speedChange * 0.7;
-                else
-                    velocityX_ -= speedChange;
-                direction = -1;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                currentState_ = RUNNING;
-                if(velocityX_ < 0)
-                    velocityX_ += speedChange * 0.7;
-                else
-                    velocityX_ += speedChange;
-                direction = 1;
-            }
-            if(playerInputManager.isKeyPressed(SDLK_j)){
-                currentState_ = ATTACKING;
-                currentCharacter_->attackDone = false;
-            }
+        if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
+            velocityY_ += 7;
+            currentState_ = JUMPING;
         }
-		else if(playerType_ == PLAYER_TWO){
-            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
-                velocityY_ += 7;
-                currentState_ = JUMPING;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                currentState_ = RUNNING;
-                if(velocityX_ > 0)
-                    velocityX_ -= speedChange * 0.7;
-                else
-                    velocityX_ -= speedChange;
-                direction = -1;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                currentState_ = RUNNING;
-                if(velocityX_ < 0)
-                    velocityX_ += speedChange * 0.7;
-                else
-                    velocityX_ += speedChange;
-                direction = 1;
-            }
-            if(playerInputManager.isKeyPressed(SDLK_KP_1)){
-                currentState_ = ATTACKING;
-                currentCharacter_->attackDone = false;
-            }
+        if(playerInputManager.isKeyPressed(preferences_.getLeft())){
+            currentState_ = RUNNING;
+            if(velocityX_ > 0)
+                velocityX_ -= speedChange * 0.7;
+            else
+                velocityX_ -= speedChange;
+            direction = -1;
         }
+        if(playerInputManager.isKeyPressed(preferences_.getRight())){
+            currentState_ = RUNNING;
+            if(velocityX_ < 0)
+                velocityX_ += speedChange * 0.7;
+            else
+                velocityX_ += speedChange;
+            direction = 1;
+        }
+        if(playerInputManager.isKeyPressed(preferences_.getAttack())){
+            currentState_ = ATTACKING;
+            currentCharacter_->attackDone = false;
+        }
+        
         break;
     case RUNNING:
-        if(playerType_ == PLAYER_ONE){
-            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
-                velocityY_ += 7;
-                currentState_ = JUMPING;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile){
-                velocityY_ -= 0.3;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                if(velocityX_ > 0)
-                    velocityX_ -= speedChange * 0.7;
-                else
-                    velocityX_ -= speedChange;
-                direction = -1;
-            }else if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                if(velocityX_ < 0)
-                    velocityX_ += speedChange * 0.7;
-                else
-                    velocityX_ += speedChange;
-                direction = 1;
-            }else{
-                currentState_ = STANDING;
-            }
-            if(playerInputManager.isKeyPressed(SDLK_j)){
-                currentState_ = ATTACKING;
-                currentCharacter_->attackDone = false;
-            }
+        if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
+            velocityY_ += 7;
+            currentState_ = JUMPING;
         }
-		else if(playerType_ == PLAYER_TWO){
-            if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
-                velocityY_ += 7;
-                currentState_ = JUMPING;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile){
-                velocityY_ -= 0.3;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                if(velocityX_ > 0)
-                    velocityX_ -= speedChange * 0.7;
-                else
-                    velocityX_ -= speedChange;
-                direction = -1;
-            }else if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                if(velocityX_ < 0)
-                    velocityX_ += speedChange * 0.7;
-                else
-                    velocityX_ += speedChange;
-                direction = 1;
-            }else{
-                currentState_ = STANDING;
-            }
-            if(playerInputManager.isKeyPressed(SDLK_KP_1)){
-                currentState_ = ATTACKING;
-                currentCharacter_->attackDone = false;
-            }
+        if(playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile){
+            velocityY_ -= 0.3;
+        }
+        if(playerInputManager.isKeyPressed(preferences_.getLeft())){
+            if(velocityX_ > 0)
+                velocityX_ -= speedChange * 0.7;
+            else
+                velocityX_ -= speedChange;
+            direction = -1;
+        }else if(playerInputManager.isKeyPressed(preferences_.getRight())){
+            if(velocityX_ < 0)
+                velocityX_ += speedChange * 0.7;
+            else
+                velocityX_ += speedChange;
+            direction = 1;
+        }else{
+            currentState_ = STANDING;
+        }
+        if(playerInputManager.isKeyPressed(preferences_.getAttack())){
+            currentState_ = ATTACKING;
+            currentCharacter_->attackDone = false;
         }
         break;
     case JUMPING:
-        if(playerType_ == PLAYER_ONE){
-            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                if(velocityX_ > 0)
-                    velocityX_ -= 0.08;
-                else
-                    velocityX_ -= 0.10;
-                direction = -1;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                if(velocityX_ < 0)
-                    velocityX_ += 0.08;
-                else
-                    velocityX_ += 0.10;
-                direction = 1;
-            }
-            if(playerInputManager.isKeyPressed(SDLK_j)){
-                currentCharacter_->jumpAttackDone = false;
-                currentState_ = JUMP_ATTACKING;
-            }
+        if(playerInputManager.isKeyPressed(preferences_.getLeft())){
+            if(velocityX_ > 0)
+                velocityX_ -= 0.08;
+            else
+                velocityX_ -= 0.10;
+            direction = -1;
         }
-		else{
-            if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                if(velocityX_ > 0)
-                    velocityX_ -= 0.08;
-                else
-                    velocityX_ -= 0.10;
-                direction = -1;
-            }
-            if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                if(velocityX_ < 0)
-                    velocityX_ += 0.08;
-                else
-                    velocityX_ += 0.10;
-                direction = 1;
-            }
-            if(playerInputManager.isKeyPressed(SDLK_KP_1)){
-                currentCharacter_->jumpAttackDone = false;
-                currentState_ = JUMP_ATTACKING;
-            }
-            break;
+        if(playerInputManager.isKeyPressed(preferences_.getRight())){
+            if(velocityX_ < 0)
+                velocityX_ += 0.08;
+            else
+                velocityX_ += 0.10;
+            direction = 1;
+        }
+        if(playerInputManager.isKeyPressed(preferences_.getAttack())){
+            currentCharacter_->jumpAttackDone = false;
+            currentState_ = JUMP_ATTACKING;
+        }    
+        break;
     case ATTACKING:
-                if(currentCharacter_->attackDone){
-                    if(velocityX_ > 0.5){
-                        currentState_ = RUNNING;
-                    }else{
-                        currentState_ = STANDING;
-                    }
-                }
-                break;
-    case FALLING:
-            if(velocityY_ == 0){
+        if(currentCharacter_->attackDone){
+            if(velocityX_ > 0.5){
+                currentState_ = RUNNING;
+            }else{
                 currentState_ = STANDING;
-                break;
             }
-            if(playerType_ == PLAYER_ONE){
-                if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                    if(velocityX_ > 0)
-                        velocityX_ -= 0.08;
-                    else
-                        velocityX_ -= 0.10;
-                    direction = -1;
-                }
-                if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                    if(velocityX_ < 0)
-                        velocityX_ += 0.08;
-                    else
-                        velocityX_ += 0.10;
-                    direction = 1;
-                }
-            }
-			else if(playerType_ == PLAYER_TWO){
-                if(playerInputManager.isKeyPressed(preferences_.getLeft())){
-                    if(velocityX_ > 0)
-                        velocityX_ -= 0.08;
-                    else
-                        velocityX_ -= 0.10;
-                    direction = -1;
-                }
-                if(playerInputManager.isKeyPressed(preferences_.getRight())){
-                    if(velocityX_ < 0)
-                        velocityX_ += 0.08;
-                    else
-                        velocityX_ += 0.10;
-                    direction = 1;
-                }
-            }
+        }
+        break;
+    case FALLING:
+        if(velocityY_ == 0){
+            currentState_ = STANDING;
             break;
         }
+        if(playerInputManager.isKeyPressed(preferences_.getLeft())){
+            if(velocityX_ > 0)
+                velocityX_ -= 0.08;
+            else
+                velocityX_ -= 0.10;
+            direction = -1;
+        }
+        if(playerInputManager.isKeyPressed(preferences_.getRight())){
+            if(velocityX_ < 0)
+                velocityX_ += 0.08;
+            else
+                velocityX_ += 0.10;
+            direction = 1;
+        }
+		break;
+        
     }
 }
 

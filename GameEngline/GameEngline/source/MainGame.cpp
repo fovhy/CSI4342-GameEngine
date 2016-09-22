@@ -78,8 +78,18 @@ void MainGame::processInput(){
             break;
         case SDL_KEYDOWN:
             myStage.players[1].playerInputManager.pressKey(evnt.key.keysym.sym);
+			if (myStage.players[1].playerInputManager.isKeyPressed(SDLK_F6)) {
+				gameState = GameState::PAUSE;
+				pauseMenu(2);
+				myStage.players[1].playerInputManager.releaseKey(SDLK_F6);
+			}
             myStage.players[0].playerInputManager.pressKey(evnt.key.keysym.sym);
-            break;
+			if (myStage.players[0].playerInputManager.isKeyPressed(SDLK_F5)) {
+				gameState = GameState::PAUSE;
+				pauseMenu(1);
+				myStage.players[0].playerInputManager.releaseKey(SDLK_F5);
+			}
+			break;
         case SDL_KEYUP:
             myStage.players[1].playerInputManager.releaseKey(evnt.key.keysym.sym);
             myStage.players[0].playerInputManager.releaseKey(evnt.key.keysym.sym);
@@ -175,4 +185,52 @@ void MainGame::calculateFPS(){
     }else{
         fps = 60.0f;
     }
+}
+
+void MainGame::pauseMenu(int playerNum){
+	char choice;
+	printf("PLAYER %d PAUSED\n", playerNum);
+	while (gameState == GameState::PAUSE) {
+		printf("What do you want to do?\nResume\tOptions\tQuit\n");
+		std::cin >> choice;
+		if (choice == 'r' || choice == 'R') {
+			gameState = GameState::PLAY;
+		}
+		else if (choice == 'o' || choice == 'O') {
+			//options menu
+			//only option is changing controls
+			printf("Set up your new controls: \n");
+			printf("Enter in this order: Left, Right, Up (Jump), Down\n");
+			int controlCount = 0;
+			std::set<int> controlSet;
+			int* newControls = new int[MAX_CONTROLS];
+			SDL_Event evnt;
+			while (controlCount < MAX_CONTROLS){
+				while (SDL_PollEvent(&evnt)) {
+					if (evnt.key.type == SDL_KEYDOWN) {
+						bool wasAdded = (controlSet.insert(evnt.key.keysym.sym)).second;
+						if (wasAdded) {
+							//key was not in the set already
+							newControls[controlCount] = evnt.key.keysym.sym;
+							controlCount++;
+							printf("%s\t", SDL_GetKeyName(evnt.key.keysym.sym));
+						}
+					}
+				}
+			}
+			printf("\nSaving Controls...\n");
+			myStage.players[playerNum - 1].setNewControls(newControls);
+			printf("controls Saved\n");
+		}
+		else if (choice == 'q' || choice == 'Q') {
+			printf("Are you sure you want to quit?\tYes\tNo\n");
+			std::cin >> choice;
+			if (choice == 'y' || choice == 'Y') {
+				gameState = GameState::EXIT;
+			}
+		}
+		else {
+			printf("Invalid option, pick again.\n");
+		}
+	}
 }

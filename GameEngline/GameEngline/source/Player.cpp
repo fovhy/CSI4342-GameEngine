@@ -179,7 +179,7 @@ void Player::processInput(){
                 velocityX_ -= speedChange;
             direction = -1;
         }
-        if(playerInputManager.isKeyPressed(preferences_.getRight())){
+        else if(playerInputManager.isKeyPressed(preferences_.getRight())){
             currentState_ = RUNNING;
             if(velocityX_ < 0)
                 velocityX_ += speedChange * 0.7;
@@ -229,14 +229,14 @@ void Player::processInput(){
                 velocityX_ -= 0.10;
             direction = -1;
         }
-        if(playerInputManager.isKeyPressed(preferences_.getRight())){
+        else if(playerInputManager.isKeyPressed(preferences_.getRight())){
             if(velocityX_ < 0)
                 velocityX_ += 0.08;
             else
                 velocityX_ += 0.10;
             direction = 1;
         }
-        if(playerInputManager.isKeyPressed(preferences_.getAttack())){
+        else if(playerInputManager.isKeyPressed(preferences_.getAttack())){
             currentCharacter_->jumpAttackDone = false;
             currentState_ = JUMP_ATTACKING;
         }    
@@ -262,7 +262,7 @@ void Player::processInput(){
                 velocityX_ -= 0.10;
             direction = -1;
         }
-        if(playerInputManager.isKeyPressed(preferences_.getRight())){
+        else if(playerInputManager.isKeyPressed(preferences_.getRight())){
             if(velocityX_ < 0)
                 velocityX_ += 0.08;
             else
@@ -353,3 +353,10 @@ void Player::drawPlayer(SpriteBatch &spriteBatch){
         drawHP(spriteBatch);
 }
 
+void Player::setNewControls(int* newControls) {
+	preferences_.setLeft(newControls[0]);
+	preferences_.setRight(newControls[1]);
+	preferences_.setUp(newControls[2]);
+	preferences_.setDown(newControls[3]);
+	//preferences_.setAttack(newControls[4]);
+}

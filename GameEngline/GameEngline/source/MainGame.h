@@ -1,7 +1,10 @@
 #pragma once
 #include "Stage.h"
 #include "inputManager.h"
-enum class GameState {PLAY, EXIT};
+#include <set>
+
+const int MAX_CONTROLS = 4;
+enum class GameState {PLAY, EXIT, PAUSE};
 class MainGame{
 public:
     MainGame();
@@ -25,6 +28,8 @@ private:
     float maxfps = 60.0f;
     //GLTexture playerTexture;
 
+
+
     Stage myStage;
 
     void initSystems();
@@ -33,6 +38,7 @@ private:
     void drawGame();
     void initShaders();
     void calculateFPS();
+	void pauseMenu(int);
 
     inputManager inputManager_;
 

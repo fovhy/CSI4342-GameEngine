@@ -6,6 +6,7 @@
 #include "ninja.h"
 #include "samurai.h"
 #include "Preferences.h"
+#include <set>
 
 enum currentCharacterType{
     MAIDEN,
@@ -77,6 +78,8 @@ public:
         return glm::vec4(playerPosition_.x, playerPosition_.y,
                          currentCharacter_->getWidth(), currentCharacter_->getHeight());
     }
+
+	void setNewControls(int*);
 
     void setVX(float vx){velocityX_ = vx;}
     void setVY(float vy){velocityY_ = vy;}

@@ -6,6 +6,13 @@ struct Position{
 };
 
 struct Color{
+	Color() = default;  // still have a default constructor 
+	Color(GLint r, GLint g, GLint b, GLint a) {
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = a;
+	}
     GLubyte r;
     GLubyte g;
     GLubyte b;

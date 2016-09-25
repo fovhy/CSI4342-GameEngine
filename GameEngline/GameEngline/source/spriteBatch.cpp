@@ -3,7 +3,7 @@
 
 
 SpriteBatch::SpriteBatch(){
-
+	
 }
 SpriteBatch::~SpriteBatch(){
 
@@ -39,7 +39,8 @@ void SpriteBatch::sortGlyphs(){
     }
 }
 
-void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, const GLuint& texture, const float& depth, const Color& color){
+void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, const GLuint& texture, 
+	const float& depth, const Color& color){
     Glyph* newGlyph = new Glyph;
     newGlyph->texture = texture;
     newGlyph->depth = depth;

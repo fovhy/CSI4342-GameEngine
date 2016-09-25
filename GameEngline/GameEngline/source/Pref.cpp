@@ -42,13 +42,35 @@ Pref::Pref() {
 
 }
 
-
 void Pref::init(char playerNum) {
 	getInput(playerNum);
 }
 
 
 void Pref::getInput(char player) {
+	int playerNum = (atoi(&player))-1;
+	controller = false;
+	// Check for joystick
+	/*if (SDL_NumJoysticks() > playerNum) {
+		// Open joystick
+		joy = SDL_JoystickOpen(playerNum);
+
+		if (joy) {
+			controller = true;
+		}
+		else {
+			printf("Couldn't open Joystick %d: %s\n", playerNum+1, SDL_GetError());
+		}
+
+	}
+	else if(SDL_NumJoysticks() == 0) {
+		printf("No joysticks detected\n");
+	}
+	else {
+		printf("Joystick not initialized: %s", SDL_GetError());
+	}*/
+
+
 	std::fstream file;
 	file.open(std::string("inputs") + player + ".txt");
 	if (!file.is_open()) {
@@ -69,6 +91,10 @@ void Pref::getInput(char player) {
 	else {
 		//reads the user's preferences
 		//can be changed later
+		file >> up_;
+		file >> down_;
+		file >> left_;
+		file >> right_;
 	}
 }
 void Pref::savePref(char player) {
@@ -80,7 +106,10 @@ void Pref::savePref(char player) {
 	}
 	else {
 		file.seekp(0);
-		//write the data to the file, overwriting the previous contents
+		file << up_ << "\n";
+		file << down_ << "\n";
+		file << left_ << "\n";
+		file << right_ << "\n";
 	}
 }
 
@@ -91,6 +120,9 @@ Pref::Pref(char player) {
 }
 Pref::~Pref() {
 	savePref(assocPlayer);
+	if (controller) {
+		SDL_JoystickClose(joy);
+	}
 }
 
 
@@ -109,9 +141,9 @@ int Pref::getRight() {
 int Pref::getJump() {
 	return jump_;
 }
-int Pref::getAttack() {
+/*int Pref::getAttack() {
 	return attack_;
-}
+}*/
 
 
 void Pref::setUp(int newUp) {
@@ -129,6 +161,6 @@ void Pref::setRight(int newRight) {
 void Pref::setJump(int newJump) {
 	jump_ = newJump;
 }
-void Pref::setAttack(int newAttack) {
+/*void Pref::setAttack(int newAttack) {
 	attack_ = newAttack;
-}
+}*/

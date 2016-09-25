@@ -21,9 +21,6 @@ void Stage::init(){
     players[1].setCurrentCharacters(players[0].characters[0]);
     players[1].setPlayerType(PLAYER_TWO);
     players[1].setPayerState(STANDING);
-    //TDOO ADD PLAYER 2
-    //players_[1].init();
-    //players_[1].setCurrentCharacters(& players_[1].characters[1]);
 
     firstLevel.resize(12);
     secondLevel.resize(12);

@@ -13,9 +13,12 @@ Modified By: Logan
 
 class Pref {
 private:
-	int up_, down_, left_, right_, jump_, attack_;
+	int up_, down_, left_, right_, jump_;
+	//int attack_;
 	char assocPlayer;
 	void getInput(char);
+	bool controller;
+	SDL_Joystick* joy;
 public:
 	//Constructor; gets user's preferred inputs from the preferences file
 	Pref(char);
@@ -32,7 +35,7 @@ public:
 	int getLeft();
 	int getRight();
 	int getJump();
-	int getAttack();
+	//int getAttack();
 
 	//setters; remaps the ipnuts for the user
 	void setUp(int newUp);
@@ -40,7 +43,7 @@ public:
 	void setLeft(int newLeft);
 	void setRight(int newRight);
 	void setJump(int newJump);
-	void setAttack(int newAttack);
+	//void setAttack(int newAttack);
 
 	void savePref(char);
 };

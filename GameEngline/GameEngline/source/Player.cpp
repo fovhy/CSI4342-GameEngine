@@ -21,7 +21,6 @@ void Player::init(const glm::vec2& pos){
     characters[2]->init();
     characters[3] = new Samurai();
     characters[3]->init();
-	preferences_.init(playerNum_);
 }
 
 void Player::checkDeath(){
@@ -187,10 +186,10 @@ void Player::processInput(){
                 velocityX_ += speedChange;
             direction = 1;
         }
-        if(playerInputManager.isKeyPressed(preferences_.getAttack())){
+        /*if(playerInputManager.isKeyPressed(preferences_.getAttack())){
             currentState_ = ATTACKING;
             currentCharacter_->attackDone = false;
-        }
+        }*/
         
         break;
     case RUNNING:
@@ -216,10 +215,10 @@ void Player::processInput(){
         }else{
             currentState_ = STANDING;
         }
-        if(playerInputManager.isKeyPressed(preferences_.getAttack())){
+        /*if(playerInputManager.isKeyPressed(preferences_.getAttack())){
             currentState_ = ATTACKING;
             currentCharacter_->attackDone = false;
-        }
+        }*/
         break;
     case JUMPING:
         if(playerInputManager.isKeyPressed(preferences_.getLeft())){
@@ -236,12 +235,12 @@ void Player::processInput(){
                 velocityX_ += 0.10;
             direction = 1;
         }
-        else if(playerInputManager.isKeyPressed(preferences_.getAttack())){
+        /*else if(playerInputManager.isKeyPressed(preferences_.getAttack())){
             currentCharacter_->jumpAttackDone = false;
             currentState_ = JUMP_ATTACKING;
-        }    
+        }*/    
         break;
-    case ATTACKING:
+    /*case ATTACKING:
         if(currentCharacter_->attackDone){
             if(velocityX_ > 0.5){
                 currentState_ = RUNNING;
@@ -249,7 +248,7 @@ void Player::processInput(){
                 currentState_ = STANDING;
             }
         }
-        break;
+        break;*/
     case FALLING:
         if(velocityY_ == 0){
             currentState_ = STANDING;

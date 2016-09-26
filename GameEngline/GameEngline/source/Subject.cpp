@@ -19,7 +19,7 @@ void Subject::notifyAll(Subject* subject, std::string eventName) {
 		printError("No such event as " + eventName);
 
 	for (const auto& itr : observers_) {
-		itr->onNotify(subject, EventManager::getEvent(eventName));
+		itr->onNotify(subject, EventManager::getEventManager().getEvent(eventName));
 	}
 }
 void Subject::unregisterAll() {

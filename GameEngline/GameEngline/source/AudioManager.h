@@ -3,10 +3,10 @@ sound effect should be WAVE files, and music can be WAVE MOD MIDL OGG MP3 FLAC f
 */
 #pragma once
 #include <string>
+#include "Observer.h"
 #include <unordered_map>
 #include <SDL\SDL_mixer.h>
-class AudioManager
-{
+class AudioManager : public Observer{
 public:
 	void init(); // init sdl2_mixer
 	void pauseAll(); // pause all audio being playing

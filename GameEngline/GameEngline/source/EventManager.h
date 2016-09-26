@@ -1,5 +1,5 @@
 /*
-A singleton set that stores all the possible events here
+A singleton class that stores all the possible events here
 */
 #pragma once
 #include "Event.h"
@@ -8,23 +8,23 @@ class EventManager
 {
 public:
 	static EventManager& getEventManager();
-	static void init();
-	static void addEvent(std::string);
-	static void removeEvent(std::string);
+	void init();
+	void addEvent(std::string);
+	void removeEvent(std::string);
 
-	static bool setEventTrue(std::string);
-	static bool setEventFalse(std::string);
-	static bool eventExist(std::string);
-	static bool isEventTrue(std::string);
+	bool setEventTrue(std::string);
+	bool setEventFalse(std::string);
+	bool eventExist(std::string);
+	bool isEventTrue(std::string);
 
-	static Event getEvent(std::string);
+	Event getEvent(std::string);
 	~EventManager();
 private:
 	EventManager() {}; // disable given constructor 
 	EventManager(EventManager const&) = delete;
 	void operator=(EventManager const&) = delete;
-	static bool init_;
-	static std::unordered_map<std::string, Event> events_;
+	bool init_;
+	std::unordered_map<std::string, Event> events_;
 
 };
 

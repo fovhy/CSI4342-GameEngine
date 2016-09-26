@@ -1,26 +1,24 @@
 #include "EventManager.h"
-bool EventManager::init_ = false;
-std::unordered_map<std::string, Event> EventManager::events_;
 EventManager& EventManager::getEventManager() {
 	static EventManager manager;
 	return manager;
 }
 
 void EventManager::init() {
-	if (EventManager::init_ == false) {
+	if (init_ == false) {
 		//TODO: add events here
-		EventManager::init_ = true;
+		init_ = true;
 	}
 }
 void EventManager::addEvent(std::string eventName) {
-	EventManager::events_.emplace(eventName, Event(eventName));
+	events_.emplace(eventName, Event(eventName));
 }
 void EventManager::removeEvent(std::string eventName) {
-	EventManager::events_.erase(eventName);
+	events_.erase(eventName);
 }
 bool EventManager::setEventTrue(std::string eventName) {
-	auto itr = EventManager::events_.find(eventName);
-	if (itr == EventManager::events_.end()) {
+	auto itr = events_.find(eventName);
+	if (itr == events_.end()) {
 		return false;
 	}
 	else {
@@ -29,8 +27,8 @@ bool EventManager::setEventTrue(std::string eventName) {
 	}
 }
 bool EventManager::setEventFalse(std::string eventName) {
-	auto itr = EventManager::events_.find(eventName);
-	if (itr == EventManager::events_.end()) {
+	auto itr = events_.find(eventName);
+	if (itr == events_.end()) {
 		return false;
 	}
 	else {
@@ -39,16 +37,16 @@ bool EventManager::setEventFalse(std::string eventName) {
 	}
 }
 bool EventManager::eventExist(std::string eventName) {
-	auto itr = EventManager::events_.find(eventName);
-	if (itr == EventManager::events_.end()) 
+	auto itr = events_.find(eventName);
+	if (itr == events_.end()) 
 		return false;
 	else
 		return true;
 }
 
 bool EventManager::isEventTrue(std::string eventName) {
-	auto itr = EventManager::events_.find(eventName);
-	if (itr == EventManager::events_.end()) {
+	auto itr = events_.find(eventName);
+	if (itr == events_.end()) {
 		return false;
 	}
 	else {
@@ -57,8 +55,8 @@ bool EventManager::isEventTrue(std::string eventName) {
 }
 
 Event EventManager::getEvent(std::string eventName) {
-	auto itr = EventManager::events_.find(eventName);
-	if (itr == EventManager::events_.end()) {
+	auto itr = events_.find(eventName);
+	if (itr == events_.end()) {
 		return nullptr;
 	}
 	else {

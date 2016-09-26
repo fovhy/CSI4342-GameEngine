@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <SDL/SDL.h>
+#include "EventManager.h"
 
 
 
@@ -29,7 +30,9 @@ void Player::checkDeath(){
             || playerPosition_.y > 400
             || playerPosition_.y < -410
             || hp <= 0){
+		notifyAll(*this, "playerDeath");
         isDead = true;
+		needToCheckDeath_ = false;
         hp = 0;
     }
 }
@@ -45,6 +48,7 @@ void Player::drawAvatar(SpriteBatch &SpriteBatch){
 void Player::respawn(){
     hp = 5;
     isDead = false;
+	needToCheckDeath_ = true;
     velocityX_ = 0;
     velocityY_ = 0;
     playerPosition_.x = 600;
@@ -280,8 +284,14 @@ void Player::update(){
 
         playerPosition_.x += velocityX_;
         playerPosition_.y += velocityY_;
-        checkDeath();
+		if (needToCheckDeath_) {
+			checkDeath();
+		}
         if(isDead){
+/*			if (EventManager::getEventManager().getEvent("playerDeath").happened == false) {
+				notifyAll(*this, "playerDeath");
+				EventManager::getEventManager().setEventTrue("playerDeath");
+			}*/
             youDead();
         }
 

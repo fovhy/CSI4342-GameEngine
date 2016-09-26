@@ -3,13 +3,12 @@
 MainGame::MainGame::MainGame(){
     window = nullptr;
     gameState = GameState::PLAY;
-
+	thisType_ = type::MAINGAME;
 }
 
 
 
 MainGame::~MainGame(){
-
 }
 
 void MainGame::run(){
@@ -32,6 +31,10 @@ void MainGame::initSystems() {
     if (glewSignal != GLEW_OK){
         printError("Failed to initialize glew");
     }
+	EventManager::getEventManager().init(); // this has to be init before audioManager
+	audioManager_.init();
+
+
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -41,6 +44,9 @@ void MainGame::initSystems() {
     camera.init(screenWidth, screenHeight);
     spriteBatch_.init();
     myStage.init();
+	myStage.players[0].addObserver(&audioManager_);
+	myStage.players[1].addObserver(&audioManager_);
+	addObserver(&audioManager_);
 
 }
 
@@ -57,6 +63,10 @@ void MainGame::gameLoop(){
             frameCounter = 0;
         }
         drawGame();
+		if (EventManager::getEventManager().getEvent("gameStart").happened == false) {
+			notifyAll(*this, "gameStart");
+			EventManager::getEventManager().setEventTrue("gameStart");
+		}
 // limit fps to be 60
         float frameTicks = SDL_GetTicks() - startTicks;
         if(1000.0/ maxfps > frameTicks){
@@ -155,7 +165,7 @@ void MainGame::initShaders(){
 void MainGame::calculateFPS(){
     static const int NUM_SAMPLES = 10;
     static float frameTimes[NUM_SAMPLES];
-
+	
     static float prevTicks = SDL_GetTicks();
 
     static int currentFrame = 0;

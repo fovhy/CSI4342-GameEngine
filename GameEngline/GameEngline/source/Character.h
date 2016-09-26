@@ -11,6 +11,7 @@
 #include <iostream>
 #include "ResourceManager.h"
 #include <cmath>
+#include "Subject.h"
 enum class Action{
     STAND_STILL,
     ATTACK,
@@ -22,9 +23,9 @@ enum class Action{
     RUN
 };
 
-class Character{
+class Character : public Subject{
 public:
-    Character(){}
+	Character() { thisType_ = type::CHARACTER; }
     ~Character(){}
     virtual void init() = 0;
     void drawAnimation(const glm::vec2& pos, int direction, Action aAction, SpriteBatch& spriteBatch);

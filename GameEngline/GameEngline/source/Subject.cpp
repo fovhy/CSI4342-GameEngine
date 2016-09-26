@@ -9,12 +9,13 @@ Subject::~Subject(){
 	unregisterAll();
 }
 void Subject::addObserver(Observer* observer) {
+	observer->addSubject(this);
 	observers_.insert(observer);
 }
 void Subject::removeObserver(Observer* observer) {
 	observers_.erase(observer);
 }
-void Subject::notifyAll(Subject* subject, std::string eventName) {
+void Subject::notifyAll(const Subject& subject, std::string eventName) {
 	if (EventManager::getEventManager().eventExist(eventName) == false)
 		printError("No such event as " + eventName);
 
@@ -23,7 +24,9 @@ void Subject::notifyAll(Subject* subject, std::string eventName) {
 	}
 }
 void Subject::unregisterAll() {
-	for (const auto& itr : observers_) {
-		itr->releaseDuty(this);
+	if (observers_.size() > 0) {
+		for (const auto& itr : observers_) {
+			itr->releaseDuty(this);
+		}
 	}
 }

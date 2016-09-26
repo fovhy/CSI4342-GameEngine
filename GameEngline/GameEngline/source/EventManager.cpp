@@ -6,7 +6,8 @@ EventManager& EventManager::getEventManager() {
 
 void EventManager::init() {
 	if (init_ == false) {
-		//TODO: add events here
+		addEvent("gameStart");
+		addEvent("playerDeath");
 		init_ = true;
 	}
 }

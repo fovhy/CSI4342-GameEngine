@@ -1,11 +1,5 @@
 #include "Observer.h"
 
-
-
-Observer::Observer(){
-}
-
-
 Observer::~Observer(){
 	for (auto& itr : watchList_) {
 		itr->removeObserver(this);

@@ -2,14 +2,16 @@
 #include "Stage.h"
 #include "inputManager.h"
 #include <set>
+#include "EventManager.h"
+#include "AudioManager.h"
+#include "Subject.h"
 
 const int MAX_CONTROLS = 4;
 enum class GameState {PLAY, EXIT, PAUSE};
-class MainGame{
+class MainGame : public Subject{
 public:
     MainGame();
     ~MainGame();
-
     void run();
 
 
@@ -41,6 +43,7 @@ private:
 	void pauseMenu(int);
 
     inputManager inputManager_;
+	AudioManager audioManager_;
 
     SpriteBatch spriteBatch_;
     GLSLProgram colorProgram;

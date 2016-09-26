@@ -32,9 +32,9 @@ enum PlayerType{
     PLAYER_TWO
 };
 
-class Player{
+class Player : public Subject{
 public:
-	Player() {}
+	Player() { thisType_ = type::PLAYER; }
     ~Player(){}
 
 
@@ -132,6 +132,7 @@ private:
 
 	Pref preferences_;
 	char playerNum_;
+	bool needToCheckDeath_ = true;
 
 
     glm::vec2 playerPosition_ = glm::vec2(0.0f);

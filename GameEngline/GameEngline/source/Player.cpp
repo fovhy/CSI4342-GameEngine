@@ -367,5 +367,6 @@ void Player::setNewControls(int* newControls) {
 	preferences_.setRight(newControls[1]);
 	preferences_.setUp(newControls[2]);
 	preferences_.setDown(newControls[3]);
+	preferences_.savePref(playerNum_);
 	//preferences_.setAttack(newControls[4]);
 }

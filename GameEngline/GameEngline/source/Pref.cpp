@@ -100,12 +100,12 @@ void Pref::getInput(char player) {
 void Pref::savePref(char player) {
 	//write the prefered inputs to the file
 	std::fstream file;
-	file.open(std::string("inputs") + player + ".txt");
+	file.open(std::string("inputs") + player + ".txt", std::fstream::trunc | std::fstream::out);
 	if (!file.is_open()) {
-		//do something
+		//really bad error
+		exit(1);
 	}
 	else {
-		file.seekp(0);
 		file << up_ << "\n";
 		file << down_ << "\n";
 		file << left_ << "\n";

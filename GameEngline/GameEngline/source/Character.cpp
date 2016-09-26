@@ -67,6 +67,7 @@ void Character::drawAttack(const glm::vec2& pos, int direction,SpriteBatch& spri
     if(attackS > attack.size() -1){
         attackS = 0;
         attackDone = true;
+		attackBox = glm::vec4();
     }
     glm::vec4 uv;
     if(direction == 1){

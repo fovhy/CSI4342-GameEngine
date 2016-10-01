@@ -105,6 +105,9 @@
     <ClInclude Include="source\Subject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\Hud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\bald.cpp">
@@ -192,6 +195,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Subject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Hud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,6 +30,7 @@
     <ClInclude Include="source\fileManager.h" />
     <ClInclude Include="source\GLSLProgram.h" />
     <ClInclude Include="source\GLTexture.h" />
+    <ClInclude Include="source\Hud.h" />
     <ClInclude Include="source\ImageLoader.h" />
     <ClInclude Include="source\inputManager.h" />
     <ClInclude Include="source\maiden.h" />
@@ -61,6 +62,7 @@
     <ClCompile Include="source\fileManager.cpp" />
     <ClCompile Include="source\GLSLProgram.cpp" />
     <ClCompile Include="source\GLTexture.cpp" />
+    <ClCompile Include="source\Hud.cpp" />
     <ClCompile Include="source\ImageLoader.cpp" />
     <ClCompile Include="source\inputManager.cpp" />
     <ClCompile Include="source\maiden.cpp" />

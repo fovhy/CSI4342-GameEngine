@@ -3,36 +3,37 @@
 
 void Character::drawAnimation(const glm::vec2 &pos, int direction,
                               Action aAction, SpriteBatch& spriteBatch){
+	myCharacter_.setPosition(pos);
     switch(aAction){
     case Action::STAND_STILL:
-        drawIdle(pos, direction, spriteBatch);
+        drawIdle(direction, spriteBatch);
         break;
     case Action::JUMP:
-        drawJump(pos, direction, spriteBatch);
+        drawJump(direction, spriteBatch);
         break;
     case Action::ATTACK:
-        drawAttack(pos, direction, spriteBatch);
+        drawAttack(direction, spriteBatch);
         break;
     case Action::JUMP_ATTACK:
-        drawJumpAttack(pos, direction, spriteBatch);
+        drawJumpAttack(direction, spriteBatch);
         break;
     case Action::RUN:
-        drawRun(pos, direction, spriteBatch);
+        drawRun(direction, spriteBatch);
         break;
     case Action::STUNNED:
-        drawStunned(pos, direction, spriteBatch);
+        drawStunned(direction, spriteBatch);
         break;
     case Action::SPECIAL_ATTACK:
-        drawSpecialAttack(pos, direction, spriteBatch);
+        drawSpecialAttack(direction, spriteBatch);
         break;
     case Action::FALL:
-        drawfall(pos, direction, spriteBatch);
+        drawfall(direction, spriteBatch);
         break;
     }
 
 }
 
-void Character::drawfall(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Character::drawfall(int direction,SpriteBatch& spriteBatch){
     Color solidColor;
     solidColor.r = 255;
     solidColor.g = 255;
@@ -48,13 +49,13 @@ void Character::drawfall(const glm::vec2& pos, int direction,SpriteBatch& sprite
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, fall[(int)fallS].id, 1.0, solidColor);
     fallS += fallC;
 
 }
 
-void Character::drawAttack(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Character::drawAttack(int direction,SpriteBatch& spriteBatch){
     if(attackDone){
         attackDone = false;
     }
@@ -75,12 +76,12 @@ void Character::drawAttack(const glm::vec2& pos, int direction,SpriteBatch& spri
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, attack[(int)attackS].id, 1.0, solidColor);
     attackS += attackC;
 }
 
-void Character::drawIdle(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Character::drawIdle(int direction,SpriteBatch& spriteBatch){
     Color solidColor;
     solidColor.r = 255;
     solidColor.g = 255;
@@ -96,12 +97,12 @@ void Character::drawIdle(const glm::vec2& pos, int direction,SpriteBatch& sprite
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, idle[(int)idleS].id, 1.0, solidColor);
     idleS += idleC;
 }
 
-void Character::drawJump(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Character::drawJump(int direction,SpriteBatch& spriteBatch){
 
     Color solidColor;
     solidColor.r = 255;
@@ -118,7 +119,7 @@ void Character::drawJump(const glm::vec2& pos, int direction,SpriteBatch& sprite
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, jump[(int)jumpS].id, 1.0, solidColor);
     jumpS += jumpC;
 }
@@ -130,7 +131,7 @@ void Character::spawnAttackBox(const glm::vec2 &pos, int direction){
     }
 }
 
-void Character::drawJumpAttack(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Character::drawJumpAttack(int direction,SpriteBatch& spriteBatch){
     if(jumpAttackDone)
         jumpAttackDone = false;
     Color solidColor;
@@ -149,12 +150,12 @@ void Character::drawJumpAttack(const glm::vec2& pos, int direction,SpriteBatch& 
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, jumpAttack[(int)jumpAttackS].id, 1.0, solidColor);
     jumpAttackS += jumpAttackC;
 }
 
-void Character::drawRun(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Character::drawRun(int direction,SpriteBatch& spriteBatch){
     Color solidColor;
     solidColor.r = 255;
     solidColor.g = 255;
@@ -170,13 +171,13 @@ void Character::drawRun(const glm::vec2& pos, int direction,SpriteBatch& spriteB
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, run[(int)runS].id, 1.0f, solidColor);
     runS += runC;
 }
 
 
-void Character::drawStunned(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Character::drawStunned(int direction,SpriteBatch& spriteBatch){
     if(stunDone){
         stunDone = false;
     }
@@ -196,7 +197,11 @@ void Character::drawStunned(const glm::vec2& pos, int direction,SpriteBatch& spr
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, stunned[(int)stunnedS].id, 1.0, solidColor);
     stunnedS += stunnedC;
+}
+
+void Character::setCharacterSize(const glm::vec2& size) {
+	myCharacter_.setSize(size);
 }

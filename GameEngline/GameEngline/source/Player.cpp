@@ -288,10 +288,6 @@ void Player::update(){
 			checkDeath();
 		}
         if(isDead){
-/*			if (EventManager::getEventManager().getEvent("playerDeath").happened == false) {
-				notifyAll(*this, "playerDeath");
-				EventManager::getEventManager().setEventTrue("playerDeath");
-			}*/
             youDead();
         }
 

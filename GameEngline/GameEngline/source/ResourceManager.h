@@ -6,7 +6,6 @@
 
 class ResourceManager{
 public:
-
     GLTexture getTexture(std::string texturePath);
 
 private:

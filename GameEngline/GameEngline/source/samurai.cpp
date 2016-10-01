@@ -4,8 +4,7 @@
 #include "samurai.h"
 
 void Samurai::init(){
-    characterWidth_ = 70;
-    characterHeight_ = 70;
+	myCharacter_.setSize(glm::vec2(70, 70));
     idle.resize(4);
     idle[0] = characterManager_.getTexture("../YOLO/texture/samurai/idle_0.png");
     idle[1] = characterManager_.getTexture("../YOLO/texture/samurai/idle_1.png");
@@ -56,7 +55,7 @@ void Samurai::spawnSpecialAttackBox(const glm::vec2& pos, int direction){
 
 }
 
-void Samurai::drawSpecialAttack(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Samurai::drawSpecialAttack(int direction,SpriteBatch& spriteBatch){
 
     Color solidColor;
     solidColor.r = 255;
@@ -73,7 +72,7 @@ void Samurai::drawSpecialAttack(const glm::vec2& pos, int direction,SpriteBatch&
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, specialAttack[(int)specialAttackS].id, 1.0, solidColor);
     specialAttackS += specialAttackC;
 }

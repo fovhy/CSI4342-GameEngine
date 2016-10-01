@@ -7,6 +7,7 @@
 #include "samurai.h"
 #include "Preferences.h"
 #include <set>
+#include "DrawableObject.h"
 
 enum currentCharacterType{
     MAIDEN,
@@ -133,7 +134,5 @@ private:
 	Pref preferences_;
 	char playerNum_;
 	bool needToCheckDeath_ = true;
-
-
     glm::vec2 playerPosition_ = glm::vec2(0.0f);
 };

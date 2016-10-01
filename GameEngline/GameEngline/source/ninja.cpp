@@ -3,8 +3,7 @@
 #include "ninja.h"
 
 void Ninja::init(){
-    characterWidth_ = 70;
-    characterHeight_ = 70;
+	myCharacter_.setSize(glm::vec2(70, 70));
     idle.resize(4);
     idle[0] = characterManager_.getTexture("../YOLO/texture/ninja/idle_0.png");
     idle[1] = characterManager_.getTexture("../YOLO/texture/ninja/idle_1.png");
@@ -56,7 +55,7 @@ void Ninja::spawnSpecialAttackBox(const glm::vec2 &pos, int direction)
 }
 
 
-void Ninja::drawSpecialAttack(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch){
+void Ninja::drawSpecialAttack(int direction,SpriteBatch& spriteBatch){
 
     Color solidColor;
     solidColor.r = 255;
@@ -73,7 +72,7 @@ void Ninja::drawSpecialAttack(const glm::vec2& pos, int direction,SpriteBatch& s
     }else{
         uv = glm::vec4 (0, 0, -1, 1);
     }
-    spriteBatch.draw(glm::vec4(pos.x, pos.y, characterWidth_, characterHeight_),
+    spriteBatch.draw(glm::vec4(myCharacter_.getPosition(), myCharacter_.getSize()),
                      uv, specialAttack[(int)specialAttackS].id, 1.0, solidColor);
     specialAttackS += specialAttackC;
 }

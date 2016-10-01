@@ -207,30 +207,40 @@ void MainGame::pauseMenu(int playerNum){
 			gameState = GameState::PLAY;
 		}
 		else if (choice == 'o' || choice == 'O') {
+			std::cout << "(c) change your control" << std::endl;
+			std::cout << "(e) eddit the level" << std::endl;
+			std::cout << "(b) back to upper level" << std::endl;
 			//options menu
-			//only option is changing controls
-			printf("Set up your new controls: \n");
-			printf("Enter in this order: Left, Right, Up (Jump), Down\n");
-			int controlCount = 0;
-			std::set<int> controlSet;
-			int* newControls = new int[MAX_CONTROLS];
-			SDL_Event evnt;
-			while (controlCount < MAX_CONTROLS){
-				while (SDL_PollEvent(&evnt)) {
-					if (evnt.key.type == SDL_KEYDOWN) {
-						bool wasAdded = (controlSet.insert(evnt.key.keysym.sym)).second;
-						if (wasAdded) {
-							//key was not in the set already
-							newControls[controlCount] = evnt.key.keysym.sym;
-							controlCount++;
-							printf("%s\t", SDL_GetKeyName(evnt.key.keysym.sym));
+			std::cin >> choice;
+			if (choice == 'C' || choice == 'c') {
+				printf("Set up your new controls: \n");
+				printf("Enter in this order: Left, Right, Up (Jump), Down\n");
+				int controlCount = 0;
+				std::set<int> controlSet;
+				int* newControls = new int[MAX_CONTROLS];
+				SDL_Event evnt;
+				while (controlCount < MAX_CONTROLS) {
+					while (SDL_PollEvent(&evnt)) {
+						if (evnt.key.type == SDL_KEYDOWN) {
+							bool wasAdded = (controlSet.insert(evnt.key.keysym.sym)).second;
+							if (wasAdded) {
+								//key was not in the set already
+								newControls[controlCount] = evnt.key.keysym.sym;
+								controlCount++;
+								printf("%s\t", SDL_GetKeyName(evnt.key.keysym.sym));
+							}
 						}
 					}
 				}
+				printf("\nSaving Controls...\n");
+				myStage.players[playerNum - 1].setNewControls(newControls);
+				printf("controls Saved\n");
+			}else if(choice == 'E' || choice == 'e'){
+				//TODO edit level
 			}
-			printf("\nSaving Controls...\n");
-			myStage.players[playerNum - 1].setNewControls(newControls);
-			printf("controls Saved\n");
+			else if (choice == 'B' || choice == 'b') {
+
+			}
 		}
 		else if (choice == 'q' || choice == 'Q') {
 			printf("Are you sure you want to quit?\tYes\tNo\n");

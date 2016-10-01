@@ -30,8 +30,6 @@ private:
     float maxfps = 60.0f;
     //GLTexture playerTexture;
 
-
-
     Stage myStage;
 
     void initSystems();

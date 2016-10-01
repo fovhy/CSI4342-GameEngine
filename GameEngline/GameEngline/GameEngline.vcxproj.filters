@@ -128,9 +128,6 @@
     <ClCompile Include="source\GLSLProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\GLTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\ImageLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -171,9 +168,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Stage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\sumrai.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\TextureCache.cpp">

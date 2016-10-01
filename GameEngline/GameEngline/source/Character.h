@@ -12,6 +12,7 @@
 #include "ResourceManager.h"
 #include <cmath>
 #include "Subject.h"
+#include "DrawableObject.h"
 enum class Action{
     STAND_STILL,
     ATTACK,
@@ -28,9 +29,10 @@ public:
 	Character() { thisType_ = type::CHARACTER; }
     ~Character(){}
     virtual void init() = 0;
+	void setCharacterSize(const glm::vec2&);
     void drawAnimation(const glm::vec2& pos, int direction, Action aAction, SpriteBatch& spriteBatch);
-    float getWidth(){ return characterWidth_ ;}
-    float getHeight(){ return characterHeight_;}
+	float getWidth() { return myCharacter_.getSize().x; }
+    float getHeight(){ return myCharacter_.getSize().y; }
 
     void spawnAttackBox(const glm::vec2& pos, int direction);
     virtual void spawnSpecialAttackBox(const glm::vec2& pos, int direction) = 0;
@@ -46,15 +48,17 @@ public:
     float specialAttackWidth = 0;
     float specialAttackHeight = 0;
 
+	DrawableObject myCharacter_;
+
 protected:
-    void drawAttack(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch);
-    void drawIdle(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch);
-    void drawJump(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch);
-    void drawJumpAttack(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch);
-    virtual void drawSpecialAttack(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch)=0;
-    void drawRun(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch);
-    void drawStunned(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch);
-    void drawfall(const glm::vec2& pos, int direction,SpriteBatch& spriteBatch);
+    void drawAttack(int direction,SpriteBatch& spriteBatch);
+    void drawIdle(int direction,SpriteBatch& spriteBatch);
+    void drawJump(int direction,SpriteBatch& spriteBatch);
+    void drawJumpAttack(int direction,SpriteBatch& spriteBatch);
+    virtual void drawSpecialAttack(int direction,SpriteBatch& spriteBatch)=0;
+    void drawRun(int direction,SpriteBatch& spriteBatch);
+    void drawStunned(int direction,SpriteBatch& spriteBatch);
+    void drawfall(int direction,SpriteBatch& spriteBatch);
 
     std::vector<GLTexture> run;
     std::vector<GLTexture> attack;
@@ -83,7 +87,5 @@ protected:
     float stunnedC = 0;
     float fallC = 0;
     ResourceManager characterManager_;
-    float characterWidth_ = 0;
-    float characterHeight_ = 0;
 };
 

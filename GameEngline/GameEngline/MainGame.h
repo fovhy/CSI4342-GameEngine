@@ -18,8 +18,8 @@ public:
 
 private:
     SDL_Window* window;
-    int screenWidth = 1200;
-    int screenHeight = 800;
+    int screenWidth = DrawableObject::screenWidth;
+    int screenHeight = DrawableObject::screenHeight;
     float time = 0;
     GameState gameState;
     ResourceManager mainManager;

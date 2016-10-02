@@ -1,200 +1,255 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
-and may not be redistributed without written permission.*/
+#include "MainGame.h"
+#include "Error.h"
+MainGame::MainGame::MainGame(){
+    window = nullptr;
+    gameState = GameState::PLAY;
+	thisType_ = type::MAINGAME;
+}
 
-//Using SDL, SDL_image, standard IO, and strings
-#include <SDL/SDL.h>
-#include <SDL/>
-#include <stdio.h>
-#include <string>
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
 
-//Starts up SDL and creates window
-bool init();
+MainGame::~MainGame(){
+}
 
-//Loads media
-bool loadMedia();
+void MainGame::run(){
+    initSystems();
+    gameLoop();
+}
+void MainGame::initSystems() {
+    SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-//Frees media and shuts down SDL
-void close();
+    window = SDL_CreateWindow("Yolo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		screenWidth, screenHeight,SDL_WINDOW_OPENGL);
+    if(window == nullptr){
+        printError("Windows failed to open");
+    }
+    SDL_GLContext glContext = SDL_GL_CreateContext(window);
+    if(glContext == nullptr){
+        printError("SDL_GL context could not be created!");
+    }
+    GLenum glewSignal = glewInit();
+    if (glewSignal != GLEW_OK){
+        printError("Failed to initialize glew");
+    }
+	EventManager::getEventManager().init(); // this has to be init before audioManager
+	audioManager_.init();
 
-//Loads individual image as texture
-SDL_Texture* loadTexture(std::string path);
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
 
-//The window renderer
-SDL_Renderer* gRenderer = NULL;
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 
-//Current displayed texture
-SDL_Texture* gTexture = NULL;
+    initShaders();
+    camera.init(screenWidth, screenHeight);
+    spriteBatch_.init();
+    myStage.init();
+	myStage.players[0].addObserver(&audioManager_);
+	myStage.players[1].addObserver(&audioManager_);
+	addObserver(&audioManager_);
 
-bool init()
-{
-	//Initialization flag
-	bool success = true;
+}
 
-	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-		success = false;
-	}
-	else
-	{
-		//Set texture filtering to linear
-		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-		{
-			printf("Warning: Linear texture filtering not enabled!");
+void MainGame::gameLoop(){
+    while(gameState != GameState::EXIT){
+        float startTicks = SDL_GetTicks();
+        time += 0.1;
+        processInput();
+        calculateFPS();
+        static int frameCounter = 0;
+        frameCounter ++;
+        if(frameCounter == 10){
+            //std::cout << fps << std::endl;
+            frameCounter = 0;
+        }
+        drawGame();
+		if (EventManager::getEventManager().getEvent("gameStart").happened == false) {
+			notifyAll(*this, "gameStart");
+			EventManager::getEventManager().setEventTrue("gameStart");
 		}
+// limit fps to be 60
+        float frameTicks = SDL_GetTicks() - startTicks;
+        if(1000.0/ maxfps > frameTicks){
+            SDL_Delay(1000.0F/ maxfps - frameTicks);
+        }
+    }
+}
 
-		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (gWindow == NULL)
-		{
-			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-			success = false;
-		}
-		else
-		{
-			//Create renderer for window
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-			if (gRenderer == NULL)
-			{
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-				success = false;
+void MainGame::processInput(){
+    SDL_Event evnt;
+
+    while(SDL_PollEvent(&evnt)){
+        switch(evnt.type){
+        case SDL_QUIT:
+            gameState = GameState::EXIT;
+            break;
+        case SDL_MOUSEMOTION:
+            //std::cout<<evnt.motion.x << " " << evnt.motion.y << std::endl;
+            break;
+        case SDL_KEYDOWN:
+            myStage.players[1].playerInputManager.pressKey(evnt.key.keysym.sym);
+			if (myStage.players[1].playerInputManager.isKeyPressed(SDLK_F6)) {
+				gameState = GameState::PAUSE;
+				pauseMenu(2);
+				myStage.players[1].playerInputManager.releaseKey(SDLK_F6);
 			}
-			else
-			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) & imgFlags))
-				{
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-					success = false;
-				}
+            myStage.players[0].playerInputManager.pressKey(evnt.key.keysym.sym);
+			if (myStage.players[0].playerInputManager.isKeyPressed(SDLK_F5)) {
+				gameState = GameState::PAUSE;
+				pauseMenu(1);
+				myStage.players[0].playerInputManager.releaseKey(SDLK_F5);
 			}
+			break;
+        case SDL_KEYUP:
+            myStage.players[1].playerInputManager.releaseKey(evnt.key.keysym.sym);
+            myStage.players[0].playerInputManager.releaseKey(evnt.key.keysym.sym);
+            break;
+        }
+    }
+    myStage.update();
+}
+
+void MainGame::drawGame(){
+
+    glClearDepth(1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    colorProgram.use();
+
+    glActiveTexture(GL_TEXTURE0);
+
+
+    GLint textureLocation = colorProgram.getUniformLocation("mySampler");
+
+    glUniform1i(textureLocation, 0);
+
+    // GLuint timeLocation = colorProgram.getUniformLocation("time");
+    //glUniform1f(timeLocation, time);
+
+    GLuint pLocation = colorProgram.getUniformLocation("ortho");
+    glm::mat4 cameraMatrix = camera.getCameraMatrix();
+
+    glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+
+
+	myStage.drawStage(spriteBatch_);
+    spriteBatch_.begin();
+    Color color;
+    color.r = 255;
+    color.b = 255;
+    color.g = 255;
+    color.a = 255;
+    myStage.draw(spriteBatch_);
+
+    spriteBatch_.end();
+
+    spriteBatch_.renderBatches();
+
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    colorProgram.unuse();
+    SDL_GL_SwapWindow(window);
+}
+
+void MainGame::initShaders(){
+    colorProgram.compileShaders("../YOLO/shader/colorShadingVert.glsl",
+                                "../YOLO/shader/colorShadingFrag.glsl" );
+    colorProgram.addAttribute("vertexPosition");
+    colorProgram.addAttribute("vertexColor");
+    colorProgram.addAttribute("vertexUV");
+    colorProgram.linkShaders();
+}
+
+void MainGame::calculateFPS(){
+    static const int NUM_SAMPLES = 10;
+    static float frameTimes[NUM_SAMPLES];
+	
+    static float prevTicks = SDL_GetTicks();
+
+    static int currentFrame = 0;
+    float currentTicks = SDL_GetTicks();
+    frameTime = currentTicks - prevTicks;
+
+    frameTimes[currentFrame % NUM_SAMPLES] = frameTime;
+
+    int count;
+    currentFrame++;
+
+    if(currentFrame < NUM_SAMPLES){
+        count = currentFrame;
+    }else{
+        count = NUM_SAMPLES;
+    }
+    prevTicks =  currentTicks;
+
+    float frameTimeAverage = 0;;
+
+    for(int i = 0; i < count; ++i){
+        frameTimeAverage += frameTimes[i];
+    }
+    frameTimeAverage /= count;
+    if(frameTimeAverage > 0){
+        fps = 1000.0f / frameTimeAverage;
+    }else{
+        fps = 60.0f;
+    }
+}
+
+void MainGame::pauseMenu(int playerNum){
+	char choice;
+	printf("PLAYER %d PAUSED\n", playerNum);
+	while (gameState == GameState::PAUSE) {
+		printf("What do you want to do?\nResume\tOptions\tQuit\n");
+		std::cin >> choice;
+		if (choice == 'r' || choice == 'R') {
+			gameState = GameState::PLAY;
 		}
-	}
-
-	return success;
-}
-
-bool loadMedia()
-{
-	//Loading success flag
-	bool success = true;
-
-	//Load PNG texture
-	gTexture = loadTexture("07_texture_loading_and_rendering/texture.png");
-	if (gTexture == NULL)
-	{
-		printf("Failed to load texture image!\n");
-		success = false;
-	}
-
-	return success;
-}
-
-void close()
-{
-	//Free loaded image
-	SDL_DestroyTexture(gTexture);
-	gTexture = NULL;
-
-	//Destroy window	
-	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
-	gRenderer = NULL;
-
-	//Quit SDL subsystems
-	IMG_Quit();
-	SDL_Quit();
-}
-
-SDL_Texture* loadTexture(std::string path)
-{
-	//The final texture
-	SDL_Texture* newTexture = NULL;
-
-	//Load image at specified path
-	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-	if (loadedSurface == NULL)
-	{
-		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
-	}
-	else
-	{
-		//Create texture from surface pixels
-		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-		if (newTexture == NULL)
-		{
-			printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-		}
-
-		//Get rid of old loaded surface
-		SDL_FreeSurface(loadedSurface);
-	}
-
-	return newTexture;
-}
-
-int main(int argc, char* args[])
-{
-	//Start up SDL and create window
-	if (!init())
-	{
-		printf("Failed to initialize!\n");
-	}
-	else
-	{
-		//Load media
-		if (!loadMedia())
-		{
-			printf("Failed to load media!\n");
-		}
-		else
-		{
-			//Main loop flag
-			bool quit = false;
-
-			//Event handler
-			SDL_Event e;
-
-			//While application is running
-			while (!quit)
-			{
-				//Handle events on queue
-				while (SDL_PollEvent(&e) != 0)
-				{
-					//User requests quit
-					if (e.type == SDL_QUIT)
-					{
-						quit = true;
+		else if (choice == 'o' || choice == 'O') {
+			std::cout << "(c) change your control" << std::endl;
+			std::cout << "(e) eddit the level" << std::endl;
+			std::cout << "(b) back to upper level" << std::endl;
+			//options menu
+			std::cin >> choice;
+			if (choice == 'C' || choice == 'c') {
+				printf("Set up your new controls: \n");
+				printf("Enter in this order: Left, Right, Up (Jump), Down\n");
+				int controlCount = 0;
+				std::set<int> controlSet;
+				int* newControls = new int[MAX_CONTROLS];
+				SDL_Event evnt;
+				while (controlCount < MAX_CONTROLS) {
+					while (SDL_PollEvent(&evnt)) {
+						if (evnt.key.type == SDL_KEYDOWN) {
+							bool wasAdded = (controlSet.insert(evnt.key.keysym.sym)).second;
+							if (wasAdded) {
+								//key was not in the set already
+								newControls[controlCount] = evnt.key.keysym.sym;
+								controlCount++;
+								printf("%s\t", SDL_GetKeyName(evnt.key.keysym.sym));
+							}
+						}
 					}
 				}
+				printf("\nSaving Controls...\n");
+				myStage.players[playerNum - 1].setNewControls(newControls);
+				printf("controls Saved\n");
+			}else if(choice == 'E' || choice == 'e'){
+				//TODO edit level
+			}
+			else if (choice == 'B' || choice == 'b') {
 
-				//Clear screen
-				SDL_RenderClear(gRenderer);
-
-				//Render texture to screen
-				SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
-
-				//Update screen
-				SDL_RenderPresent(gRenderer);
 			}
 		}
+		else if (choice == 'q' || choice == 'Q') {
+			printf("Are you sure you want to quit?\tYes\tNo\n");
+			std::cin >> choice;
+			if (choice == 'y' || choice == 'Y') {
+				gameState = GameState::EXIT;
+			}
+		}
+		else {
+			printf("Invalid option, pick again.\n");
+		}
 	}
-
-	//Free resources and close SDL
-	close();
-
-	return 0;
 }

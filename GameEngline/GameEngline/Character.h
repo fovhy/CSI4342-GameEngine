@@ -12,7 +12,7 @@
 #include "ResourceManager.h"
 #include <cmath>
 #include "Subject.h"
-#include "DrawableObject.h"
+#include "MovableObject.h"
 enum class Action{
     STAND_STILL,
     ATTACK,
@@ -31,8 +31,8 @@ public:
     virtual void init() = 0;
 	void setCharacterSize(const glm::vec2&);
     void drawAnimation(const glm::vec2& pos, int direction, Action aAction, SpriteBatch& spriteBatch);
-	float getWidth() { return myCharacter_.getSize().x; }
-    float getHeight(){ return myCharacter_.getSize().y; }
+	float getWidth() { return myCharacter_.getColliSize().x; }
+    float getHeight(){ return myCharacter_.getColliSize().y; }
 
     void spawnAttackBox(const glm::vec2& pos, int direction);
     virtual void spawnSpecialAttackBox(const glm::vec2& pos, int direction) = 0;
@@ -48,7 +48,7 @@ public:
     float specialAttackWidth = 0;
     float specialAttackHeight = 0;
 
-	DrawableObject myCharacter_;
+	MovableObject myCharacter_;
 
 protected:
     void drawAttack(int direction,SpriteBatch& spriteBatch);

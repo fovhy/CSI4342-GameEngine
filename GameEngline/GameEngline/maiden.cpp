@@ -3,6 +3,7 @@
 
 void Maiden::init(){
 	myCharacter_.setSize(glm::vec2(70, 70));
+	myCharacter_.setColliSize(glm::vec2(70, 70));
     idle.resize(4);
     idle[0] = characterManager_.getTexture("../YOLO/texture/maiden/idle_0.png");
     idle[1] = characterManager_.getTexture("../YOLO/texture/maiden/idle_1.png");

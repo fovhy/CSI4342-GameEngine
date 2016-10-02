@@ -21,21 +21,22 @@ public:
     Stage(){}
     ~Stage(){}
     void init();
-    void setStage(SpriteBatch &);
+    void setStage();
     static const int PLAYER_NUMBERS= 2;
     std::vector<Player> players;
     Physic myPhysic;
     void tileCollisionChecking(Player&);
     void update();
-    void processInput();
     void draw(SpriteBatch& spriteBattch);
     tile findTile(Player& aPlayer);
     void applyTileEffect(Player& aPlayer,  tile& aTile);
     void applyGravity();
-
+	void drawPlayers(SpriteBatch&);
+	void drawStage(SpriteBatch&);
     void checkAttack();
 
 private:
+	static const unsigned int quadrantNumber = 4;
     float firstLevelHeight = -200;
     float secondLevelHeight = -100;
     float thirdLevelHeight = 0;
@@ -48,10 +49,7 @@ private:
     GLTexture backGroundTexture;
 
     // store each level of tiles
-    std::vector<tile> firstLevel;
-    std::vector<tile> secondLevel;
-    std::vector<tile> thirdLevel;
-    std::vector<tile> fourthLevel;
+	std::vector<std::vector<tile>> myTiles_;
 
     // two players
 

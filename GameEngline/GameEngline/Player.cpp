@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <SDL/SDL.h>
 #include "EventManager.h"
+#include <iostream>
 
 
 
@@ -171,7 +172,7 @@ void Player::processInput(){
     switch(currentState_){
     case STANDING:
         if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
-            velocityY_ += 7;
+            velocityY_ += 10;
             currentState_ = JUMPING;
         }
         if(playerInputManager.isKeyPressed(preferences_.getLeft())){
@@ -198,7 +199,7 @@ void Player::processInput(){
         break;
     case RUNNING:
         if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
-            velocityY_ += 7;
+            velocityY_ += 10;
             currentState_ = JUMPING;
         }
         if(playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile){

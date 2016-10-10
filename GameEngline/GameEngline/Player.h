@@ -113,7 +113,7 @@ public:
     float ticking = 1.0/60.0;
     currentCharacterType characterType = BALD;
     Character* currentCharacter_ = nullptr;
-private:
+protected:
     ResourceManager playerManager;
     std::vector<GLTexture> heart;
     std::vector<GLTexture> Avatar;

@@ -94,10 +94,7 @@ public:
     void setX(float x){playerPosition_.x = x;}
     void setY(float y){playerPosition_.y = y;}
 
-    float getX(){
-		float x = playerPosition_.x;
-		return x;
-	}
+    float getX(){return playerPosition_.x;}
     float getY(){return playerPosition_.y;}
 
     float getVX(){return velocityX_;}
@@ -122,6 +119,7 @@ public:
     float ticking = 1.0/60.0;
     currentCharacterType characterType = BALD;
     Character* currentCharacter_ = nullptr;
+	int direction = 0;
 protected:
     ResourceManager playerManager;
     std::vector<GLTexture> heart;
@@ -133,7 +131,6 @@ protected:
     PlayerStates currentState_;
 
     const int CHARACTER_NUMBERS = 4;
-    int direction = 0;
 
     float accelerationX_ = 0;
     float accelerationY_ = 0;

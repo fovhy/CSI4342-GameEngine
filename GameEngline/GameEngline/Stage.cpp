@@ -15,7 +15,7 @@ void Stage::init(int numPlayers) {
 	backGroundTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/Backgrounds/background.png");
 
 	players.resize(numPlayers);
-	players[0].init(glm::vec2(0, 200));
+	players[0].init(glm::vec2(500, 200));
 	players[0].setCurrentCharacters(players[0].characters[0]);
 	players[0].setPlayerType(PLAYER_ONE);
 	players[0].setPayerState(STANDING);
@@ -26,13 +26,12 @@ void Stage::init(int numPlayers) {
 	}
 	else {
 		//player 2 is an AI character
-		AI compPlayer;
-		compPlayer.setPlayers(players);
-		compPlayer.setStage(this);
-		players.push_back(compPlayer);
+		AI* compPlayer = new AI();
+		compPlayer->setStage(this);
+		players.push_back(*compPlayer);
 		players[1].setPlayerType(COMP);
 		AIPlayerActive_ = true;
-		AIPlayer_ = &compPlayer;
+		AIPlayer_ = compPlayer;
 	}
 	players[1].init(glm::vec2(1000, 200));
 	players[1].setCurrentCharacters(players[1].characters[0]);

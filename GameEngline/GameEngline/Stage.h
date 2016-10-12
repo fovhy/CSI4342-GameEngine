@@ -15,12 +15,13 @@
 #include "tile.h"
 #include "Player.h"
 #include "Physic.h"
+#include "AI.h"
 
 class Stage{
 public:
     Stage(){}
     ~Stage(){}
-    void init();
+    void init(int);
     void setStage();
     static const int PLAYER_NUMBERS= 2;
     std::vector<Player> players;
@@ -28,7 +29,7 @@ public:
     void tileCollisionChecking(Player&);
     void update();
     void draw(SpriteBatch& spriteBattch);
-    tile findTile(Player& aPlayer);
+    tile findTile(const Player& aPlayer);
     void applyTileEffect(Player& aPlayer,  tile& aTile);
     void applyGravity();
 	void drawPlayers(SpriteBatch&);

@@ -5,7 +5,7 @@
 GLTexture Stage:: iceTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkBlue.png");
 GLTexture Stage:: dirtTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_LightBeige.png");
 GLTexture Stage::poisonTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");*/
-void Stage::init() {
+void Stage::init(int numPlayers) {
 	//load all the textures
 	grassTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkGreen.png");
 	iceTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkBlue.png");
@@ -13,15 +13,26 @@ void Stage::init() {
 	poisonTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");
 	backGroundTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/Backgrounds/background.png");
 
-	players.resize(PLAYER_NUMBERS);
+	players.resize(numPlayers);
 	players[0].init(glm::vec2(0, 200));
 	players[0].setCurrentCharacters(players[0].characters[0]);
 	players[0].setPlayerType(PLAYER_ONE);
 	players[0].setPayerState(STANDING);
+	if (numPlayers > 1) {
+		players[1].setPlayerType(PLAYER_TWO);
+	}
+	else {
+		//player 2 is an AI character
+		AI compPlayer;
+		compPlayer.setPlayers(players);
+		compPlayer.setStage(this);
+		players.push_back(compPlayer);
+		players[1].setPlayerType(COMP);
+	}
 	players[1].init(glm::vec2(1000, 200));
-	players[1].setCurrentCharacters(players[0].characters[0]);
-	players[1].setPlayerType(PLAYER_TWO);
+	players[1].setCurrentCharacters(players[1].characters[0]);
 	players[1].setPayerState(STANDING);
+
 	myTiles_.resize(quadrantNumber);
 	setStage();
 
@@ -184,7 +195,7 @@ void Stage::applyGravity() {
 	}
 }
 
-tile Stage::findTile(Player& aPlayer) {
+tile Stage::findTile(const Player& aPlayer) {
 	if (!aPlayer.onTile) {
 		printError("Not on tile while finding tile");
 		exit(3);

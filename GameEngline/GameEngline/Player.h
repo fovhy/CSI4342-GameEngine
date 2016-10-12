@@ -30,7 +30,8 @@ enum PlayerStates{
 
 enum PlayerType{
     PLAYER_ONE,
-    PLAYER_TWO
+    PLAYER_TWO,
+	COMP
 };
 
 class Player : public Subject{
@@ -40,7 +41,7 @@ public:
 
 
     void init(const glm::vec2& pos);
-    void processInput();
+    virtual void processInput();
     void update();
     void drawPlayer(SpriteBatch& spriteBatch);
     void setCurrentCharacters(Character* character){
@@ -59,9 +60,14 @@ public:
 		case PLAYER_TWO:
 			playerNum_ = '2';
 			break;
+		default:
+			playerNum_ = '3';
 		}
 		preferences_.init(playerNum_);
     }
+	PlayerType getPlayerType() {
+		return playerType_;
+	}
 
     void setDirection(int direction){
         this->direction = direction;
@@ -88,7 +94,10 @@ public:
     void setX(float x){playerPosition_.x = x;}
     void setY(float y){playerPosition_.y = y;}
 
-    float getX(){return playerPosition_.x;}
+    float getX(){
+		float x = playerPosition_.x;
+		return x;
+	}
     float getY(){return playerPosition_.y;}
 
     float getVX(){return velocityX_;}

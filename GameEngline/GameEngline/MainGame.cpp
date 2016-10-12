@@ -16,6 +16,14 @@ void MainGame::run(){
     gameLoop();
 }
 void MainGame::initSystems() {
+	int numPlayers = 0;
+	do {
+		std::cout << "One player, or two?\n";
+		std::cin >> numPlayers;
+		if (numPlayers != 1 && numPlayers != 2) {
+			std::cout << "I'm sorry; that's not a valid number of players.\n";
+		}
+	} while (numPlayers != 1 && numPlayers != 2);
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -44,7 +52,7 @@ void MainGame::initSystems() {
     initShaders();
     camera.init(screenWidth, screenHeight);
     spriteBatch_.init();
-    myStage.init();
+    myStage.init(numPlayers);
 	myStage.players[0].addObserver(&audioManager_);
 	myStage.players[1].addObserver(&audioManager_);
 	addObserver(&audioManager_);

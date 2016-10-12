@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="bald.h" />
     <ClInclude Include="Camera.h" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="bald.cpp" />
     <ClCompile Include="Camera.cpp" />

@@ -16,6 +16,13 @@ void MainGame::run(){
     gameLoop();
 }
 void MainGame::initSystems() {
+	do {
+		std::cout << "One player, or two?\n";
+		std::cin >>numberOfPlayers;
+		if (numberOfPlayers != 1 && numberOfPlayers != 2) {
+			std::cout << "I'm sorry; that's not a valid number of players.\n";
+		}
+	} while (numberOfPlayers != 1 && numberOfPlayers != 2);
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -44,16 +51,24 @@ void MainGame::initSystems() {
     initShaders();
     camera.init(screenWidth, screenHeight);
     spriteBatch_.init();
-	loadStages();
+	loadStages(numberOfPlayers);
 	addObserverToAllStage(&audioManager_);
 	addObserver(&audioManager_);
 }
 
 void MainGame::gameLoop(){
+	bool AIPlayer = myStages_.stages[currentStage].isAI();
+	if (AIPlayer) {
+		comp = myStages_.stages[currentStage].getAI();
+	}
     while(gameState != GameState::EXIT){
         float startTicks = SDL_GetTicks();
         time += 0.1;
-        processInput();
+		if (comp)
+		{
+			((AI*)comp)->pathfind();
+		}
+		processInput();
         calculateFPS();
         static int frameCounter = 0;
         frameCounter ++;
@@ -277,7 +292,7 @@ void MainGame::pauseMenu(int playerNum) {
 				switch (choice) {
 				case 'a':
 					gameState = GameState::EDIT;
-					myStages_.addNewStage();
+					myStages_.addNewStage(numberOfPlayers);
 					currentStage = myStages_.getStageNumber();
 					break;
 				case 'e':
@@ -297,9 +312,8 @@ void MainGame::pauseMenu(int playerNum) {
 				case 'c':
 					std::cout << "Which level you can go to ? Max Level " <<
 						myStages_.getStageNumber() << std::endl;
-					unsigned int temp;
-					std::cin >> temp;
-					currentStage = temp;
+					std::cin >> currentStage;
+					((AI*)comp)->setStage(&myStages_.stages[currentStage]);
 					break;
 				case 's':
 					saveStages();
@@ -332,11 +346,11 @@ void MainGame::saveStages() {
 	oa << myStages_;
 	ofs.close();
 }
-void MainGame::loadStages() {
+void MainGame::loadStages(int playerNumber) {
 	std::ifstream ifs(myStages_.saveFileName_);
 	if (!ifs.is_open()) {
 		myStages_.stages.reserve(20); // should be no more than 20 stages for now
-		myStages_.addNewStage();
+		myStages_.addNewStage(playerNumber);
 		myStages_.stages.back().setStage();
 	}
 	else {
@@ -345,7 +359,7 @@ void MainGame::loadStages() {
 		myStages_.stages.reserve(20); // should be no more than 20 stages for now
 		for (auto &i : myStages_.stages) {
 			i.initTextures();
-			i.init();
+			i.init(playerNumber);
 		}
 	}
 }

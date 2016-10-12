@@ -1,5 +1,7 @@
 #include "Stage.h"
 #include <algorithm>
+#include "AI.h"
+#include <iostream>
 ResourceManager Stage::stageManager;
 void Stage::initTextures() {
 	//load all the textures
@@ -9,16 +11,32 @@ void Stage::initTextures() {
 	poisonTexture = Stage::stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");
 	backGroundTexture = Stage::stageManager.getTexture("../YOLO/texture/JJU/PNG/Backgrounds/background.png");
 }
-void Stage::init() {
-	players.resize(PLAYER_NUMBERS);
-	players[0].init(glm::vec2(0, 200));
+
+void Stage::init(int numPlayers) {
+
+	players.resize(numPlayers);
+	players[0].init(glm::vec2(500, 200));
 	players[0].setCurrentCharacters(players[0].characters[0]);
 	players[0].setPlayerType(PLAYER_ONE);
 	players[0].setPayerState(STANDING);
+	if (numPlayers > 1) {
+		players[1].setPlayerType(PLAYER_TWO);
+		AIPlayerActive_ = false;
+		AIPlayer_ = NULL;
+	}
+	else {
+		//player 2 is an AI character
+		AI* compPlayer = new AI();
+		compPlayer->setStage(this);
+		players.push_back(*compPlayer);
+		players[1].setPlayerType(COMP);
+		AIPlayerActive_ = true;
+		AIPlayer_ = compPlayer;
+	}
 	players[1].init(glm::vec2(1000, 200));
-	players[1].setCurrentCharacters(players[0].characters[0]);
-	players[1].setPlayerType(PLAYER_TWO);
+	players[1].setCurrentCharacters(players[1].characters[0]);
 	players[1].setPayerState(STANDING);
+
 	myTiles_.resize(quadrantNumber);
 
 }
@@ -37,6 +55,16 @@ void Stage::checkAttack() {
 	players[0].currentCharacter_->attackDone = true;
 	players[1].currentCharacter_->attackDone = true;
 
+}
+
+bool Stage::isAI()
+{
+	return AIPlayerActive_;
+}
+
+Player * Stage::getAI()
+{
+	return AIPlayer_;
 }
 
 void Stage::update() {
@@ -164,7 +192,7 @@ void Stage::applyGravity() {
 	}
 }
 
-tile Stage::findTile(Player& aPlayer) {
+tile Stage::findTile(Player& const aPlayer) {
 	if (!aPlayer.onTile) {
 		printError("Not on tile while finding tile");
 		exit(3);

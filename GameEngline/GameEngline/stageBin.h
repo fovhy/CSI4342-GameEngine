@@ -11,7 +11,7 @@ public:
 	~StageBin();
 	int getStageNumber() const;
 	void init();
-	void addNewStage();
+	void addNewStage(int playerNumber);
 	template<class Archive>
 	inline void serialize(Archive & ar, const unsigned int version) {
 		ar & stages;

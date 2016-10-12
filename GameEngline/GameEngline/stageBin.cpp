@@ -15,10 +15,10 @@ int StageBin::getStageNumber() const {
 	return stages.size() - 1;
 }
 
-void StageBin::addNewStage() {
+void StageBin::addNewStage(int numberPlayer) {
 	stages.push_back(Stage());
 	stages.back().initTextures();
-	stages.back().init();
+	stages.back().init(numberPlayer);
 }
 void StageBin::init() {
 }

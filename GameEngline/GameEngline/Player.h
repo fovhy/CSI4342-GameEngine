@@ -30,7 +30,8 @@ enum PlayerStates{
 
 enum PlayerType{
     PLAYER_ONE,
-    PLAYER_TWO
+    PLAYER_TWO,
+	COMP
 };
 
 class Player : public Subject{
@@ -40,7 +41,7 @@ public:
 
 
     void init(const glm::vec2& pos);
-    void processInput();
+    virtual void processInput();
     void update();
     void drawPlayer(SpriteBatch& spriteBatch);
     void setCurrentCharacters(Character* character){
@@ -59,9 +60,14 @@ public:
 		case PLAYER_TWO:
 			playerNum_ = '2';
 			break;
+		default:
+			playerNum_ = '3';
 		}
 		preferences_.init(playerNum_);
     }
+	PlayerType getPlayerType() {
+		return playerType_;
+	}
 
     void setDirection(int direction){
         this->direction = direction;
@@ -113,7 +119,8 @@ public:
     float ticking = 1.0/60.0;
     currentCharacterType characterType = BALD;
     Character* currentCharacter_ = nullptr;
-private:
+	int direction = 0;
+protected:
     static ResourceManager playerManager;
     std::vector<GLTexture> heart;
     std::vector<GLTexture> Avatar;
@@ -124,7 +131,6 @@ private:
     PlayerStates currentState_;
 
     const int CHARACTER_NUMBERS = 4;
-    int direction = 0;
 
     float accelerationX_ = 0;
     float accelerationY_ = 0;

@@ -1,4 +1,7 @@
 #pragma once
+//AI.h has Stage.h
+#include "AI.h"
+#include "inputManager.h"
 #include <set>
 #include "stageBin.h"
 #include "inputManager.h"
@@ -16,6 +19,7 @@ public:
     void run();
 
 
+	Stage myStage;
 
 private:
     SDL_Window* window;
@@ -29,10 +33,13 @@ private:
     float fps;
     float frameTime;
     float maxfps = 60.0f;
+	int numberOfPlayers;
     //GLTexture playerTexture;
 
 	unsigned int currentStage = 0;
 	StageBin myStages_;
+	Player* comp = nullptr;
+	
 
 	void initSystems();
     void gameLoop();
@@ -45,7 +52,7 @@ private:
 
 	tilesType editType = GRASS;
 	void saveStages();
-	void loadStages();         //if it failed to load, it will init with the basic stage
+	void loadStages(int);         //if it failed to load, it will init with the basic stage
     inputManager inputManager_;
 	AudioManager audioManager_;
 

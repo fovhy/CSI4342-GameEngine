@@ -120,9 +120,6 @@ Pref::Pref(char player) {
 }
 Pref::~Pref() {
 	savePref(assocPlayer);
-	if (controller) {
-		SDL_JoystickClose(joy);
-	}
 }
 
 

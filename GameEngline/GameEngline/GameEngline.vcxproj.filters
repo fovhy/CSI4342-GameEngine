@@ -114,7 +114,11 @@
     <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="stageBin.h">
+=======
+    <ClInclude Include="AI.h">
+>>>>>>> 8d0c395419bd4609f34e59bf5acbd386d176f03c
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -209,7 +213,11 @@
     <ClCompile Include="UnmovableObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="stageBin.cpp">
+=======
+    <ClCompile Include="AI.cpp">
+>>>>>>> 8d0c395419bd4609f34e59bf5acbd386d176f03c
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

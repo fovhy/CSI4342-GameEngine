@@ -22,7 +22,7 @@ class Stage{
 public:
     Stage(){}
     ~Stage(){}
-    void init();
+    void init(int);
     void setStage();
     static const int PLAYER_NUMBERS= 2;
     std::vector<Player> players;
@@ -30,7 +30,7 @@ public:
     void tileCollisionChecking(Player&);
     void update();
     void draw(SpriteBatch& spriteBattch);
-    tile findTile(Player& aPlayer);
+    tile findTile(Player& const aPlayer);
     void applyTileEffect(Player& aPlayer,  tile& aTile);
     void applyGravity();
 	void drawPlayers(SpriteBatch&);
@@ -47,6 +47,8 @@ public:
 	void removeTileJustAdded();
 	void initTextures();
 	std::vector<tile> tileJustAdded;
+	bool isAI();
+	Player* getAI();
 
 private:
 	static const unsigned int quadrantNumber = 4;
@@ -73,4 +75,7 @@ private:
     glm::vec4 getTilesUpDown(const glm::vec4& pos, int);
     void drawTiles(const std::vector<tile>& level, SpriteBatch& spriteBatch);
     static ResourceManager stageManager;
+	bool AIPlayerActive_;
+	Player* AIPlayer_;
+
 };

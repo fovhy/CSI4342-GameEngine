@@ -177,15 +177,12 @@ void AudioManager::onNotify(const Subject& subject, Event event) {
 		//TODO: make this actually mean something
 	case type::CHARACTER:
 		playSoundFromEvent(event.eventName, 0, -1);          // TODO: add sound event and other events to event manager
-		std::cout << "from chracter" << std::endl;
 		break;
 	case type::MAINGAME:
 		playSoundFromEvent(event.eventName, -1, -1);
-		std::cout << "from mainGame" << std::endl;
 		break;
 	case type::PLAYER:
 		playSoundFromEvent(event.eventName, 0, -1);
-		std::cout << "from player" << std::endl;
 		break;
 	}
 }

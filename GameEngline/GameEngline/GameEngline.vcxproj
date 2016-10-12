@@ -47,6 +47,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="spriteBatch.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="stageBin.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="tile.h" />
@@ -81,6 +82,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="spriteBatch.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="stageBin.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="UnmovableObject.cpp" />

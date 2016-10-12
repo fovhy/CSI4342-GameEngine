@@ -114,7 +114,7 @@ public:
     currentCharacterType characterType = BALD;
     Character* currentCharacter_ = nullptr;
 private:
-    ResourceManager playerManager;
+    static ResourceManager playerManager;
     std::vector<GLTexture> heart;
     std::vector<GLTexture> Avatar;
     void limitSpeed(float& speed);

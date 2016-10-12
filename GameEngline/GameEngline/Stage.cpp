@@ -1,18 +1,15 @@
 #include "Stage.h"
-#include <iostream>
-
-/*GLTexture Stage::grassTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkGreen.png");
-GLTexture Stage:: iceTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkBlue.png");
-GLTexture Stage:: dirtTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_LightBeige.png");
-GLTexture Stage::poisonTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");*/
-void Stage::init() {
+#include <algorithm>
+ResourceManager Stage::stageManager;
+void Stage::initTextures() {
 	//load all the textures
-	grassTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkGreen.png");
-	iceTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkBlue.png");
-	dirtTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_LightBeige.png");
-	poisonTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");
-	backGroundTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/Backgrounds/background.png");
-
+	grassTexture = Stage::stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkGreen.png");
+	iceTexture = Stage::stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkBlue.png");
+	dirtTexture = Stage::stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_LightBeige.png");
+	poisonTexture = Stage::stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkPing.png");
+	backGroundTexture = Stage::stageManager.getTexture("../YOLO/texture/JJU/PNG/Backgrounds/background.png");
+}
+void Stage::init() {
 	players.resize(PLAYER_NUMBERS);
 	players[0].init(glm::vec2(0, 200));
 	players[0].setCurrentCharacters(players[0].characters[0]);
@@ -23,7 +20,6 @@ void Stage::init() {
 	players[1].setPlayerType(PLAYER_TWO);
 	players[1].setPayerState(STANDING);
 	myTiles_.resize(quadrantNumber);
-	setStage();
 
 }
 
@@ -31,13 +27,11 @@ void Stage::checkAttack() {
 	if (!players[0].currentCharacter_->attackDone) {
 		if (myPhysic.checkCollisions(players[0].currentCharacter_->attackBox, players[1].getMatrix())) {
 			players[1].takingDamage = true;
-			std::cout << "taking damage p1" << std::endl;
 		}
 	}
 	if (!players[1].currentCharacter_->attackDone) {
 		if (myPhysic.checkCollisions(players[1].currentCharacter_->attackBox, players[0].getMatrix())) {
 			players[0].takingDamage = true;
-			std::cout << "taking damage p2" << std::endl;
 		}
 	}
 	players[0].currentCharacter_->attackDone = true;
@@ -56,20 +50,6 @@ void Stage::update() {
 		checkAttack();
 		player.update();
 	}
-	/*players[0].processInput();
-	players[1].processInput();
-	if (players[0].onTile) {
-		applyTileEffect(players[0], findTile(players[0]));
-	}
-	players[0].update();
-	if (players[1].onTile) {
-		applyTileEffect(players[1], findTile(players[1]));
-	}
-	players[1].update();
-	tileCollisionChecking(players[0]);
-	tileCollisionChecking(players[1]);
-	applyGravity();
-	checkAttack();*/
 }
 
 void Stage::draw(SpriteBatch &spriteBatch) {
@@ -281,5 +261,27 @@ void Stage::tileCollisionChecking(Player& aPlayer) {
 		}
 	}
 	aPlayer.onTile = false;
-	//std::cout<<"not on tile" << std::endl;
+}
+void Stage::addTile(double x, double y, tilesType aType) {
+	// could potentially make it way more efficient. 
+	myTiles_[0].emplace_back(glm::vec4(x, y, tileWidth, tileHeight), aType);
+	tileJustAdded.emplace_back(glm::vec4(x, y, tileWidth, tileHeight), aType);
+}
+void Stage::removeTileJustAdded() {
+	if (tileJustAdded.size() > 0) {
+		for (auto& i : myTiles_) {
+			i.erase(std::remove(i.begin(), i.end(), tileJustAdded.back()), i.end());
+		}
+		if (tileJustAdded.size() > 0)
+			tileJustAdded.pop_back();
+	}
+}
+
+std::ostream& operator<< (std::ostream& os, const Stage& stage) {
+	for (auto itr = stage.myTiles_.begin(); itr != stage.myTiles_.end(); itr++) {
+		for (auto sec = itr->begin(); sec != itr->end(); sec++) {
+			os << sec->myTile;
+		}
+	}
+	return os;
 }

@@ -44,11 +44,9 @@ void MainGame::initSystems() {
     initShaders();
     camera.init(screenWidth, screenHeight);
     spriteBatch_.init();
-    myStage.init();
-	myStage.players[0].addObserver(&audioManager_);
-	myStage.players[1].addObserver(&audioManager_);
+	loadStages();
+	addObserverToAllStage(&audioManager_);
 	addObserver(&audioManager_);
-
 }
 
 void MainGame::gameLoop(){
@@ -79,124 +77,158 @@ void MainGame::gameLoop(){
 void MainGame::processInput(){
     SDL_Event evnt;
 
-    while(SDL_PollEvent(&evnt)){
-        switch(evnt.type){
-        case SDL_QUIT:
-            gameState = GameState::EXIT;
-            break;
-        case SDL_MOUSEMOTION:
-            //std::cout<<evnt.motion.x << " " << evnt.motion.y << std::endl;
-            break;
-        case SDL_KEYDOWN:
-            myStage.players[1].playerInputManager.pressKey(evnt.key.keysym.sym);
-			if (myStage.players[1].playerInputManager.isKeyPressed(SDLK_F6)) {
-				gameState = GameState::PAUSE;
-				pauseMenu(2);
-				myStage.players[1].playerInputManager.releaseKey(SDLK_F6);
+	while (SDL_PollEvent(&evnt)) {
+		if (gameState == GameState::EDIT) {
+			switch (evnt.type) {
+			case SDL_MOUSEBUTTONDOWN:
+				myStages_.stages[currentStage].addTile(evnt.motion.x, - evnt.motion.y + 400, editType);
+				break;
+			case SDL_KEYDOWN:
+				inputManager_.pressKey(evnt.key.keysym.sym);
+				break;
+			case SDL_KEYUP:
+				inputManager_.releaseKey(evnt.key.keysym.sym);
+				break;
 			}
-            myStage.players[0].playerInputManager.pressKey(evnt.key.keysym.sym);
-			if (myStage.players[0].playerInputManager.isKeyPressed(SDLK_F5)) {
-				gameState = GameState::PAUSE;
-				pauseMenu(1);
-				myStage.players[0].playerInputManager.releaseKey(SDLK_F5);
+			if (inputManager_.isKeyPressed(SDLK_1)) {
+				editType = GRASS;
 			}
-			break;
-        case SDL_KEYUP:
-            myStage.players[1].playerInputManager.releaseKey(evnt.key.keysym.sym);
-            myStage.players[0].playerInputManager.releaseKey(evnt.key.keysym.sym);
-            break;
-        }
-    }
-    myStage.update();
+			if (inputManager_.isKeyPressed(SDLK_2)) {
+				editType = DIRT;
+			}
+			if (inputManager_.isKeyPressed(SDLK_3)) {
+				editType = ICE;
+			}
+			if (inputManager_.isKeyPressed(SDLK_4)) {
+				editType = POISON;
+			}
+			if (inputManager_.isKeyPressed(SDLK_r)) {
+				gameState = GameState::PLAY;
+				inputManager_.releaseKey(SDLK_r);
+			}
+			if (inputManager_.isKeyPressed(SDLK_z)) {
+				myStages_.stages[currentStage].removeTileJustAdded();
+				inputManager_.releaseKey(SDLK_z);
+			}
+		}
+		else {
+			switch (evnt.type) {
+			case SDL_QUIT:
+				gameState = GameState::EXIT;
+				break;
+			case SDL_KEYDOWN:
+				myStages_.stages[currentStage].players[1].playerInputManager.pressKey(evnt.key.keysym.sym);
+				if (myStages_.stages[currentStage].players[1].playerInputManager.isKeyPressed(SDLK_F6)) {
+					gameState = GameState::PAUSE;
+					pauseMenu(2);
+					myStages_.stages[currentStage].players[1].playerInputManager.releaseKey(SDLK_F6);
+				}
+				myStages_.stages[currentStage].players[0].playerInputManager.pressKey(evnt.key.keysym.sym);
+				if (myStages_.stages[currentStage].players[0].playerInputManager.isKeyPressed(SDLK_F5)) {
+					gameState = GameState::PAUSE;
+					pauseMenu(1);
+					myStages_.stages[currentStage].players[0].playerInputManager.releaseKey(SDLK_F5);
+				}
+				break;
+			case SDL_KEYUP:
+				myStages_.stages[currentStage].players[1].playerInputManager.releaseKey(evnt.key.keysym.sym);
+				myStages_.stages[currentStage].players[0].playerInputManager.releaseKey(evnt.key.keysym.sym);
+				break;
+			}
+		}
+	}
+	myStages_.stages[currentStage].update();
 }
 
-void MainGame::drawGame(){
+void MainGame::drawGame() {
 
-    glClearDepth(1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    colorProgram.use();
+	glClearDepth(1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	colorProgram.use();
 
-    glActiveTexture(GL_TEXTURE0);
-
-
-    GLint textureLocation = colorProgram.getUniformLocation("mySampler");
-
-    glUniform1i(textureLocation, 0);
-
-    // GLuint timeLocation = colorProgram.getUniformLocation("time");
-    //glUniform1f(timeLocation, time);
-
-    GLuint pLocation = colorProgram.getUniformLocation("ortho");
-    glm::mat4 cameraMatrix = camera.getCameraMatrix();
-
-    glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+	glActiveTexture(GL_TEXTURE0);
 
 
+	GLint textureLocation = colorProgram.getUniformLocation("mySampler");
 
-	myStage.drawStage(spriteBatch_);
-    spriteBatch_.begin();
-    Color color;
-    color.r = 255;
-    color.b = 255;
-    color.g = 255;
-    color.a = 255;
-    myStage.draw(spriteBatch_);
+	glUniform1i(textureLocation, 0);
 
-    spriteBatch_.end();
+	// GLuint timeLocation = colorProgram.getUniformLocation("time");
+	//glUniform1f(timeLocation, time);
 
-    spriteBatch_.renderBatches();
+	GLuint pLocation = colorProgram.getUniformLocation("ortho");
+	glm::mat4 cameraMatrix = camera.getCameraMatrix();
+
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
 
-    glBindTexture(GL_TEXTURE_2D, 0);
-    colorProgram.unuse();
-    SDL_GL_SwapWindow(window);
+
+	myStages_.stages[currentStage].drawStage(spriteBatch_);
+	if (gameState != GameState::EDIT) {
+		spriteBatch_.begin();
+		Color color;
+		color.r = 255;
+		color.b = 255;
+		color.g = 255;
+		color.a = 255;
+		myStages_.stages[currentStage].drawPlayers(spriteBatch_);
+		spriteBatch_.end();
+		spriteBatch_.renderBatches();
+	}
+
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	colorProgram.unuse();
+	SDL_GL_SwapWindow(window);
 }
 
-void MainGame::initShaders(){
-    colorProgram.compileShaders("../YOLO/shader/colorShadingVert.glsl",
-                                "../YOLO/shader/colorShadingFrag.glsl" );
-    colorProgram.addAttribute("vertexPosition");
-    colorProgram.addAttribute("vertexColor");
-    colorProgram.addAttribute("vertexUV");
-    colorProgram.linkShaders();
+void MainGame::initShaders() {
+	colorProgram.compileShaders("../YOLO/shader/colorShadingVert.glsl",
+		"../YOLO/shader/colorShadingFrag.glsl");
+	colorProgram.addAttribute("vertexPosition");
+	colorProgram.addAttribute("vertexColor");
+	colorProgram.addAttribute("vertexUV");
+	colorProgram.linkShaders();
 }
 
-void MainGame::calculateFPS(){
-    static const int NUM_SAMPLES = 10;
-    static float frameTimes[NUM_SAMPLES];
-	
-    static float prevTicks = SDL_GetTicks();
+void MainGame::calculateFPS() {
+	static const int NUM_SAMPLES = 10;
+	static float frameTimes[NUM_SAMPLES];
 
-    static int currentFrame = 0;
-    float currentTicks = SDL_GetTicks();
-    frameTime = currentTicks - prevTicks;
+	static float prevTicks = SDL_GetTicks();
 
-    frameTimes[currentFrame % NUM_SAMPLES] = frameTime;
+	static int currentFrame = 0;
+	float currentTicks = SDL_GetTicks();
+	frameTime = currentTicks - prevTicks;
 
-    int count;
-    currentFrame++;
+	frameTimes[currentFrame % NUM_SAMPLES] = frameTime;
 
-    if(currentFrame < NUM_SAMPLES){
-        count = currentFrame;
-    }else{
-        count = NUM_SAMPLES;
-    }
-    prevTicks =  currentTicks;
+	int count;
+	currentFrame++;
 
-    float frameTimeAverage = 0;;
+	if (currentFrame < NUM_SAMPLES) {
+		count = currentFrame;
+	}
+	else {
+		count = NUM_SAMPLES;
+	}
+	prevTicks = currentTicks;
 
-    for(int i = 0; i < count; ++i){
-        frameTimeAverage += frameTimes[i];
-    }
-    frameTimeAverage /= count;
-    if(frameTimeAverage > 0){
-        fps = 1000.0f / frameTimeAverage;
-    }else{
-        fps = 60.0f;
-    }
+	float frameTimeAverage = 0;;
+
+	for (int i = 0; i < count; ++i) {
+		frameTimeAverage += frameTimes[i];
+	}
+	frameTimeAverage /= count;
+	if (frameTimeAverage > 0) {
+		fps = 1000.0f / frameTimeAverage;
+	}
+	else {
+		fps = 60.0f;
+	}
 }
 
-void MainGame::pauseMenu(int playerNum){
+void MainGame::pauseMenu(int playerNum) {
 	char choice;
 	printf("PLAYER %d PAUSED\n", playerNum);
 	while (gameState == GameState::PAUSE) {
@@ -232,13 +264,50 @@ void MainGame::pauseMenu(int playerNum){
 					}
 				}
 				printf("\nSaving Controls...\n");
-				myStage.players[playerNum - 1].setNewControls(newControls);
+				myStages_.stages[currentStage].players[playerNum - 1].setNewControls(newControls);
 				printf("controls Saved\n");
-			}else if(choice == 'E' || choice == 'e'){
-				//TODO edit level
 			}
-			else if (choice == 'B' || choice == 'b') {
-
+			else if (choice == 'E' || choice == 'e') {
+				std::cout << "(a) Add level\n";
+				std::cout << "(e) Eddit level\n";
+				std::cout << "(c) Change level\n";
+				std::cout << "(s) Save all your levels\n";
+				std::cout << "(q) Quit level" << std::endl;
+				std::cin >> choice;
+				switch (choice) {
+				case 'a':
+					gameState = GameState::EDIT;
+					myStages_.addNewStage();
+					currentStage = myStages_.getStageNumber();
+					break;
+				case 'e':
+					std::cout << "Which level do you want to edit ? Max Level " <<
+						myStages_.getStageNumber() << std::endl;
+					unsigned int levelNumber;
+					std::cin >> levelNumber;
+					if (levelNumber > myStages_.getStageNumber()) {
+						std::cout << "Not so many stages" << std::endl;
+						gameState = GameState::EXIT;
+					}
+					else {
+						gameState = GameState::EDIT;
+						currentStage = levelNumber;
+					}
+					break;
+				case 'c':
+					std::cout << "Which level you can go to ? Max Level " <<
+						myStages_.getStageNumber() << std::endl;
+					unsigned int temp;
+					std::cin >> temp;
+					currentStage = temp;
+					break;
+				case 's':
+					saveStages();
+				break;
+				case 'q':
+					gameState = GameState::EXIT;
+					break;
+				}
 			}
 		}
 		else if (choice == 'q' || choice == 'Q') {
@@ -252,4 +321,36 @@ void MainGame::pauseMenu(int playerNum){
 			printf("Invalid option, pick again.\n");
 		}
 	}
+}
+void MainGame::saveStages() {
+	std::cout << "Saving all your levels" << std::endl;;
+	std::ofstream ofs(myStages_.saveFileName_);
+	if (!ofs.is_open()) {
+		std::cout << "Failed to save your file" << std::endl;
+	}
+	boost::archive::text_oarchive oa (ofs);
+	oa << myStages_;
+	ofs.close();
+}
+void MainGame::loadStages() {
+	std::ifstream ifs(myStages_.saveFileName_);
+	if (!ifs.is_open()) {
+		myStages_.stages.reserve(20); // should be no more than 20 stages for now
+		myStages_.addNewStage();
+		myStages_.stages.back().setStage();
+	}
+	else {
+		boost::archive::text_iarchive ia(ifs);
+		ia >> myStages_;
+		myStages_.stages.reserve(20); // should be no more than 20 stages for now
+		for (auto &i : myStages_.stages) {
+			i.initTextures();
+			i.init();
+		}
+	}
+}
+void MainGame::addObserverToAllStage(Observer* observer) {
+	for (auto & s : myStages_.stages)
+		for (auto & player : s.players)
+			player.addObserver(observer);
 }

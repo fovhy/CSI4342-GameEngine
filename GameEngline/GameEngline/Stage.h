@@ -15,6 +15,8 @@
 #include "tile.h"
 #include "Player.h"
 #include "Physic.h"
+#include <boost/serialization/vector.hpp>
+
 
 class Stage{
 public:
@@ -34,6 +36,17 @@ public:
 	void drawPlayers(SpriteBatch&);
 	void drawStage(SpriteBatch&);
     void checkAttack();
+	void addTile(double x, double y, tilesType);
+	friend inline std::ostream& operator<< (std::ostream& os, const Stage& stage);
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar & myTiles_;
+		ar & grassTexture & iceTexture & dirtTexture & poisonTexture & backGroundTexture;
+	}
+	void removeTileJustAdded();
+	void initTextures();
+	std::vector<tile> tileJustAdded;
 
 private:
 	static const unsigned int quadrantNumber = 4;
@@ -59,7 +72,5 @@ private:
     glm::vec4 getTilesLeftRight(const glm::vec4& pos, int);
     glm::vec4 getTilesUpDown(const glm::vec4& pos, int);
     void drawTiles(const std::vector<tile>& level, SpriteBatch& spriteBatch);
-    ResourceManager stageManager;
-
-
+    static ResourceManager stageManager;
 };

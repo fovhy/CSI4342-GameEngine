@@ -86,6 +86,6 @@ protected:
     float specialAttackC = 0;
     float stunnedC = 0;
     float fallC = 0;
-    ResourceManager characterManager_;
+    static ResourceManager characterManager_;
 };
 

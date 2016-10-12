@@ -1,6 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
 #include "UnmovableObject.h"
+#include <iostream>
 
 enum tilesType{
     GRASS,
@@ -18,7 +19,6 @@ struct tile{
 		type = aType;
 	}
 	tile() = default;
-
 	void setTile(const glm::vec4& pos, tilesType aType) {
 		myTile.setPosition(glm::vec2(pos.x, pos.y));
 		myTile.setSize(glm::vec2(pos.z, pos.w));
@@ -33,12 +33,12 @@ struct tile{
 		type = aType;
 	}
 
-	glm::vec4 getPos() {
+	glm::vec4 getPos() const{
 		return glm::vec4(myTile.getPosition(), myTile.getSize());
 	}
 
-	glm::vec2 getColliPosition() {
-		return myTile.getColliSize();
+	glm::vec2 getColliPosition() const{
+		return glm::vec2(myTile.getColliSize());
 	}
 
 	float getFriction() {
@@ -57,5 +57,24 @@ struct tile{
 			break;
 		}
 	}
+	friend class boost::serialization::access;
+	friend inline std::ostream& operator<<(std::ostream& os, const tile& ti);
 	tilesType type;
+	template <class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar & myTile;
+		ar & type;
+	}
 };
+std::ostream& operator<<(std::ostream& os, const tile& ti) {
+	return os << ti.myTile << ' ' << ti.type << ' ';
+}
+inline bool operator== (const tile& lhs, const tile& rhs) {
+	bool toReturn = false;
+	if (lhs.getColliPosition() == rhs.getColliPosition() &&
+		lhs.getPos() == rhs.getPos() &&
+		lhs.type == rhs.type) {
+		toReturn = true;
+	}
+	return toReturn;
+}

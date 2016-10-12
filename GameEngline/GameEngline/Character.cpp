@@ -1,6 +1,6 @@
 #include "Character.h"
 
-
+ResourceManager Character::characterManager_;
 void Character::drawAnimation(const glm::vec2 &pos, int direction,
                               Action aAction, SpriteBatch& spriteBatch){
 	myCharacter_.setPosition(pos);

@@ -1,13 +1,14 @@
 #pragma once
-#include "Stage.h"
-#include "inputManager.h"
 #include <set>
+#include "stageBin.h"
+#include "inputManager.h"
 #include "EventManager.h"
 #include "AudioManager.h"
 #include "Subject.h"
 
+
 const int MAX_CONTROLS = 4;
-enum class GameState {PLAY, EXIT, PAUSE};
+enum class GameState {PLAY, EXIT, PAUSE, EDIT};
 class MainGame : public Subject{
 public:
     MainGame();
@@ -30,21 +31,25 @@ private:
     float maxfps = 60.0f;
     //GLTexture playerTexture;
 
-    Stage myStage;
+	unsigned int currentStage = 0;
+	StageBin myStages_;
 
-    void initSystems();
+	void initSystems();
     void gameLoop();
     void processInput();
     void drawGame();
     void initShaders();
     void calculateFPS();
 	void pauseMenu(int);
+	void addObserverToAllStage(Observer* observer);
 
+	tilesType editType = GRASS;
+	void saveStages();
+	void loadStages();         //if it failed to load, it will init with the basic stage
     inputManager inputManager_;
 	AudioManager audioManager_;
 
     SpriteBatch spriteBatch_;
     GLSLProgram colorProgram;
-
 
 };

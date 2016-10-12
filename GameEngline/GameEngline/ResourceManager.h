@@ -8,6 +8,7 @@ class ResourceManager{
 public:
     GLTexture getTexture(std::string texturePath);
 
+	bool inited = false;
 private:
      TextureCache textureCache;
 

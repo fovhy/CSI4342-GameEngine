@@ -3,7 +3,7 @@
 #include "EventManager.h"
 #include <iostream>
 
-
+ResourceManager Player::playerManager;
 
 void Player::init(const glm::vec2& pos){
     setPosition(pos);

@@ -12,7 +12,6 @@ DrawableObject::DrawableObject(const glm::vec2& pos, const glm::vec2& size,
 }
 
 DrawableObject::~DrawableObject() {
-
 }
 
 void DrawableObject::draw(SpriteBatch& spriteBatch, glm::vec4 uv, GLTexture texture) {
@@ -24,16 +23,13 @@ void DrawableObject::draw(SpriteBatch& spriteBatch, glm::vec4 uv, GLTexture text
 	spriteBatch.draw(glm::vec4(pos_.x, pos_.y, size_.x, size_.y), uv, texture.id, depth_, solidColor);
 }
 
-GLTexture DrawableObject::getTexture() {
-	return texture_;
-}
-glm::vec2 DrawableObject::getPosition() {
+glm::vec2 DrawableObject::getPosition() const {
 	return pos_;
 }
-glm::vec2 DrawableObject::getSize() {
+glm::vec2 DrawableObject::getSize() const {
 	return size_;
 }
-glm::vec2 DrawableObject::getColliSize() {
+glm::vec2 DrawableObject::getColliSize() const {
 	return colliSize_;
 }
 void DrawableObject::setColliSize(const glm::vec2& it) {
@@ -66,3 +62,8 @@ void DrawableObject::calculateQuadrants() {
 	}
 }
 
+std::ostream& operator<<(std::ostream& os, const DrawableObject& DO) {
+	return os << DO.pos_.x << ' ' << DO.pos_.y << ' ' << DO.size_.x <<
+		' ' << DO.size_.y << ' ' << DO.colliSize_.x << ' ' <<
+		DO.colliSize_.y << ' ' << DO.depth_ << ' ';
+}

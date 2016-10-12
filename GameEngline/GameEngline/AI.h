@@ -15,8 +15,8 @@ public:
 	AI();
 	void setPlayers(std::vector<Player>);
 	void setStage(Stage*);
-private:
 	void pathfind();
 	std::vector<Player> otherPlayers;
+private:
 	Stage* stage_;
 };

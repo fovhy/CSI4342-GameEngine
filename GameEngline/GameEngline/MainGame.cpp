@@ -60,10 +60,19 @@ void MainGame::initSystems() {
 }
 
 void MainGame::gameLoop(){
+	bool AIPlayer = myStage.isAI();
+	Player* comp = NULL;
+	if (AIPlayer) {
+		comp = myStage.getAI();
+	}
     while(gameState != GameState::EXIT){
         float startTicks = SDL_GetTicks();
         time += 0.1;
-        processInput();
+		if (comp)
+		{
+			((AI*)comp)->pathfind();
+		}
+		processInput();
         calculateFPS();
         static int frameCounter = 0;
         frameCounter ++;

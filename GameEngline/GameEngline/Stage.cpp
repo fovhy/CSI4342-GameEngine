@@ -1,4 +1,5 @@
 #include "Stage.h"
+#include "AI.h"
 #include <iostream>
 
 /*GLTexture Stage::grassTexture = stageManager.getTexture("../YOLO/texture/JJU/PNG/LandPiece_DarkGreen.png");
@@ -20,6 +21,8 @@ void Stage::init(int numPlayers) {
 	players[0].setPayerState(STANDING);
 	if (numPlayers > 1) {
 		players[1].setPlayerType(PLAYER_TWO);
+		AIPlayerActive_ = false;
+		AIPlayer_ = NULL;
 	}
 	else {
 		//player 2 is an AI character
@@ -28,6 +31,8 @@ void Stage::init(int numPlayers) {
 		compPlayer.setStage(this);
 		players.push_back(compPlayer);
 		players[1].setPlayerType(COMP);
+		AIPlayerActive_ = true;
+		AIPlayer_ = &compPlayer;
 	}
 	players[1].init(glm::vec2(1000, 200));
 	players[1].setCurrentCharacters(players[1].characters[0]);
@@ -54,6 +59,16 @@ void Stage::checkAttack() {
 	players[0].currentCharacter_->attackDone = true;
 	players[1].currentCharacter_->attackDone = true;
 
+}
+
+bool Stage::isAI()
+{
+	return AIPlayerActive_;
+}
+
+Player * Stage::getAI()
+{
+	return AIPlayer_;
 }
 
 void Stage::update() {
@@ -195,7 +210,7 @@ void Stage::applyGravity() {
 	}
 }
 
-tile Stage::findTile(const Player& aPlayer) {
+tile Stage::findTile(Player& const aPlayer) {
 	if (!aPlayer.onTile) {
 		printError("Not on tile while finding tile");
 		exit(3);

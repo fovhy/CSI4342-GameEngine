@@ -15,7 +15,6 @@
 #include "tile.h"
 #include "Player.h"
 #include "Physic.h"
-#include "AI.h"
 
 class Stage{
 public:
@@ -29,12 +28,14 @@ public:
     void tileCollisionChecking(Player&);
     void update();
     void draw(SpriteBatch& spriteBattch);
-    tile findTile(const Player& aPlayer);
+    tile findTile(Player& const aPlayer);
     void applyTileEffect(Player& aPlayer,  tile& aTile);
     void applyGravity();
 	void drawPlayers(SpriteBatch&);
 	void drawStage(SpriteBatch&);
     void checkAttack();
+	bool isAI();
+	Player* getAI();
 
 private:
 	static const unsigned int quadrantNumber = 4;
@@ -61,6 +62,7 @@ private:
     glm::vec4 getTilesUpDown(const glm::vec4& pos, int);
     void drawTiles(const std::vector<tile>& level, SpriteBatch& spriteBatch);
     ResourceManager stageManager;
-
+	bool AIPlayerActive_;
+	Player* AIPlayer_;
 
 };

@@ -1,5 +1,6 @@
 #pragma once
-#include "Stage.h"
+//AI.h has Stage.h
+#include "AI.h"
 #include "inputManager.h"
 #include <set>
 #include "EventManager.h"
@@ -15,6 +16,7 @@ public:
     void run();
 
 
+	Stage myStage;
 
 private:
     SDL_Window* window;
@@ -29,8 +31,7 @@ private:
     float frameTime;
     float maxfps = 60.0f;
     //GLTexture playerTexture;
-
-    Stage myStage;
+	
 
     void initSystems();
     void gameLoop();

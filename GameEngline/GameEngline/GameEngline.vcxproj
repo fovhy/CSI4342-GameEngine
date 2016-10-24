@@ -42,6 +42,7 @@
     <ClInclude Include="Physic.h" />
     <ClInclude Include="pico.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Powerup.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="samurai.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="Physic.cpp" />
     <ClCompile Include="pico.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Powerup.cpp" />
     <ClCompile Include="Pref.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="samurai.cpp" />

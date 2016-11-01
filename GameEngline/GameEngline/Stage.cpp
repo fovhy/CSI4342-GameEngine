@@ -4,6 +4,7 @@
 #include <iostream>
 
 const int SPAWNPU = 100;
+const int PU_WEAR_OFF = 50;
 
 ResourceManager Stage::stageManager;
 void Stage::initTextures() {
@@ -72,16 +73,18 @@ Player * Stage::getAI()
 
 void Stage::makePowerUp()
 {
-	glm::vec2 pos;
+	glm::vec4 pos;
+	srand(time(0));
 	int tileSpot1 = rand() % myTiles_.size() + 1;
 	int tileSpot2 = rand() % myTiles_[tileSpot1].size() + 1;
-	pos = myTiles_[tileSpot1][tileSpot2].getPos;
+	pos = myTiles_[tileSpot1][tileSpot2].getPos();
+	pos.x += myTiles_[tileSpot1][tileSpot2].getColliPosition().x / 2;
+	pos.y -= (myTiles_[tileSpot1][tileSpot2].getColliPosition().y + HEIGHT/2);
 	activePowerUp.spawn(pos);
 	PUActive = true;
 }
 
 void Stage::update() {
-	static int ticks;
 	for (auto& player : players) {
 		player.processInput();
 		tileCollisionChecking(player);
@@ -90,9 +93,15 @@ void Stage::update() {
 			PowerUpCollisionDetection(player);
 		}
 		else {
-			if (ticks >= SPAWNPU)
+			if (playerWithPowerUp && ticks >= PU_WEAR_OFF)
+			{
+				playerWithPowerUp->currentPU = NULL;
+				ticks = 0;
+			}
+			else if (!playerWithPowerUp && ticks >= SPAWNPU)
 			{
 				makePowerUp();
+				ticks = 0;
 			}
 			else {
 				ticks++;
@@ -339,6 +348,7 @@ void Stage::PowerUpCollisionDetection(Player & aPlayer)
 	{
 		aPlayer.currentPU = &activePowerUp;
 		PUActive = false;
+		playerWithPowerUp = &aPlayer;
 	}
 }
 

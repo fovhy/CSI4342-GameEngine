@@ -27,7 +27,7 @@ private:
 public:
 	Powerup();
 	PowerupType getType();
-	void spawn(const glm::vec2& it);
+	void spawn(const glm::vec4& it);
 	glm::vec4 getPos();
 
 };

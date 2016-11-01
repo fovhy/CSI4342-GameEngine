@@ -82,5 +82,7 @@ private:
 	bool AIPlayerActive_;
 	Player* AIPlayer_;
 	bool PUActive = false;
+	int ticks = 0;
+	Player* playerWithPowerUp = NULL;
 
 };

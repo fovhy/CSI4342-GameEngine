@@ -38,7 +38,16 @@ void AI::pathfind()
 			float selfX = stage_->players[1].getX();
 			float targetY = target->getY();
 			float selfY = stage_->players[1].getY();
-			if (target->getX() > selfX && stage_->players[1].getVX() < 1) 
+			float PUMod = 1;
+			if (currentPU && currentPU->getType() == SPEED_DOWN)
+			{
+				PUMod = 0.5;
+			}
+			if (currentPU && currentPU->getType() == SPEED_UP)
+			{
+				PUMod = 1.5;
+			}
+			if (target->getX() > selfX && stage_->players[1].getVX() < 1 * PUMod) 
 			{
 				action.key.keysym.sym = preferences_.getLeft();
 				action.type = SDL_KEYUP;
@@ -47,7 +56,7 @@ void AI::pathfind()
 				action.type = SDL_KEYDOWN;
 				SDL_PushEvent(&action);
 			}
-			else if (target->getX() < selfX && stage_->players[1].getVX() > -1)
+			else if (target->getX() < selfX && stage_->players[1].getVX() > -1 * PUMod)
 			{
 				action.key.keysym.sym = preferences_.getRight();
 				action.type = SDL_KEYUP;

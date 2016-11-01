@@ -2,6 +2,9 @@
 #include <algorithm>
 #include "AI.h"
 #include <iostream>
+
+const int SPAWNPU = 100;
+
 ResourceManager Stage::stageManager;
 void Stage::initTextures() {
 	//load all the textures
@@ -67,10 +70,34 @@ Player * Stage::getAI()
 	return AIPlayer_;
 }
 
+void Stage::makePowerUp()
+{
+	glm::vec2 pos;
+	int tileSpot1 = rand() % myTiles_.size() + 1;
+	int tileSpot2 = rand() % myTiles_[tileSpot1].size() + 1;
+	pos = myTiles_[tileSpot1][tileSpot2].getPos;
+	activePowerUp.spawn(pos);
+	PUActive = true;
+}
+
 void Stage::update() {
+	static int ticks;
 	for (auto& player : players) {
 		player.processInput();
 		tileCollisionChecking(player);
+		if (PUActive)
+		{
+			PowerUpCollisionDetection(player);
+		}
+		else {
+			if (ticks >= SPAWNPU)
+			{
+				makePowerUp();
+			}
+			else {
+				ticks++;
+			}
+		}
 		if (player.onTile) {
 			applyTileEffect(player, findTile(player));
 		}
@@ -218,8 +245,19 @@ tile Stage::findTile(Player& const aPlayer) {
 
 void Stage::applyTileEffect(Player& aPlayer, tile& aTile) {
 	float speedX = aPlayer.getVX();
+	float PUMod = 1;
+	if (aPlayer.currentPU && aPlayer.currentPU->getType() == FRICTION_DOWN)
+	{
+		PUMod = 0.5;
+	}
+	if (aPlayer.currentPU && aPlayer.currentPU->getType() == FRICTION_UP)
+	{
+		PUMod = 1.5;
+	}
 	if (&aTile) {
-		switch (aTile.type) {
+		myPhysic.applyFriction(speedX, aTile.getFriction() * PUMod);
+		aPlayer.setVX(speedX);
+		/*switch (aTile.type) {
 		case GRASS:
 			myPhysic.applyFriction(speedX, aTile.getFriction());
 			aPlayer.setVX(speedX);
@@ -236,10 +274,9 @@ void Stage::applyTileEffect(Player& aPlayer, tile& aTile) {
 			myPhysic.applyFriction(speedX, aTile.getFriction());
 			aPlayer.setVX(speedX);
 			break;
-		}
+		}*/
 	}
 }
-
 
 void Stage::tileCollisionChecking(Player& aPlayer) {
 	glm::vec4 playerPos;
@@ -290,11 +327,27 @@ void Stage::tileCollisionChecking(Player& aPlayer) {
 	}
 	aPlayer.onTile = false;
 }
+
+void Stage::PowerUpCollisionDetection(Player & aPlayer)
+{
+	glm::vec4 playerPos;
+	playerPos.x = aPlayer.getX();
+	playerPos.y = aPlayer.getY();
+	playerPos.z = aPlayer.getCurr()->getWidth();
+	playerPos.w = aPlayer.getCurr()->getHeight();
+	if (myPhysic.checkTileCollisions(playerPos, activePowerUp.getPos()))
+	{
+		aPlayer.currentPU = &activePowerUp;
+		PUActive = false;
+	}
+}
+
 void Stage::addTile(double x, double y, tilesType aType) {
 	// could potentially make it way more efficient. 
 	myTiles_[0].emplace_back(glm::vec4(x, y, tileWidth, tileHeight), aType);
 	tileJustAdded.emplace_back(glm::vec4(x, y, tileWidth, tileHeight), aType);
 }
+
 void Stage::removeTileJustAdded() {
 	if (tileJustAdded.size() > 0) {
 		for (auto& i : myTiles_) {

@@ -8,6 +8,7 @@
 #include "Preferences.h"
 #include <set>
 #include "DrawableObject.h"
+#include "Powerup.h"
 
 enum currentCharacterType{
     MAIDEN,
@@ -120,6 +121,7 @@ public:
     currentCharacterType characterType = BALD;
     Character* currentCharacter_ = nullptr;
 	int direction = 0;
+	Powerup* currentPU = NULL;
 protected:
     static ResourceManager playerManager;
     std::vector<GLTexture> heart;

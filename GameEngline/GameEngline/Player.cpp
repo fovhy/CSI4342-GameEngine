@@ -112,10 +112,19 @@ void Player::drawHP(SpriteBatch &spriteBatch){
 }
 
 void Player::limitSpeed(float& speed){
-    if(speed < -MAX_VELOCITY)
-        speed = -MAX_VELOCITY;
-    if(speed > MAX_VELOCITY)
-        speed = MAX_VELOCITY;
+	float PUMod = 1;
+	if (currentPU && currentPU->getType() == SPEED_DOWN)
+	{
+		PUMod = 0.5;
+	}
+	if (currentPU && currentPU->getType() == SPEED_UP)
+	{
+		PUMod = 1.5;
+	}
+    if(speed < -MAX_VELOCITY * PUMod)
+        speed = -MAX_VELOCITY * PUMod;
+    if(speed > MAX_VELOCITY * PUMod)
+        speed = MAX_VELOCITY * PUMod;
 }
 
 void Player::processInput(){
@@ -199,7 +208,16 @@ void Player::processInput(){
         break;
     case RUNNING:
         if(playerInputManager.isKeyPressed(preferences_.getUp()) && onTile){
-            velocityY_ += 10;
+			float PUMod = 1;
+			if (currentPU && currentPU->getType() == JUMP_DOWN)
+			{
+				PUMod = 0.5;
+			}
+			if (currentPU && currentPU->getType() == JUMP_UP)
+			{
+				PUMod = 1.5;
+			}
+            velocityY_ += 10 * PUMod;
             currentState_ = JUMPING;
         }
         if(playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile){

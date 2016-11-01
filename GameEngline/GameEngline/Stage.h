@@ -15,6 +15,7 @@
 #include "tile.h"
 #include "Player.h"
 #include "Physic.h"
+#include "Powerup.h"
 #include <boost/serialization/vector.hpp>
 
 
@@ -26,8 +27,10 @@ public:
     void setStage();
     static const int PLAYER_NUMBERS= 2;
     std::vector<Player> players;
+	Powerup activePowerUp;
     Physic myPhysic;
     void tileCollisionChecking(Player&);
+	void PowerUpCollisionDetection(Player&);
     void update();
     void draw(SpriteBatch& spriteBattch);
     tile findTile(Player& const aPlayer);
@@ -49,6 +52,7 @@ public:
 	std::vector<tile> tileJustAdded;
 	bool isAI();
 	Player* getAI();
+	void makePowerUp();
 
 private:
 	static const unsigned int quadrantNumber = 4;
@@ -77,5 +81,6 @@ private:
     static ResourceManager stageManager;
 	bool AIPlayerActive_;
 	Player* AIPlayer_;
+	bool PUActive = false;
 
 };

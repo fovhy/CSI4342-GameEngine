@@ -17,7 +17,7 @@ AI::AI()
 
 void AI::setStage(Stage* stage)
 {
-	//stage_ = stage;
+	stage_ = stage;
 }
 
 void AI::pathfind()

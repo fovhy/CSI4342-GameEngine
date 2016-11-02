@@ -3,8 +3,8 @@
 #include "AI.h"
 #include <iostream>
 
-const int SPAWNPU = 100;
-const int PU_WEAR_OFF = 50;
+const int SPAWNPU = 1000;
+const int PU_WEAR_OFF = 2500;
 
 ResourceManager Stage::stageManager;
 void Stage::initTextures() {
@@ -74,12 +74,10 @@ Player * Stage::getAI()
 void Stage::makePowerUp()
 {
 	glm::vec4 pos;
-	srand(time(0));
-	int tileSpot1 = rand() % myTiles_.size() + 1;
-	int tileSpot2 = rand() % myTiles_[tileSpot1].size() + 1;
-	pos = myTiles_[tileSpot1][tileSpot2].getPos();
-	pos.x += myTiles_[tileSpot1][tileSpot2].getColliPosition().x / 2;
-	pos.y -= (myTiles_[tileSpot1][tileSpot2].getColliPosition().y + HEIGHT/2);
+	pos.x = 550;
+	pos.y = -50;
+	pos.z = 50;
+	pos.w = 50;
 	activePowerUp.spawn(pos);
 	PUActive = true;
 }
@@ -93,15 +91,44 @@ void Stage::update() {
 			PowerUpCollisionDetection(player);
 		}
 		else {
+			if (playerWithPowerUp)
+			{
+				std::cout << "Player has powerup for " << PU_WEAR_OFF - ticks << " ticks" << std::endl;
+			}
 			if (playerWithPowerUp && ticks >= PU_WEAR_OFF)
 			{
 				playerWithPowerUp->currentPU = NULL;
+				playerWithPowerUp = NULL;
 				ticks = 0;
 			}
 			else if (!playerWithPowerUp && ticks >= SPAWNPU)
 			{
 				// this function is broken
-				//makePowerUp();
+				makePowerUp();
+				std::cout << "Making powerup: ";
+				switch (activePowerUp.getType()) {
+				case SPEED_DOWN:
+					std::cout << "Speed Down";
+					break;
+				case SPEED_UP:
+					std::cout << "Speed Up";
+					break;
+				case JUMP_DOWN:
+					std::cout << "Jump Down";
+					break;
+				case JUMP_UP:
+					std::cout << "Jump Up";
+					break;
+				case FRICTION_DOWN:
+					std::cout << "Friction Down";
+					break;
+				case FRICTION_UP:
+					std::cout << "Friction Up";
+					break;
+				default:
+					std::cout << "Invalid Powerup";
+				}
+				std::cout << std::endl;
 				ticks = 0;
 			}
 			else {
@@ -156,6 +183,7 @@ void Stage::setStage() {
 	myTiles_[0].emplace_back(getTilesLeftRight(firstLevelPos, 9), POISON);
 	myTiles_[0].emplace_back(getTilesLeftRight(firstLevelPos, 10), POISON);
 	myTiles_[0].emplace_back(getTilesLeftRight(firstLevelPos, 11), POISON);
+	std::cout << myTiles_[0][0].getPos().x << " " << myTiles_[0][0].getPos().y << std::endl;
 
 	glm::vec4 secondLevelPos(0, secondLevelHeight, tileWidth, tileHeight);
 	myTiles_[1].emplace_back(getTilesLeftRight(secondLevelPos, 4), ICE);
@@ -163,6 +191,7 @@ void Stage::setStage() {
 
 	myTiles_[1].emplace_back(getTilesLeftRight(secondLevelPos, 6), ICE);
 	myTiles_[1].emplace_back(getTilesLeftRight(secondLevelPos, 7), ICE);
+	std::cout << myTiles_[1][0].getPos().x << " " << myTiles_[1][0].getPos().y << std::endl;
 
 	glm::vec4 thirdLevelPos(0, thirdLevelHeight, tileWidth, tileHeight);
 	myTiles_[2].emplace_back(getTilesLeftRight(thirdLevelPos, 1), DIRT);
@@ -174,6 +203,7 @@ void Stage::setStage() {
 	myTiles_[2].emplace_back(getTilesLeftRight(thirdLevelPos, 8), DIRT);
 	myTiles_[2].emplace_back(getTilesLeftRight(thirdLevelPos, 9), DIRT);
 	myTiles_[2].emplace_back(getTilesLeftRight(thirdLevelPos, 10), DIRT);
+	std::cout << myTiles_[2][0].getPos().x << " " << myTiles_[2][0].getPos().y << std::endl;
 
 	glm::vec4 fourthLevelPos(0, fourthLevelHeight, tileWidth, tileHeight);
 	myTiles_[3].emplace_back(fourthLevelPos, ICE);
@@ -185,6 +215,7 @@ void Stage::setStage() {
 	myTiles_[3].emplace_back(getTilesLeftRight(fourthLevelPos, 7), ICE);
 	myTiles_[3].emplace_back(getTilesLeftRight(fourthLevelPos, 10), ICE);
 	myTiles_[3].emplace_back(getTilesLeftRight(fourthLevelPos, 11), ICE);
+	std::cout << myTiles_[3][0].getPos().x << " " << myTiles_[3][0].getPos().y << std::endl;
 }
 // draw all tiles
 void Stage::drawTiles(const std::vector<tile>& level, SpriteBatch& spriteBatch) {
@@ -347,6 +378,7 @@ void Stage::PowerUpCollisionDetection(Player & aPlayer)
 	playerPos.w = aPlayer.getCurr()->getHeight();
 	if (myPhysic.checkTileCollisions(playerPos, activePowerUp.getPos()))
 	{
+		std::cout << "Powerup get!" << std::endl;
 		aPlayer.currentPU = &activePowerUp;
 		PUActive = false;
 		playerWithPowerUp = &aPlayer;

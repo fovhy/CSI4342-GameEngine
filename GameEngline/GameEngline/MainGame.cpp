@@ -382,7 +382,7 @@ void MainGame::drawHUD() {
 	hudBatch_.begin();
 	sprintf(buffer, "Halo");
 	spriteFont_->draw(hudBatch_, buffer, glm::vec2(300, 300),
-		glm::vec2(4.0), 0.0f, ColorRGBA8(255, 255, 255, 255), Justification::RIGHT);
+		glm::vec2(1.0), 0.0f, ColorRGBA8(255, 0, 0, 255), Justification::RIGHT);
 
 	hudBatch_.end();
 	hudBatch_.renderBatches();

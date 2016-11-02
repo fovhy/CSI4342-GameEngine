@@ -128,7 +128,7 @@ protected:
     std::vector<GLTexture> heart;
     std::vector<GLTexture> Avatar;
     void limitSpeed(float& speed);
-    const float MAX_VELOCITY = 10;
+    const float MAX_VELOCITY = 12;
 
     PlayerType playerType_;
     PlayerStates currentState_;

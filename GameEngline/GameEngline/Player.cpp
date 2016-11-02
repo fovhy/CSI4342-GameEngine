@@ -116,19 +116,10 @@ void Player::drawHP(SpriteBatch &spriteBatch) {
 }
 
 void Player::limitSpeed(float& speed) {
-	float PUMod = 1;
-	if (currentPU && currentPU->getType() == SPEED_DOWN)
-	{
-		PUMod = 0.5;
-	}
-	if (currentPU && currentPU->getType() == SPEED_UP)
-	{
-		PUMod = 1.5;
-	}
-	if (speed < -MAX_VELOCITY * PUMod)
-		speed = -MAX_VELOCITY * PUMod;
-	if (speed > MAX_VELOCITY * PUMod)
-		speed = MAX_VELOCITY * PUMod;
+	if (speed < -MAX_VELOCITY)
+		speed = -MAX_VELOCITY;
+	if (speed > MAX_VELOCITY)
+		speed = MAX_VELOCITY;
 }
 
 void Player::processInput() {
@@ -182,26 +173,54 @@ void Player::processInput() {
 			characterType = SAMURAI;
 		}
 	}
+	float PUMod = 1;
 	switch (currentState_) {
 	case STANDING:
 		if (playerInputManager.isKeyPressed(preferences_.getUp()) && onTile) {
-			velocityY_ += 10;
+			PUMod = 1;
+			if (currentPU && currentPU->getType() == JUMP_DOWN)
+			{
+				PUMod = 0.75;
+			}
+			if (currentPU && currentPU->getType() == JUMP_UP)
+			{
+				PUMod = 1.5;
+			}
+			velocityY_ += 9 * PUMod;
 			currentState_ = JUMPING;
 		}
 		if (playerInputManager.isKeyPressed(preferences_.getLeft())) {
 			currentState_ = RUNNING;
+			PUMod = 1;
+			if (currentPU && currentPU->getType() == SPEED_DOWN)
+			{
+				PUMod = 0.75;
+			}
+			if (currentPU && currentPU->getType() == SPEED_UP)
+			{
+				PUMod = 1.5;
+			}
 			if (velocityX_ > 0)
-				velocityX_ -= speedChange * 0.7;
+				velocityX_ -= speedChange * 0.7 * PUMod;
 			else
-				velocityX_ -= speedChange;
+				velocityX_ -= speedChange * PUMod;
 			direction = -1;
 		}
 		else if (playerInputManager.isKeyPressed(preferences_.getRight())) {
 			currentState_ = RUNNING;
+			PUMod = 1;
+			if (currentPU && currentPU->getType() == SPEED_DOWN)
+			{
+				PUMod = 0.75;
+			}
+			if (currentPU && currentPU->getType() == SPEED_UP)
+			{
+				PUMod = 1.5;
+			}
 			if (velocityX_ < 0)
-				velocityX_ += speedChange * 0.7;
+				velocityX_ += speedChange * 0.7* PUMod;
 			else
-				velocityX_ += speedChange;
+				velocityX_ += speedChange * PUMod;
 			direction = 1;
 		}
 		/*if(playerInputManager.isKeyPressed(preferences_.getAttack())){
@@ -212,33 +231,51 @@ void Player::processInput() {
 		break;
 	case RUNNING:
 		if (playerInputManager.isKeyPressed(preferences_.getUp()) && onTile) {
-			float PUMod = 1;
+			PUMod = 1;
 			if (currentPU && currentPU->getType() == JUMP_DOWN)
 			{
-				PUMod = 0.5;
+				PUMod = 0.75;
 			}
 			if (currentPU && currentPU->getType() == JUMP_UP)
 			{
 				PUMod = 1.5;
 			}
-			velocityY_ += 10 * PUMod;
+			velocityY_ += 9 * PUMod;
 			currentState_ = JUMPING;
 		}
 		if (playerInputManager.isKeyPressed(preferences_.getDown()) && !onTile) {
 			velocityY_ -= 0.3;
 		}
 		if (playerInputManager.isKeyPressed(preferences_.getLeft())) {
+			PUMod = 1;
+			if (currentPU && currentPU->getType() == SPEED_DOWN)
+			{
+				PUMod = 0.75;
+			}
+			if (currentPU && currentPU->getType() == SPEED_UP)
+			{
+				PUMod = 1.5;
+			}
 			if (velocityX_ > 0)
-				velocityX_ -= speedChange * 0.7;
+				velocityX_ -= speedChange * 0.7 * PUMod;
 			else
-				velocityX_ -= speedChange;
+				velocityX_ -= speedChange * PUMod;
 			direction = -1;
 		}
 		else if (playerInputManager.isKeyPressed(preferences_.getRight())) {
+			PUMod = 1;
+			if (currentPU && currentPU->getType() == SPEED_DOWN)
+			{
+				PUMod = 0.75;
+			}
+			if (currentPU && currentPU->getType() == SPEED_UP)
+			{
+				PUMod = 1.5;
+			}
 			if (velocityX_ < 0)
-				velocityX_ += speedChange * 0.7;
+				velocityX_ += speedChange * 0.7 * PUMod;
 			else
-				velocityX_ += speedChange;
+				velocityX_ += speedChange * PUMod;
 			direction = 1;
 		}
 		else {
@@ -250,18 +287,27 @@ void Player::processInput() {
 		}*/
 		break;
 	case JUMPING:
+		PUMod = 1;
+		if (currentPU && currentPU->getType() == SPEED_DOWN)
+		{
+			PUMod = 0.75;
+		}
+		if (currentPU && currentPU->getType() == SPEED_UP)
+		{
+			PUMod = 1.5;
+		}
 		if (playerInputManager.isKeyPressed(preferences_.getLeft())) {
 			if (velocityX_ > 0)
-				velocityX_ -= 0.08;
+				velocityX_ -= 0.08 * PUMod;
 			else
-				velocityX_ -= 0.10;
+				velocityX_ -= 0.10 * PUMod;
 			direction = -1;
 		}
 		else if (playerInputManager.isKeyPressed(preferences_.getRight())) {
 			if (velocityX_ < 0)
-				velocityX_ += 0.08;
+				velocityX_ += 0.08 * PUMod;
 			else
-				velocityX_ += 0.10;
+				velocityX_ += 0.10 * PUMod;
 			direction = 1;
 		}
 		/*else if(playerInputManager.isKeyPressed(preferences_.getAttack())){
@@ -279,22 +325,31 @@ void Player::processInput() {
 			}
 			break;*/
 	case FALLING:
+		PUMod = 1;
+		if (currentPU && currentPU->getType() == SPEED_DOWN)
+		{
+			PUMod = 0.75;
+		}
+		if (currentPU && currentPU->getType() == SPEED_UP)
+		{
+			PUMod = 1.5;
+		}
 		if (velocityY_ == 0) {
 			currentState_ = STANDING;
 			break;
 		}
 		if (playerInputManager.isKeyPressed(preferences_.getLeft())) {
 			if (velocityX_ > 0)
-				velocityX_ -= 0.08;
+				velocityX_ -= 0.08 * PUMod;
 			else
-				velocityX_ -= 0.10;
+				velocityX_ -= 0.10 * PUMod;
 			direction = -1;
 		}
 		else if (playerInputManager.isKeyPressed(preferences_.getRight())) {
 			if (velocityX_ < 0)
-				velocityX_ += 0.08;
+				velocityX_ += 0.08 * PUMod;
 			else
-				velocityX_ += 0.10;
+				velocityX_ += 0.10 * PUMod;
 			direction = 1;
 		}
 		break;

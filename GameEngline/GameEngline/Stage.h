@@ -31,13 +31,14 @@ public:
     Physic myPhysic;
     void tileCollisionChecking(Player&);
 	void PowerUpCollisionDetection(Player&);
-    void update();
+    void update(SpriteBatch&);
     void draw(SpriteBatch& spriteBattch);
     tile findTile(Player& const aPlayer);
     void applyTileEffect(Player& aPlayer,  tile& aTile);
     void applyGravity();
 	void drawPlayers(SpriteBatch&);
 	void drawStage(SpriteBatch&);
+	void drawPowerUP(SpriteBatch&);
     void checkAttack();
 	void addTile(double x, double y, tilesType);
 	friend inline std::ostream& operator<< (std::ostream& os, const Stage& stage);

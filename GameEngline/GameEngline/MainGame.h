@@ -40,7 +40,8 @@ private:
 	Player* comp = nullptr;
 
 	bool nextLevel = false;
-	
+	int playerOnePoint = 0;
+	int playerTwoPoint = 0;
 
 	void initSystems();
     void gameLoop();

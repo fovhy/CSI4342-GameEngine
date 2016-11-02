@@ -159,7 +159,7 @@ void MainGame::processInput(){
 			}
 		}
 	}
-	myStages_.stages[currentStage].update();
+	myStages_.stages[currentStage].update(hudBatch_);
 }
 
 void MainGame::drawGame() {
@@ -186,6 +186,7 @@ void MainGame::drawGame() {
 
 
 	myStages_.stages[currentStage].drawStage(spriteBatch_);
+	myStages_.stages[currentStage].drawPowerUP(hudBatch_);
 	if (gameState != GameState::EDIT) {
 		spriteBatch_.begin();
 		Color color;
@@ -390,6 +391,12 @@ void MainGame::drawHUD() {
 	sprintf(buffer, "Stage %d", currentStage + 1);
 	drawText(buffer, glm::vec2(525, 350),
 		glm::vec2(2.5), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+	sprintf(buffer, "Point %d", playerOnePoint);
+	drawText(buffer, glm::vec2(75, 250),
+		glm::vec2(2.5), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+	sprintf(buffer, "Point %d", playerTwoPoint);
+	drawText(buffer, glm::vec2(900, 250),
+		glm::vec2(2.5), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
 }
 
 void MainGame::drawInstruction() {
@@ -435,8 +442,19 @@ void MainGame::enableLevelChange() {
 }
 bool MainGame::checkPlayerLifesReachZero() {
 	bool toReturn = false;
-	for (auto &player : myStages_.stages[currentStage].players) {
-		if (player.playerLives == 0) {
+	for (auto &play : myStages_.stages[currentStage].players) {
+		if (play.playerLives == 0) {
+			toReturn = true;
+			break;
+		}
+	}
+	for (int i = 0; i < 2; i++) {
+		if (myStages_.stages[currentStage].players[i].playerLives == 0) {
+			if (i = 0) {
+				playerOnePoint += 100;
+			}
+			else
+				playerTwoPoint += 100;
 			toReturn = true;
 			break;
 		}

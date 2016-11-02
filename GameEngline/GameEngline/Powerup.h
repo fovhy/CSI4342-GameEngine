@@ -18,16 +18,18 @@ enum PowerupType {
 	FRICTION_UP,
 	FRICTION_DOWN,
 	JUMP_UP,
-	JUMP_DOWN
+	JUMP_DOWN,
+	DONGER
 };
 
 class Powerup : public DrawableObject{
 private:
 	PowerupType type_;
 	glm::vec4 position;
-	ResourceManager powerUpManager_;
+	static ResourceManager powerUpManager_;
 public:
 	Powerup();
+	void init();
 	PowerupType getType();
 	void spawn(const glm::vec4& it);
 	glm::vec4 getPos();

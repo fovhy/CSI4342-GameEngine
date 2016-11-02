@@ -40,6 +40,7 @@ void Stage::init(int numPlayers) {
 	players[1].init(glm::vec2(1000, 200));
 	players[1].setCurrentCharacters(players[1].characters[0]);
 	players[1].setPayerState(STANDING);
+	activePowerUp.init();
 
 	myTiles_.resize(quadrantNumber);
 
@@ -82,7 +83,7 @@ void Stage::makePowerUp()
 	PUActive = true;
 }
 
-void Stage::update() {
+void Stage::update(SpriteBatch& spriteBatch) {
 	for (auto& player : players) {
 		player.processInput();
 		tileCollisionChecking(player);
@@ -93,7 +94,6 @@ void Stage::update() {
 		else {
 			if (playerWithPowerUp)
 			{
-				std::cout << "Player has powerup for " << PU_WEAR_OFF - ticks << " ticks" << std::endl;
 			}
 			if (playerWithPowerUp && ticks >= PU_WEAR_OFF)
 			{
@@ -103,31 +103,31 @@ void Stage::update() {
 			}
 			else if (!playerWithPowerUp && ticks >= SPAWNPU)
 			{
+				spriteBatch.begin();
 				// this function is broken
 				makePowerUp();
-				std::cout << "Making powerup: ";
 				switch (activePowerUp.getType()) {
 				case SPEED_DOWN:
-					std::cout << "Speed Down";
+					activePowerUp.drawSD(spriteBatch);
 					break;
 				case SPEED_UP:
-					std::cout << "Speed Up";
+					activePowerUp.drawSU(spriteBatch);
 					break;
 				case JUMP_DOWN:
-					std::cout << "Jump Down";
+					activePowerUp.drawJD(spriteBatch);
 					break;
 				case JUMP_UP:
-					std::cout << "Jump Up";
+					activePowerUp.drawJU(spriteBatch);
 					break;
 				case FRICTION_DOWN:
-					std::cout << "Friction Down";
+					activePowerUp.drawFD(spriteBatch);
 					break;
 				case FRICTION_UP:
-					std::cout << "Friction Up";
+					activePowerUp.drawFD(spriteBatch);
 					break;
-				default:
-					std::cout << "Invalid Powerup";
 				}
+				spriteBatch.end();
+				spriteBatch.renderBatches();
 				std::cout << std::endl;
 				ticks = 0;
 			}
@@ -165,7 +165,7 @@ void Stage::drawStage(SpriteBatch& spriteBatch) {
 	for (auto& i : myTiles_) {
 		drawTiles(i, spriteBatch);
 	}
-	spriteBatch.end();
+spriteBatch.end();
 	spriteBatch.renderBatches();
 }
 // for now it is just gonna be hard coded
@@ -378,7 +378,6 @@ void Stage::PowerUpCollisionDetection(Player & aPlayer)
 	playerPos.w = aPlayer.getCurr()->getHeight();
 	if (myPhysic.checkTileCollisions(playerPos, activePowerUp.getPos()))
 	{
-		std::cout << "Powerup get!" << std::endl;
 		aPlayer.currentPU = &activePowerUp;
 		PUActive = false;
 		playerWithPowerUp = &aPlayer;
@@ -408,4 +407,34 @@ std::ostream& operator<< (std::ostream& os, const Stage& stage) {
 		}
 	}
 	return os;
+}
+
+void Stage::drawPowerUP(SpriteBatch& spriteBatch) {
+	if (PUActive) {
+		spriteBatch.begin();
+		switch (activePowerUp.getType()) {
+		case SPEED_DOWN:
+			activePowerUp.drawSD(spriteBatch);
+			break;
+		case SPEED_UP:
+			activePowerUp.drawSU(spriteBatch);
+			break;
+		case JUMP_DOWN:
+			activePowerUp.drawJD(spriteBatch);
+			break;
+		case JUMP_UP:
+			activePowerUp.drawJU(spriteBatch);
+			break;
+		case FRICTION_DOWN:
+			activePowerUp.drawFD(spriteBatch);
+			break;
+		case FRICTION_UP:
+			activePowerUp.drawFD(spriteBatch);
+			break;
+		}
+
+		spriteBatch.end();
+		spriteBatch.renderBatches();
+	}
+
 }

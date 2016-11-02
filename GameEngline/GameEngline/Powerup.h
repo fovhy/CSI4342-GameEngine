@@ -1,5 +1,6 @@
 #pragma once
 #include "DrawableObject.h"
+#include "ResourceManager.h"
 #include <cstdlib>
 #include <ctime>
 /*
@@ -24,10 +25,24 @@ class Powerup : public DrawableObject{
 private:
 	PowerupType type_;
 	glm::vec4 position;
+	ResourceManager powerUpManager_;
 public:
 	Powerup();
 	PowerupType getType();
 	void spawn(const glm::vec4& it);
 	glm::vec4 getPos();
+	void drawSU(SpriteBatch&);
+	void drawSD(SpriteBatch&);
+	void drawFU(SpriteBatch&);
+	void drawFD(SpriteBatch&);
+	void drawJU(SpriteBatch&);
+	void drawJD(SpriteBatch&);
 
+	GLTexture FU;
+	GLTexture FD;
+	GLTexture JU;
+	GLTexture JD;
+	GLTexture SU;
+	GLTexture SD;
+	
 };

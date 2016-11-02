@@ -8,6 +8,7 @@
 #include "EventManager.h"
 #include "AudioManager.h"
 #include "Subject.h"
+#include "SpriteFont.h"
 
 
 const int MAX_CONTROLS = 4;
@@ -39,6 +40,7 @@ private:
 	unsigned int currentStage = 0;
 	StageBin myStages_;
 	Player* comp = nullptr;
+
 	
 
 	void initSystems();
@@ -49,6 +51,7 @@ private:
     void calculateFPS();
 	void pauseMenu(int);
 	void addObserverToAllStage(Observer* observer);
+	void drawHUD();
 
 	tilesType editType = GRASS;
 	void saveStages();
@@ -57,6 +60,9 @@ private:
 	AudioManager audioManager_;
 
     SpriteBatch spriteBatch_;
+	SpriteBatch hudBatch_;
+
+	SpriteFont* spriteFont_;
     GLSLProgram colorProgram;
 
 };

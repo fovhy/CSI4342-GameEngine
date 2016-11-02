@@ -34,6 +34,7 @@
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="UnmovableObject.cpp" />
     <ClCompile Include="Powerup.cpp" />
+    <ClCompile Include="SpriteFont.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />
@@ -72,5 +73,6 @@
     <ClInclude Include="UnmovableObject.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Powerup.h" />
+    <ClInclude Include="SpriteFont.h" />
   </ItemGroup>
 </Project>

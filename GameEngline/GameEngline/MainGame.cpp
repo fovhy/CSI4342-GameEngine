@@ -50,7 +50,13 @@ void MainGame::initSystems() {
 
     initShaders();
     camera.init(screenWidth, screenHeight);
+
     spriteBatch_.init();
+	hudBatch_.init();
+
+	// set up the font 
+	spriteFont_ = new SpriteFont("../YOLO/font/chintzy.ttf", 32);
+
 	loadStages(numberOfPlayers);
 	addObserverToAllStage(&audioManager_);
 	addObserver(&audioManager_);
@@ -191,6 +197,7 @@ void MainGame::drawGame() {
 		spriteBatch_.renderBatches();
 	}
 
+	drawHUD();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorProgram.unuse();
@@ -359,6 +366,7 @@ void MainGame::loadStages(int playerNumber) {
 		myStages_.stages.reserve(20); // should be no more than 20 stages for now
 		for (auto &i : myStages_.stages) {
 			i.initTextures();
+			// one crashes, this is a hack
 			i.init(playerNumber);
 		}
 	}
@@ -367,4 +375,15 @@ void MainGame::addObserverToAllStage(Observer* observer) {
 	for (auto & s : myStages_.stages)
 		for (auto & player : s.players)
 			player.addObserver(observer);
+}
+void MainGame::drawHUD() {
+	
+	char buffer[1024];
+	hudBatch_.begin();
+	sprintf(buffer, "Halo");
+	spriteFont_->draw(hudBatch_, buffer, glm::vec2(300, 300),
+		glm::vec2(4.0), 0.0f, ColorRGBA8(255, 255, 255, 255), Justification::RIGHT);
+
+	hudBatch_.end();
+	hudBatch_.renderBatches();
 }

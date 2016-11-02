@@ -32,7 +32,7 @@ void Stage::init(int numPlayers) {
 		//player 2 is an AI character
 		AI* compPlayer = new AI();
 		compPlayer->setStage(this);
-		players.push_back(*compPlayer);
+		players.push_back((Player)*compPlayer);
 		players[1].setPlayerType(COMP);
 		AIPlayerActive_ = true;
 		AIPlayer_ = compPlayer;

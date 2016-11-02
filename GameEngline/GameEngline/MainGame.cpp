@@ -55,7 +55,7 @@ void MainGame::initSystems() {
 	hudBatch_.init();
 
 	// set up the font 
-	spriteFont_ = new SpriteFont("../YOLO/font/chintzy.ttf", 32);
+	spriteFont_ = new SpriteFont("../YOLO/font/chintzy.ttf", 16);
 
 	loadStages(numberOfPlayers);
 	addObserverToAllStage(&audioManager_);
@@ -87,6 +87,7 @@ void MainGame::gameLoop(){
 			notifyAll(*this, "gameStart");
 			EventManager::getEventManager().setEventTrue("gameStart");
 		}
+		updateLevel();
 // limit fps to be 60
         float frameTicks = SDL_GetTicks() - startTicks;
         if(1000.0/ maxfps > frameTicks){
@@ -195,9 +196,12 @@ void MainGame::drawGame() {
 		myStages_.stages[currentStage].drawPlayers(spriteBatch_);
 		spriteBatch_.end();
 		spriteBatch_.renderBatches();
+		drawHUD();
+	}
+	else {
+		drawInstruction();
 	}
 
-	drawHUD();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorProgram.unuse();
@@ -324,7 +328,7 @@ void MainGame::pauseMenu(int playerNum) {
 					break;
 				case 's':
 					saveStages();
-				break;
+					break;
 				case 'q':
 					gameState = GameState::EXIT;
 					break;
@@ -349,7 +353,7 @@ void MainGame::saveStages() {
 	if (!ofs.is_open()) {
 		std::cout << "Failed to save your file" << std::endl;
 	}
-	boost::archive::text_oarchive oa (ofs);
+	boost::archive::text_oarchive oa(ofs);
 	oa << myStages_;
 	ofs.close();
 }
@@ -366,7 +370,6 @@ void MainGame::loadStages(int playerNumber) {
 		myStages_.stages.reserve(20); // should be no more than 20 stages for now
 		for (auto &i : myStages_.stages) {
 			i.initTextures();
-			// one crashes, this is a hack
 			i.init(playerNumber);
 		}
 	}
@@ -377,13 +380,81 @@ void MainGame::addObserverToAllStage(Observer* observer) {
 			player.addObserver(observer);
 }
 void MainGame::drawHUD() {
-	
 	char buffer[1024];
-	hudBatch_.begin();
-	sprintf(buffer, "Halo");
-	spriteFont_->draw(hudBatch_, buffer, glm::vec2(300, 300),
-		glm::vec2(1.0), 0.0f, ColorRGBA8(255, 0, 0, 255), Justification::RIGHT);
+	sprintf(buffer, "Life %d", myStages_.stages[currentStage].players[0].playerLives);
+	drawText(buffer, glm::vec2(150, 350),
+		glm::vec2(2.0), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::RIGHT);
+	sprintf(buffer, "Life %d", myStages_.stages[currentStage].players[1].playerLives);
+	drawText(buffer, glm::vec2(1000, 350),
+		glm::vec2(2.0), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+	sprintf(buffer, "Stage %d", currentStage + 1);
+	drawText(buffer, glm::vec2(525, 350),
+		glm::vec2(2.5), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+}
 
+void MainGame::drawInstruction() {
+	char buffer[1024];
+	sprintf(buffer, "Player 1 spawn");
+	drawText(buffer, glm::vec2(100, 300),
+		glm::vec2(1.7), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+	sprintf(buffer, "Player 2 spawn");
+	drawText(buffer, glm::vec2(800, 300),
+		glm::vec2(1.7), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+	sprintf(buffer, "Respawn");
+	drawText(buffer, glm::vec2(550, 200),
+		glm::vec2(1.7), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+	sprintf(buffer, "Press R to resume the game");
+	drawText(buffer, glm::vec2(300, -200),
+		glm::vec2(2.0), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+	sprintf(buffer, "Press 1 2 3 4 to change Tile");
+	drawText(buffer, glm::vec2(700, -300),
+		glm::vec2(2.0), 1.0f, ColorRGBA8(255, 255, 255, 255), Justification::LEFT);
+}
+
+void MainGame::goToNextLevel() {
+	for (auto &player : myStages_.stages[currentStage].players) {
+		player.playerLives = 3;
+		player.respawn();
+	}
+	if (myStages_.getStageNumber() != 0) {
+		if (currentStage == myStages_.getStageNumber()) {
+			currentStage = 0;
+		}
+		else {
+			currentStage = (currentStage++) % myStages_.getStageNumber();
+		}
+	}
+	nextLevel = false;
+}
+
+bool MainGame::checkLevelChange() {
+	return nextLevel;
+}
+void MainGame::enableLevelChange() {
+	nextLevel = true;
+}
+bool MainGame::checkPlayerLifesReachZero() {
+	bool toReturn = false;
+	for (auto &player : myStages_.stages[currentStage].players) {
+		if (player.playerLives == 0) {
+			toReturn = true;
+			break;
+		}
+	}
+	return toReturn;
+}
+
+void MainGame::updateLevel() {
+	if (checkPlayerLifesReachZero()) {
+		goToNextLevel();
+	}
+}
+
+void MainGame::drawText(const char* buffer, glm::vec2 pos, glm::vec2 scaling,
+	float depth, ColorRGBA8 tint, Justification just) {
+	hudBatch_.begin();
+	spriteFont_->draw(hudBatch_, buffer, pos,
+		scaling, depth, tint, just);
 	hudBatch_.end();
 	hudBatch_.renderBatches();
 }

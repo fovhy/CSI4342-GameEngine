@@ -10,6 +10,7 @@ public:
     void releaseKey(unsigned int keyID);
 
     bool isKeyPressed(unsigned int keyID);
+	void cleanUp();
 
 private:
     bool keyPressed_ = false;

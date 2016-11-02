@@ -121,7 +121,8 @@ public:
     currentCharacterType characterType = BALD;
     Character* currentCharacter_ = nullptr;
 	int direction = 0;
-	Powerup* currentPU = NULL;
+	Powerup* currentPU = NULL;	
+	unsigned int playerLives = 3;
 protected:
     static ResourceManager playerManager;
     std::vector<GLTexture> heart;

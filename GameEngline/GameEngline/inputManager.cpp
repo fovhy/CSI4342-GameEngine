@@ -15,3 +15,6 @@ bool inputManager::isKeyPressed(unsigned int keyID){
     }else
         return false;
 }
+void inputManager::cleanUp() {
+	keyMap_.clear();
+}

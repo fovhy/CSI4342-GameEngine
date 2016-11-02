@@ -18,8 +18,6 @@ public:
     MainGame();
     ~MainGame();
     void run();
-
-
 	Stage myStage;
 
 private:
@@ -41,6 +39,7 @@ private:
 	StageBin myStages_;
 	Player* comp = nullptr;
 
+	bool nextLevel = false;
 	
 
 	void initSystems();
@@ -52,6 +51,15 @@ private:
 	void pauseMenu(int);
 	void addObserverToAllStage(Observer* observer);
 	void drawHUD();
+	void drawInstruction();
+
+	void updateLevel();
+	void goToNextLevel();
+	bool checkLevelChange();
+	void enableLevelChange();
+	bool checkPlayerLifesReachZero();
+	void drawText(const char* s, glm::vec2 pos, glm::vec2 scaling,
+		float depth, ColorRGBA8 tint, Justification just);
 
 	tilesType editType = GRASS;
 	void saveStages();

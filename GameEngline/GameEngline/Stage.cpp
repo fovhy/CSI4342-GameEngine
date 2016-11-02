@@ -19,7 +19,7 @@ void Stage::initTextures() {
 void Stage::init(int numPlayers) {
 
 	players.resize(numPlayers);
-	players[0].init(glm::vec2(500, 200));
+	players[0].init(glm::vec2(100, 200));
 	players[0].setCurrentCharacters(players[0].characters[0]);
 	players[0].setPlayerType(PLAYER_ONE);
 	players[0].setPayerState(STANDING);
@@ -100,7 +100,8 @@ void Stage::update() {
 			}
 			else if (!playerWithPowerUp && ticks >= SPAWNPU)
 			{
-				makePowerUp();
+				// this function is broken
+				//makePowerUp();
 				ticks = 0;
 			}
 			else {
